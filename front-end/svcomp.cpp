@@ -603,7 +603,7 @@ void generate_witness(){
 	systm(cmd.str().c_str());
 
 	cmd.str("");
-	cmd << "llvm-gcc -c -g --emit-llvm -o tokenized.bc " << tmp_file("tokenized.c");
+	cmd << "clang -S -emit-llvm -o tokenized.bc " << tmp_file("tokenized.c");
 	systm(cmd.str().c_str());
 
 	cmd.str("");

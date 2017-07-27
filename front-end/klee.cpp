@@ -165,7 +165,7 @@ void make_initial_bc_klee(){
 
 	// Compile to BC
 	cmd.str("");
-	cmd << "llvm-g++ -O0 --emit-llvm -D KLEE -c file.cpp -o file.bc";
+	cmd << "clang++ -O0 -S -emit-llvm -D KLEE -c file.cpp -o file.bc";
 	systm(cmd.str().c_str());
 
 }

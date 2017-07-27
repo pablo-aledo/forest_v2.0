@@ -182,7 +182,7 @@ void load_file_options(string file){
 void load_default_options(){
 	options["verbose"] = "false";
 	options["base_path"] = "/media/disk/release";
-	options["llvm_path"] = "/llvm-2.9";
+	options["llvm_path"] = "/usr/share/llvm-3.7";
 	options["output_file"] = "final";
 	options["subst_names"] = "true";
 	options["driver"] = "real_integer";
@@ -346,7 +346,7 @@ bool is_concurrent(string filename){
 bool is_recursive(string filename){
 	string llvm_path = cmd_option_str("llvm_path");
 	stringstream command;
-	command << "llvm-gcc " << filename << " -c --emit-llvm -o " << tmp_file("check_recursive") << ";";
+	command << "clang " << filename << " -S -emit-llvm -o " << tmp_file("check_recursive") << ";";
 	command << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestFeatures.so -isrecursive < " << tmp_file("check_recursive") << " > /dev/null";
 	systm(command.str().c_str());
 

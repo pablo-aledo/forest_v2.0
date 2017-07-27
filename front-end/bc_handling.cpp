@@ -707,9 +707,9 @@ void make_initial_bc(){
 		// Compile code to BC
 		cmd.str("");
 		if(cmd_option_str("c_standard") == "C")
-			cmd << "llvm-gcc " << cmd_option_str("compiler_flags") << " -O0 --emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.c -o file.bc";
+			cmd << "llvm-gcc " << cmd_option_str("compiler_flags") << " -O0 -S -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.c -o file.bc";
 		else
-			cmd << "llvm-g++ -O0 --emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.cpp -o file.bc";
+			cmd << "clang++ -O0 -S -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.cpp -o file.bc";
 		systm(cmd.str().c_str());
 
 	}
@@ -873,11 +873,11 @@ void compare_libs(){
 	stringstream cmd;
 
 	cmd.str("");
-	cmd << "llvm-g++ --emit-llvm " << prj_file(cmd_option_string_vector("file")[0]) << " -c -o " << tmp_file("file-1.bc") << ";";
+	cmd << "clang++ -S -emit-llvm " << prj_file(cmd_option_string_vector("file")[0]) << " -c -o " << tmp_file("file-1.bc") << ";";
 	systm(cmd.str());
 
 	cmd.str("");
-	cmd << "llvm-g++ --emit-llvm " << cflags.str() << " " << prj_file(cmd_option_string_vector("file")[0]) << " -c -o " << tmp_file("file-2.bc") << ";";
+	cmd << "clang++ -S -emit-llvm " << cflags.str() << " " << prj_file(cmd_option_string_vector("file")[0]) << " -c -o " << tmp_file("file-2.bc") << ";";
 	systm(cmd.str());
 
 
