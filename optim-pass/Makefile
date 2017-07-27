@@ -1,7 +1,7 @@
 #all: /llvm-2.9/install/lib/ForestInstr.so /llvm-2.9/install/lib/ForestMeasure.so /llvm-2.9/install/lib/ForestConcurrency.so /llvm-2.9/install/lib/ForestStdlibs.so /llvm-2.9/install/lib/ForestHeuristic.so /llvm-2.9/install/lib/ForestBcAnalyze.so /llvm-2.9/install/lib/ForestFeatures.so
-all: /usr/share/llvm-3.7/lib/ForestInstr.so
+all: /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so
 
-/usr/share/llvm-3.7/lib/ForestInstr.so: instrumentation_pass.cpp 
+/usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so: instrumentation_pass.cpp 
 	mkdir -p /usr/src/llvm-3.7/build3/lib/Transforms/Forest_instr/
 	mkdir -p /usr/src/llvm-3.7/lib/Transforms/Forest_instr/
 	\cp make_instr /usr/src/llvm-3.7/build3/lib/Transforms/Forest_instr/Makefile

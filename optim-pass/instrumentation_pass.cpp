@@ -151,7 +151,7 @@ string floatvalue( ConstantFP * CF ){
 	ret_ss.setf( std::ios::fixed, std:: ios::floatfield );
 	ret_ss.precision(5);
 
-	if( CF->getType()->getTypeID() == 1)
+	if( CF->getType()->getTypeID() == 2)
 		ret_ss << CF->getValueAPF().convertToFloat();
 	else
 		ret_ss << CF->getValueAPF().convertToDouble();
