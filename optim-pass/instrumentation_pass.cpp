@@ -298,11 +298,11 @@ string get_type_str( const Type* t){
 		return name.str();
 	}
 
-	if(typId == 13){
+	if(typId == 14){
 		return "PointerTyID";
 	}
 
-	if(typId == 12){
+	if(typId == 13){
 		return "ArrayTyID";
 	}
 
@@ -1202,99 +1202,6 @@ struct Demangle: public ModulePass {
 			if( functions_v.find(fn_name) != functions_v.end() ){
 				fn->setName(demangle(fn_name));
 			}
-		}
-
-		return false;
-	}
-};
-
-
-
-struct RmXBool: public ModulePass {
-	static char ID; // Pass identification, replacement for typeid
-	RmXBool() : ModulePass(ID) {}
-
-	virtual bool runOnModule(Module &M) {
-
-		if(cmd_option_bool("svcomp") || cmd_option_bool("goanna_fpr")) return false;
-
-		mod_iterator(M, fn){
-
-			map<string,vector<Instruction*> > to_rm;
-
-			fun_iterator(fn, bb){
-				blk_iterator(bb, in){
-
-					BasicBlock::iterator in_1 = in;
-					BasicBlock::iterator in_2 = in_1; in_2++;
-					BasicBlock::iterator in_3 = in_2; in_3++;
-					BasicBlock::iterator in_4 = in_3; in_4++;
-
-					if(in_4 == bb->end()) continue;
-
-					ICmpInst* in_1_c       = dyn_cast<ICmpInst>(in_1);
-					BinaryOperator* in_2_c = dyn_cast<BinaryOperator>(in_2);
-					CastInst* in_3_c       = dyn_cast<CastInst>(in_3);
-					CmpInst* in_4_c        = dyn_cast<CmpInst>(in_4);
-
-					if( (!in_1_c) || (!in_2_c) && (!in_3_c && !in_4_c) ) continue;
-
-
-					ConstantInt* constant_int_1_v = dyn_cast<ConstantInt>(in_1_c->getOperand(1));
-					if(!constant_int_1_v) continue;
-					int constant_int_1 = constant_int_1_v->getSExtValue();
-
-					ConstantInt* constant_int_2_v = dyn_cast<ConstantInt>(in_2_c->getOperand(1));
-					if(!constant_int_2_v) continue;
-					int constant_int_2 = constant_int_2_v->getSExtValue();
-
-						
-					ConstantInt* constant_int_4_v = dyn_cast<ConstantInt>(in_4_c->getOperand(1));
-					if(!constant_int_4_v) continue;
-					int constant_int_4 = constant_int_4_v->getSExtValue();
-
-
-					if( constant_int_1 != 0 || constant_int_2 != -1 || constant_int_4 != 0 ) continue;
-
-					
-					Value* x = in_1_c->getOperand(0);
-					ConstantInt* const_int8_5 = ConstantInt::get(M.getContext(), APInt(8, StringRef("0"), 10));
-					ICmpInst* int1_8 = new ICmpInst(in_1, ICmpInst::ICMP_EQ,x,const_int8_5, "");
-
-					blk_iterator(bb, in2){
-						for ( unsigned int i = 0; i < in2->getNumOperands(); i++) {
-							Value* operand = in2->getOperand(i);
-							if(operand == in_4)
-								in2->setOperand(i, int1_8);
-						}
-					}
-
-					to_rm[bb->getName().str()].push_back(in_1);
-					to_rm[bb->getName().str()].push_back(in_2);
-					to_rm[bb->getName().str()].push_back(in_3);
-					to_rm[bb->getName().str()].push_back(in_4);
-
-				}
-
-
-			}
-
-			// cerr << "fnname: " << fn->getName().str() << endl;
-
-			for( map<string,vector<Instruction*> >::iterator it = to_rm.begin(); it != to_rm.end(); it++){
-
-				vector<Instruction*> vin = it->second;
-				string bb_s = it->first;
-
-				// cerr << "bb: " << bb_s << endl;
-
-				for( vector<Instruction*>::iterator it2 = vin.end(); it2 != vin.begin(); ){
-					it2--;
-					(*it2)->eraseFromParent();
-				}
-
-			}
-
 		}
 
 		return false;
@@ -4370,7 +4277,6 @@ struct All: public ModulePass {
 		cerr << "AddAssertFn    " << endl; fflush(stderr); {AddAssertFn      pass;   pass.runOnModule(M);}
 		cerr << "RmErrorFn      " << endl; fflush(stderr); {RmErrorFn        pass;   pass.runOnModule(M);}
 		cerr << "RmPutsFn       " << endl; fflush(stderr); {RmPutsFn         pass;   pass.runOnModule(M);}
-		cerr << "RmXBool        " << endl; fflush(stderr); {RmXBool          pass;   pass.runOnModule(M);}
 		cerr << "MainArgs_2     " << endl; fflush(stderr); {MainArgs_2       pass;   pass.runOnModule(M);}
 		cerr << "SwitchInstr    " << endl; fflush(stderr); {SwitchInstr      pass;   pass.runOnModule(M);}
 		cerr << "FillNames      " << endl; fflush(stderr); {FillNames        pass;   pass.runOnModule(M);}
@@ -4417,9 +4323,6 @@ static RegisterPass<Demangle> Demangle(               "instr_demangle"          
 
 char BinaryOp::ID = 0;
 static RegisterPass<BinaryOp> BinaryOp(               "instr_binaryop"           , "Instrument binary operations                        " );
-
-char RmXBool::ID = 0;
-static RegisterPass<RmXBool> RmXBool(                 "instr_rmxbool"            , "Remove xor boolean                                  " );
 
 char RmIndetFn::ID = 0;
 static RegisterPass<RmIndetFn> RmIndetFn(             "instr_rmindet"            , "Remove indetermination functions                    " );
