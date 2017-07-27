@@ -8,15 +8,6 @@ z3_wrapper:
 coverage_viewer:
 	#make -C utils/coverage_viewer/
 
-post-proc:
-	make -C postproc
-
-stdlibs_parser:
-	make -C stdlibs_parser/src_parser/
-
-library:
-	make -C stdlibs
-
 backend:
 	make -C back-end
 
