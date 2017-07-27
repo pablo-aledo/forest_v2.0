@@ -1,0 +1,6 @@
+bin/*
+lib/
+*.bc
+*.log
+*.swp
+tags
