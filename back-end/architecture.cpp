@@ -78,7 +78,7 @@ string make_unsigned(string value, string type){
 
 	string ret_s;
 	int ret_i;
-	int value_i = stoi(value);
+	int value_i = strtoi(value);
 
 
 	if( value_i < 0){
@@ -95,7 +95,7 @@ string make_signed(string value, string type){
 
 	string ret_s;
 	int ret_i;
-	int value_i = stoi(value);
+	int value_i = strtoi(value);
 
 
 	if( value_i > (1 << bits(type)) - 1 ){
@@ -113,14 +113,14 @@ string trunc(string src, string dst_type){
 
 	int ret_i;
 
-	     if(dst_type == "IntegerTyID8"   ) ret_i = (char) stoi(src);
-	else if(dst_type == "IntegerTyID32"  ) ret_i = (int) stoi(src);
-	else if(dst_type == "IntegerTyID16"  ) ret_i = (short) stoi(src);
-	else if(dst_type == "DoubleTyID"     ) ret_i = (double) stoi(src);
-	else if(dst_type == "IntegerTyID64"  ) ret_i = (long) stoi(src);
-	else if(dst_type == "Int"            ) ret_i = (int) stoi(src);
-	else if(dst_type == "FloatTyID"      ) ret_i = (float) stoi(src);
-	else if(dst_type == "bool"           ) ret_i = (int) stoi(src);
+	     if(dst_type == "IntegerTyID8"   ) ret_i = (char) strtoi(src);
+	else if(dst_type == "IntegerTyID32"  ) ret_i = (int) strtoi(src);
+	else if(dst_type == "IntegerTyID16"  ) ret_i = (short) strtoi(src);
+	else if(dst_type == "DoubleTyID"     ) ret_i = (double) strtoi(src);
+	else if(dst_type == "IntegerTyID64"  ) ret_i = (long) strtoi(src);
+	else if(dst_type == "Int"            ) ret_i = (int) strtoi(src);
+	else if(dst_type == "FloatTyID"      ) ret_i = (float) strtoi(src);
+	else if(dst_type == "bool"           ) ret_i = (int) strtoi(src);
 	else assert(0 && "Unknown type");
 
 	if( ret_i < 0 ) ret_i = (1 << bits(dst_type)) + ret_i;

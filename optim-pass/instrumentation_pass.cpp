@@ -18,33 +18,8 @@
  * =====================================================================================
  */
 
-#define LLVM29
-
-
-#ifdef LLVM29
-#include "llvm/Pass.h"
-#include "llvm/Module.h"
-#include "llvm/Support/raw_ostream.h"
-#include "llvm/ADT/Statistic.h"
-#include "llvm/Analysis/Dominators.h"
-#include "llvm/Support/InstIterator.h"
-#include "llvm/Instructions.h"
-#include "llvm/DerivedTypes.h"
-#include "llvm/Support/IRBuilder.h"
-#include "llvm/ADT/APFloat.h"
-#include "llvm/Transforms/Utils/BasicBlockUtils.h"
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <stdio.h>
-#include <map>
-#include "/media/disk/release/back-end/architecture.cpp"
-#else
 #include <llvm/Pass.h>
-#include <llvm/PassManager.h>
 #include <llvm/ADT/SmallVector.h>
-#include <llvm/Analysis/Verifier.h>
-#include <llvm/Assembly/PrintModulePass.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/Constants.h>
@@ -58,6 +33,7 @@
 #include <llvm/Support/FormattedStream.h>
 #include <llvm/Support/MathExtras.h>
 #include <llvm/IR/Operator.h>
+#include <llvm/Transforms/Utils/BasicBlockUtils.h>
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -65,8 +41,7 @@
 #include <stdio.h>
 #include <map>
 #include <set>
-#include "/home/luis/CurroUC/vippe/hw_llvm/trunk/back-end/architecture.cpp"
-#endif
+#include "/media/DATA/Work/forest_comm/disk/release/back-end/architecture.cpp"
 
 
 #define mod_iterator(mod, fn) for( Module::iterator        fn = mod.begin(),  function_end    = mod.end();  fn != function_end;    ++fn )
@@ -95,12 +70,11 @@ typedef struct VarInit {
 
 // Helper Functions
 
-
-	int stoi(string str){
-		int ret;
-		sscanf(str.c_str(), "%d", &ret);
-		return ret;
-	}
+int strtoi(string str){
+	int ret;
+	sscanf(str.c_str(), "%d", &ret);
+	return ret;
+}
 
 
 map<string, string> options;
@@ -165,8 +139,10 @@ string cmd_option_str(string option){
 }
 
 int cmd_option_int(string key){
-	return stoi(options[key]);
+	return strtoi(options[key]);
 }
+
+// LLVM Functions
 
 
 string floatvalue( ConstantFP * CF ){
@@ -242,11 +218,7 @@ GlobalVariable* make_global_str(Module& M, string name){
 			/*Initializer=*/0, // has initializer, specified below
 			/*Name=*/"a");
 
-	#ifdef LLVM29
-	Constant* const_array_2 = ConstantArray::get(M.getContext(), name.c_str(), true);
-	#else
 	Constant* const_array_2 = ConstantDataArray::getString(M.getContext(), name.c_str(), true);
-	#endif
 
 	// Global Variable Definitions
 	gvar_array_a->setInitializer(const_array_2);
@@ -261,11 +233,8 @@ Constant* pointerToArray( Module& M, GlobalVariable* global_var ){
 	const_ptr_9_indices.push_back(const_int64_10);
 	const_ptr_9_indices.push_back(const_int64_10);
 
-	#ifdef LLVM29
-	Constant* const_ptr_9 = ConstantExpr::getGetElementPtr(global_var, &const_ptr_9_indices[0], const_ptr_9_indices.size());
-	#else
-	Constant* const_ptr_9 = ConstantExpr::getGetElementPtr(global_var, const_ptr_9_indices);
-	#endif
+	Constant* const_ptr_9 = ConstantExpr::getGetElementPtr(global_var->getType(), global_var, const_ptr_9_indices);
+
 	return const_ptr_9;
 }
 
@@ -622,9 +591,7 @@ int get_offset(const Type* t, int debug = 1){
 	//const SequentialType*   t_sequential   = dyn_cast<SequentialType>(t);
 	//const IntegerType*      t_integer      = dyn_cast<IntegerType>(t);
 	const CompositeType*    t_composite    = dyn_cast<CompositeType>(t);
-#ifndef LLVM29
 	CompositeType*          t_composite_2  = (CompositeType*)t_composite;
-#endif
 
 	string type_str = get_type_str(t);
 
@@ -639,11 +606,7 @@ int get_offset(const Type* t, int debug = 1){
 
 		int sum = 0;
 		for ( unsigned int i = 0; i < t_array->getNumElements(); i++) {
-#ifdef LLVM29
-			sum += get_offset(t_composite->getTypeAtIndex(i));
-#else
 			sum += get_offset(t_composite_2->getTypeAtIndex(i));
-#endif
 		}
 
 		return sum;
@@ -701,9 +664,7 @@ string get_offset_tree_rec( const Type* t, int* base){
 	//const SequentialType*   t_sequential   = dyn_cast<SequentialType>(t);
 	//const IntegerType*      t_integer      = dyn_cast<IntegerType>(t);
 	const CompositeType*    t_composite    = dyn_cast<CompositeType>(t);
-#ifndef LLVM29
 	CompositeType*          t_composite_2  = (CompositeType*) t_composite;
-#endif
 
 	string type_str = get_type_str(t);
 
@@ -738,11 +699,7 @@ string get_offset_tree_rec( const Type* t, int* base){
 
 		string aux = "(";
 		for ( unsigned int i = 0; i < t_array->getNumElements(); i++) {
-#ifdef LLVM29
-			aux += get_offset_tree_rec(t_composite->getTypeAtIndex(i),base);
-#else
 			aux += get_offset_tree_rec(t_composite_2->getTypeAtIndex(i),base);
-#endif
 		}
 		//aux += "," + itos(get_offset(t_array->getElementType()));
 		aux += "," + itos(get_offset(t));
@@ -996,7 +953,7 @@ struct FPointerhook: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst* call = CallInst::Create(InitFn, params.begin(), params.end(), "hola", insertpos);
+						CallInst* call = CallInst::Create(InitFn, params, "hola", insertpos);
 							
 						// cerr << "number of operands " << in->getNumOperands() << endl;
 						in->setOperand(in->getNumOperands()-1,call);
@@ -1026,10 +983,10 @@ struct IsolateFunction: public ModulePass {
 		Function::arg_iterator arg_begin = fnseed->arg_begin();
 		Function::arg_iterator arg_end   = fnseed->arg_end();
 		vector<string> argNames;
-		vector<const Type*> argTypes;
+		vector<Type*> argTypes;
 		for( Function::arg_iterator it = arg_begin; it != arg_end; it++ ){
 			argNames.push_back(it->getName().str());
-			const Type* t = it->getType();
+			Type* t = it->getType();
 			argTypes.push_back(t);
 		}
 
@@ -1045,20 +1002,16 @@ struct IsolateFunction: public ModulePass {
 		std::vector<Value*> params;
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
 			string name = argNames[i];
-			const Type* type = argTypes[i];
 
-			AllocaInst* ai = new AllocaInst(type, 0, name.c_str(), entry );
+			AllocaInst* ai = new AllocaInst(argTypes[i], 0, 0, name.c_str(), entry );
+
 			LoadInst* ai_ptr = new LoadInst(ai,"",entry);
 
 			params.push_back(ai_ptr);
 
 		}
 
-#ifdef LLVM29
-		CallInst::Create(fnseed, params.begin(), params.end(), "", entry);
-#else
 		CallInst::Create(fnseed, params, "", entry);
-#endif
 
 		ReturnInst::Create(M.getContext(), entry);
 
@@ -1107,11 +1060,7 @@ struct SelectInstr: public ModulePass {
 						params.push_back(pointerToArray(M,c2));
 						params.push_back(pointerToArray(M,c3));
 						params.push_back(pointerToArray(M,c4));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 				}
@@ -1498,7 +1447,7 @@ struct RmIndetFn: public ModulePass {
 				AllocaInst* ai = new AllocaInst(instr->getType(), 0, instr->getName().str(), instr);
 				ConstantInt* zero = ConstantInt::get(M.getContext(), APInt(32, StringRef("0"), 10));
 				vector<Value*> indices; indices.push_back(zero);
-				GetElementPtrInst* getelement = GetElementPtrInst::Create(ai, indices.begin(),indices.end(), "pointer", instr);
+				GetElementPtrInst* getelement =	GetElementPtrInst::Create( ai->getType(), ai, indices, "pointer", instr);
 				LoadInst* load = new LoadInst(getelement, "load", false, instr);
 				
 				fun_iterator(fn, bb){
@@ -1510,8 +1459,7 @@ struct RmIndetFn: public ModulePass {
 				if(!(*it)->getNumUses()){
 					(*it)->eraseFromParent();
 				} else {
-					const Type* type = (*it)->getType();
-					Instruction* allocainst = new AllocaInst(type, 0, "");
+					Instruction* allocainst = new AllocaInst((*it)->getType());
 					Instruction* loadinst   = new LoadInst(allocainst, "");
 					BasicBlock::iterator ii(*it);
 					
@@ -1638,9 +1586,9 @@ struct RmMalloc: public ModulePass {
 						)
 			){
 				const PointerType* pointertype = cast<PointerType>((*it)->getType());
-				const Type*        pointedtype = pointertype->getElementType();
+				Type*        pointedtype = pointertype->getElementType();
 
-				Instruction* allocainst = new AllocaInst(pointedtype, 0, "");
+				Instruction* allocainst = new AllocaInst(pointedtype, 0,0, "");
 				BasicBlock::iterator ii(*it);
 
 				ReplaceInstWithInst((*it)->getParent()->getInstList(), ii, allocainst );
@@ -1698,7 +1646,7 @@ struct ChAssumeFn: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
+						CallInst::Create(InitFn, params, "", insertpos);
 
 					}
 				}
@@ -1758,7 +1706,7 @@ struct ChAlloc: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
+						CallInst::Create(InitFn, params, "", insertpos);
 
 					}
 
@@ -1783,7 +1731,7 @@ struct ChAlloc: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
+						CallInst::Create(InitFn, params, "", insertpos);
 
 					}
 
@@ -1808,7 +1756,7 @@ struct ChAlloc: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
+						CallInst::Create(InitFn, params, "", insertpos);
 
 					}
 
@@ -1872,7 +1820,7 @@ struct ChAssertFn: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
+						CallInst::Create(InitFn, params, "", insertpos);
 
 					}
 				}
@@ -1933,7 +1881,7 @@ struct AddAssertFn: public ModulePass {
 
 								std::vector<Value*> params;
 								params.push_back(in_c->getArgOperand(0));
-								CallInst::Create(M.getFunction("__VERIFIER_assert"), params.begin(), params.end(), "",in);
+								CallInst::Create(M.getFunction("__VERIFIER_assert"), params, "",in);
 
 							}
 						}
@@ -1967,8 +1915,9 @@ if(M.getFunction("__VERIFIER_assert"))
 
 
  // Type Definitions
- std::vector<const Type*>FuncTy_0_args;
+ std::vector<Type*>FuncTy_0_args;
  FuncTy_0_args.push_back(IntegerType::get(mod->getContext(), 32));
+
  FunctionType* FuncTy_0 = FunctionType::get(
   /*Result=*/Type::getVoidTy(mod->getContext()),
   /*Params=*/FuncTy_0_args,
@@ -2024,7 +1973,7 @@ if(M.getFunction("__VERIFIER_assert"))
 
 					std::vector<Value*> params;
 					params.push_back(in_c->getArgOperand(0));
-					CallInst::Create(func_assert, params.begin(), params.end(), "",in);
+					CallInst::Create(func_assert, params, "",in);
 
 				}
 			}
@@ -2090,7 +2039,7 @@ struct RmInstr: public ModulePass {
 
 	}
 
-	Constant* get_zero_of_type(const Type* type, Module& M){
+	Constant* get_zero_of_type(Type* type, Module& M){
 
 		Constant* ret;
 
@@ -2234,11 +2183,7 @@ struct BinaryOp: public ModulePass {
 						params.push_back(pointerToArray(M,c2));
 						params.push_back(pointerToArray(M,c3));
 						params.push_back(pointerToArray(M,c4));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 						//CallInst* ci = CallInst::Create(InitFn, "", insertpos );
 
@@ -2294,11 +2239,7 @@ struct CastInstr: public ModulePass {
 						params.push_back(pointerToArray(M,c2));
 						params.push_back(pointerToArray(M,c3));
 						params.push_back(pointerToArray(M,c4));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 
 					}
@@ -2340,11 +2281,8 @@ struct LoadStore: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 						params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
+
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 
@@ -2368,11 +2306,8 @@ struct LoadStore: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 						params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
+
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 				}
@@ -2409,11 +2344,8 @@ struct SeparateGetElm: public ModulePass {
 							User::op_iterator idxend   = gepop->idx_end();
 							vector<Value*> indices(idxbegin, idxend);
 
-#ifdef LLVM29
-							GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices.begin(),indices.end(), "pointer", in);
-#else
-							GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices, "pointer", in);
-#endif
+							GetElementPtrInst* getelement = GetElementPtrInst::Create(NULL, pointer, indices, "pointer", in);
+
 							in->setOperand(0,getelement);
 
 							//gepop->dump();
@@ -2444,11 +2376,7 @@ struct SeparateGetElm: public ModulePass {
 								User::op_iterator idxend   = gepop->idx_end();
 								vector<Value*> indices(idxbegin, idxend);
 
-#ifdef LLVM29
-								GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices.begin(),indices.end(), "pointer", in);
-#else
-								GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices, "pointer", in);
-#endif
+								GetElementPtrInst* getelement = GetElementPtrInst::Create(NULL, pointer, indices, "pointer", in);
 
 								in->setOperand(i,getelement);
 
@@ -2478,11 +2406,9 @@ struct SeparateGetElm: public ModulePass {
 								User::op_iterator idxbegin = gepop->idx_begin();
 								User::op_iterator idxend   = gepop->idx_end();
 								vector<Value*> indices(idxbegin, idxend);
-#ifdef LLVM29
-								GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices.begin(),indices.end(), "pointer", in);
-#else
-								GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices, "pointer", in);
-#endif
+
+								GetElementPtrInst* getelement = GetElementPtrInst::Create(NULL, pointer, indices, "pointer", in);
+
 								in->setOperand(i,getelement);
 
 							}
@@ -2508,11 +2434,9 @@ struct SeparateGetElm: public ModulePass {
 							User::op_iterator idxbegin = gepop->idx_begin();
 							User::op_iterator idxend   = gepop->idx_end();
 							vector<Value*> indices(idxbegin, idxend);
-#ifdef LLVM29
-							GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices.begin(),indices.end(), "pointer", in);
-#else
-							GetElementPtrInst* getelement = GetElementPtrInst::Create(pointer, indices, "pointer", in);
-#endif
+
+							GetElementPtrInst* getelement = GetElementPtrInst::Create(NULL, pointer, indices, "pointer", in);
+
 							in->setOperand(0,getelement);
 
 						}
@@ -2688,11 +2612,7 @@ struct IcmpInstr: public ModulePass {
 						params.push_back(pointerToArray(M,c2));
 						params.push_back(pointerToArray(M,c3));
 						params.push_back(pointerToArray(M,c4));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 				}
@@ -2989,11 +2909,7 @@ struct BrInstr: public ModulePass {
 							params.push_back(pointerToArray(M,c1));
 							params.push_back(pointerToArray(M,c2));
 
-#ifdef LLVM29
-							CallInst* ci = CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 							CallInst* ci = CallInst::Create(InitFn, params, "", insertpos);
-#endif
 							
 							if( in_b->isConditional() )
 								in_b->setCondition(ci);
@@ -3008,11 +2924,7 @@ struct BrInstr: public ModulePass {
 							BasicBlock::iterator insertpos = in; //insertpos++;
 
 							std::vector<Value*> params;
-#ifdef LLVM29
-							CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 							CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 						}
 					}
@@ -3101,11 +3013,7 @@ struct SpecialCall: public ModulePass {
 
 							std::vector<Value*> params;
 							params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-							CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 							CallInst::Create(InitFn, params, "", insertpos);
-#endif
 						} else if(forcepivot) {
 
 							GlobalVariable* c2 = make_global_str(M, oplist );
@@ -3120,11 +3028,7 @@ struct SpecialCall: public ModulePass {
 
 							std::vector<Value*> params;
 							params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-							CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 							CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 						} else {
 
@@ -3256,11 +3160,7 @@ struct CallInstr: public ModulePass {
 						params1.push_back(pointerToArray(M,c2));
 						params1.push_back(pointerToArray(M,c3));
 						params1.push_back(pointerToArray(M,c5));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params1.begin(), params1.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params1, "", insertpos);
-#endif
 
 						insertpos++; in++;
 
@@ -3268,11 +3168,7 @@ struct CallInstr: public ModulePass {
 						params2.push_back(pointerToArray(M,c1));
 						params2.push_back(pointerToArray(M,c4));
 						params2.push_back(pointerToArray(M,c6));
-#ifdef LLVM29
-						CallInst::Create(InitFn_post, params2.begin(),params2.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn_post, params2, "", insertpos);
-#endif
 
 						in--;
 
@@ -3308,11 +3204,7 @@ struct CallInstr: public ModulePass {
 
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 
 
@@ -3432,11 +3324,7 @@ struct Memcpy: public ModulePass {
 							params.push_back(pointerToArray(M,c3));
 							params.push_back(pointerToArray(M,c4));
 							params.push_back(pointerToArray(M,c5));
-#ifdef LLVM29
-							CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 							CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 						}
 
@@ -3455,6 +3343,7 @@ struct Memcpy: public ModulePass {
 		return false;
 	}
 };
+
 
 struct ExternalFn: public ModulePass {
 	static char ID; // Pass identification, replacement for typed
@@ -3500,22 +3389,14 @@ struct BbMarks: public ModulePass {
 					BasicBlock::iterator insertpos = bb->begin();
 					std::vector<Value*> params;
 					params.push_back(pointerToArray(M,c1));
-#ifdef LLVM29
-					CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 					CallInst::Create(InitFn, params, "", insertpos);
-#endif
 				}
 
 				{
 					BasicBlock::iterator insertpos = bb->end(); insertpos--;
 					std::vector<Value*> params;
 					params.push_back(pointerToArray(M,c1));
-#ifdef LLVM29
-					CallInst::Create(EndFn, params.begin(), params.end(), "", insertpos);
-#else
 					CallInst::Create(EndFn, params, "", insertpos);
-#endif
 				}
 			}
 		}
@@ -3558,11 +3439,7 @@ struct BbMarks: public ModulePass {
 				std::vector<Value*> params;
 				params.push_back(pointerToArray(M,c1));
 				params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-				CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 				CallInst::Create(InitFn, params, "", insertpos);
-#endif
 				
 			}
 
@@ -3612,11 +3489,7 @@ struct AllocaInstr: public ModulePass {
 						std::vector<Value*> params;
 						params.push_back(pointerToArray(M,c1));
 						params.push_back(pointerToArray(M,c2));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 				}
@@ -3695,11 +3568,7 @@ struct GetelementPtr: public ModulePass {
 						params.push_back(pointerToArray(M,c3));
 						params.push_back(pointerToArray(M,c4));
 						//params.push_back(pointerToArray(M,c5));
-#ifdef LLVM29
-						CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 						CallInst::Create(InitFn, params, "", insertpos);
-#endif
 
 					}
 				}
@@ -3726,11 +3595,7 @@ struct BeginEnd: public ModulePass {
 						));
 	
 			std::vector<Value*> params;
-#ifdef LLVM29
-			CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos);
-#else
 			CallInst::Create(InitFn, params, "", insertpos);
-#endif
 		}
 
 		{
@@ -3748,11 +3613,7 @@ struct BeginEnd: public ModulePass {
 						));
 	
 			std::vector<Value*> params;
-#ifdef LLVM29
-			CallInst::Create(InitFn, params.begin(), params.end(), "", insertpos_b);
-#else
 			CallInst::Create(InitFn, params, "", insertpos_b);
-#endif
 		}
 
 		return false;
@@ -3777,7 +3638,7 @@ struct MainArgs: public ModulePass {
 		read_options();
 		string number_of_args = cmd_option_str("argc");
 		number_of_args = (number_of_args=="")?"0":number_of_args;
-		int number_of_args_i = stoi(number_of_args);
+		int number_of_args_i = strtoi(number_of_args);
 
 		// Finds main Function
 		Function* fn = M.getFunction("main");
@@ -3815,7 +3676,7 @@ struct MainArgs: public ModulePass {
 				std::vector<Value*> ptr_13_indices;
 				ptr_13_indices.push_back(const_int64_10);
 				ptr_13_indices.push_back(const_int64_11);
-				ptr_13 = GetElementPtrInst::Create(argv_addr, ptr_13_indices.begin(), ptr_13_indices.end(), "", inbegin);
+				ptr_13 = GetElementPtrInst::Create(NULL,argv_addr, ptr_13_indices, "", inbegin);
 			}
 
 
@@ -3827,7 +3688,7 @@ struct MainArgs: public ModulePass {
 				std::vector<Value*> ptr_14_indices;
 				ptr_14_indices.push_back(const_int64_10);
 				ptr_14_indices.push_back(const_int64_11);
-				ptr_14 = GetElementPtrInst::Create(argvs, ptr_14_indices.begin(), ptr_14_indices.end(), "", inbegin);
+				ptr_14 = GetElementPtrInst::Create(NULL,argvs, ptr_14_indices, "", inbegin);
 			}
 
 			new StoreInst(ptr_14, ptr_13, false, inbegin);
@@ -3928,9 +3789,9 @@ struct MainArgs_2: public ModulePass {
 
 		if(args_str == "") return false;
 		vector<string> tokens = tokenize(args_str, " ");
-		int min_argvs = stoi(tokens[0]);
-		int max_argvs = stoi(tokens[1]);
-		int max_len   = stoi(tokens[2]); max_len++;
+		int min_argvs = strtoi(tokens[0]);
+		int max_argvs = strtoi(tokens[1]);
+		int max_len   = strtoi(tokens[2]); max_len++;
 
 		// Finds main Function
 		Function* fn = M.getFunction("main");
@@ -3969,11 +3830,7 @@ struct MainArgs_2: public ModulePass {
 				std::vector<Value*> ptr_13_indices;
 				ptr_13_indices.push_back(const_int64_10);
 				ptr_13_indices.push_back(const_int64_11);
-#ifdef LLVM29
-				ptr_13 = GetElementPtrInst::Create(argv_addr, ptr_13_indices.begin(), ptr_13_indices.end(), "", inbegin);
-#else
-				ptr_13 = GetElementPtrInst::Create(argv_addr, ptr_13_indices, "", inbegin);
-#endif
+				ptr_13 = GetElementPtrInst::Create(NULL,argv_addr, ptr_13_indices, "", inbegin);
 			}
 
 
@@ -3985,11 +3842,7 @@ struct MainArgs_2: public ModulePass {
 				std::vector<Value*> ptr_14_indices;
 				ptr_14_indices.push_back(const_int64_10);
 				ptr_14_indices.push_back(const_int64_11);
-#ifdef LLVM29
-				ptr_14 = GetElementPtrInst::Create(argvs, ptr_14_indices.begin(), ptr_14_indices.end(), "", inbegin);
-#else
-				ptr_14 = GetElementPtrInst::Create(argvs, ptr_14_indices, "", inbegin);
-#endif
+				ptr_14 = GetElementPtrInst::Create(NULL,argvs, ptr_14_indices, "", inbegin);
 			}
 
 			{
@@ -3999,11 +3852,7 @@ struct MainArgs_2: public ModulePass {
 				std::vector<Value*> ptr_15_indices;
 				ptr_15_indices.push_back(const_int64_10);
 				ptr_15_indices.push_back(const_int64_11);
-#ifdef LLVM29
-				ptr_15 = GetElementPtrInst::Create(argvs, ptr_15_indices.begin(), ptr_15_indices.end(), "", inbegin);
-#else
-				ptr_15 = GetElementPtrInst::Create(argvs, ptr_15_indices, "", inbegin);
-#endif
+				ptr_15 = GetElementPtrInst::Create(NULL, argvs, ptr_15_indices, "", inbegin);
 			}
 
 			ConstantInt* const_int64_10 = ConstantInt::get(M.getContext(), APInt(8, StringRef("0"), 10));
@@ -4185,7 +4034,7 @@ struct GlobalInit: public ModulePass {
 	
 		//debug && printf("\e[33m %s %s \e[0m\n", indexes[0].c_str(), realvalue(indexes[0]).c_str() );
 	
-		//int realvalue_index_0 = stoi(realvalue_index_0_s);
+		//int realvalue_index_0 = strtoi(realvalue_index_0_s);
 	
 		if( has_index(offset_tree, index_0) ){
 	
@@ -4200,13 +4049,13 @@ struct GlobalInit: public ModulePass {
 			if( rem_indexes.size() ){
 				return get_offset(rem_indexes, elem_str);
 			} else {
-				return stoi(trimpar(elem_str));
+				return strtoi(trimpar(elem_str));
 			}
 	
 		} else {
 			vector<string> tokens = tokenize(offset_tree, "(),");
 			string size_s = tokens[tokens.size()-1];
-			int size = stoi(size_s);
+			int size = strtoi(size_s);
 			//printf("offset_tree %s realvalue_index_0 %d size_s %s\n", offset_tree.c_str(), realvalue_index_0, size_s.c_str());
 			return size*index_0;
 		}
