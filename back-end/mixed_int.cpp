@@ -323,7 +323,7 @@ void MixedInt::right_shift(string op1, string op2, string dst){
 	string uniq_num = itos(rand());
 
 	if(is_constant(op2) || get_is_propagated_constant(op2)){
-		int exponent = 1 << stoi(realvalue(op2));
+		int exponent = 1 << strtoi(realvalue(op2));
 
 
 		map<string, float> content_initial = variables[op1].content;

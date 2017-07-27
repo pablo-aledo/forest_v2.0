@@ -295,13 +295,13 @@ map<set<pair<string, int> > , int > Z3BitVector::get_idx_val(string base,string 
 			string value = canonical_representation(result_get(line));
 			printf("value_canonical_rep %s\n", value.c_str());
 
-			sub_sol.insert(pair<string, int>(varname, stoi(value)));
+			sub_sol.insert(pair<string, int>(varname, strtoi(value)));
 
 		}
 		
 		i++;
 		line = result[i];
-		int idx_res = stoi(canonical_representation(result_get(line)));
+		int idx_res = strtoi(canonical_representation(result_get(line)));
 
 		//printf("idx_res %d\n", idx_res);
 
@@ -354,7 +354,7 @@ void Z3BitVector::representation_constants(string& condition){
 
 				assert(is_number(value) && "Value is not a number");
 
-				int value_i = stoi(value);
+				int value_i = strtoi(value);
 
 
 				//printf("\e[32m before \e[0m .%s.\n", before.c_str());

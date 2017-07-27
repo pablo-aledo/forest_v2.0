@@ -39,7 +39,6 @@
 #include "concurrent.h"
 #include "random_testing.h"
 #include "models.h"
-#include "uppaal.h"
 #include "goanna_fpr.h"
 
 using namespace std;

@@ -28,7 +28,6 @@
 #include <set>
 #include <vector>
 #include "sqlite3.h"
-#include "uppaal.h"
 
 using namespace std;
 
@@ -45,8 +44,6 @@ public:
 	void insert_fi(string filename, string position, string value);
 	void add_visualization_bb(string name);
 	void insert_variable(string name);
-	void insert_uppaal_variables(set<UppaalVar> variables);
-	void insert_uppaal_row(string orig, string dst, string conds, string sem, string lockunlock, string assigns);
 	void insert_trace();
 	set<string> get_interpolants(string position);
 	bool already_covered_at_bb(string name);

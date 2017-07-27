@@ -105,7 +105,6 @@ void clean_tables(){
 	action << "drop table results;";
 	action << "drop table measurements;";
 	action << "drop table frontend;";
-	action << "drop table check_uppaal;";
 	action << "drop table check_xml;";
 	db_command( action.str() );
 
@@ -213,43 +212,11 @@ void clean_tables(){
 	action << ");";
 	db_command( action.str() );
 
-
-	action.str("");
-	action << "create table uppaal (";
-	action << "src varchar(5000),";
-	action << "dst varchar(5000),";
-	action << "conditions varchar(5000),";
-	action << "semaphore varchar(5000),";
-	action << "lockunlock varchar(5000),";
-	action << "assigns varchar(5000)";
-	action << ");";
-	db_command( action.str() );
-
-
-	action.str("");
-	action << "create table uppaal_variables (";
-	action << "name varchar(5000),";
-	action << "type varchar(5000),";
-	action << "init varchar(5000)";
-	action << ");";
-	db_command( action.str() );
-
-
 	action.str("");
 	action << "create table free_variables(";
 	action << "name varchar(5000),";
 	action << "position varchar(5000),";
 	action << "type varchar(5000)";
-	action << ");";
-	db_command( action.str() );
-
-
-	action.str("");
-	action << "create table check_uppaal (";
-	action << "nameThread varchar(5000),";
-	action << "nameVar varchar(5000),";
-	action << "type varchar(5000),";
-	action << "action varchar(5000)";
 	action << ");";
 	db_command( action.str() );
 

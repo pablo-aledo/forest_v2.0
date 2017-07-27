@@ -204,7 +204,7 @@ int count(string name, string character){
 
 }
 
-int stoi(string str){
+int strtoi(string str){
 	int ret;
 	sscanf(str.c_str(), "%d", &ret);
 	return ret;

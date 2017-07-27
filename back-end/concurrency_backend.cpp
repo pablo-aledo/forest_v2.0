@@ -77,7 +77,7 @@ void Concurrency::callinstr_post(char* _fn_name){
 		string register_id       = tokenize(oplist, ",")[0];
 		string content_id       = solver->realvalue(operators->name(register_id));
 
-		string content_function = map_functions[stoi(content_id)];
+		string content_function = map_functions[strtoi(content_id)];
 
 		printf("stopping function %s\n", content_function.c_str());
 

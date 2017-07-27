@@ -64,9 +64,9 @@ void MemAlloc::initialize(){
 
 int MemAlloc::get_size(){
 	if(options->cmd_option_str("malloc_policy") == "constant")
-		return stoi(solver->realvalue("frmalloc_registerunderscoresize"));
+		return strtoi(solver->realvalue("frmalloc_registerunderscoresize"));
 
-	return stoi(solver->realvalue("frmalloc_registerunderscoresize"));
+	return strtoi(solver->realvalue("frmalloc_registerunderscoresize"));
 }
 
 void* MemAlloc::fr_malloc(char* register_size){
@@ -80,20 +80,20 @@ void* MemAlloc::fr_malloc(char* register_size){
 	operators->begin_bb((char*)"entry");
 
 
-	//int first_address  = stoi(solver->realvalue("global_allocationunderscorebuffer"));
+	//int first_address  = strtoi(solver->realvalue("global_allocationunderscorebuffer"));
 	//int allocated_size = get_size();
 	//int last_address  = first_address + allocated_size - 1;
 	
 	pair<int,int> minmax;
 	if(solver->get_is_propagated_constant("frmalloc_registerunderscoresize")){
-		int value = stoi(solver->realvalue("frmalloc_registerunderscoresize"));
+		int value = strtoi(solver->realvalue("frmalloc_registerunderscoresize"));
 		minmax = pair<int,int>(0, value-1);
 	} else {
 		minmax = solver->get_range("frmalloc_registerunderscoresize");
 	}
 
-	int first_address = stoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.first;
-	int last_address  = stoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.second;
+	int first_address = strtoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.first;
+	int last_address  = strtoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.second;
 
 	operators->alloca_instr((char*)"register_ret", (char*)"PointerTyID");
 
@@ -131,20 +131,20 @@ void* MemAlloc::fr_alloca(char* register_size){
 	operators->begin_bb((char*)"entry");
 
 
-	//int first_address  = stoi(solver->realvalue("global_allocationunderscorebuffer"));
+	//int first_address  = strtoi(solver->realvalue("global_allocationunderscorebuffer"));
 	//int allocated_size = get_size();
 	//int last_address  = first_address + allocated_size - 1;
 	
 	pair<int,int> minmax;
 	if(solver->get_is_propagated_constant("fralloca_registerunderscoresize")){
-		int value = stoi(solver->realvalue("fralloca_registerunderscoresize"));
+		int value = strtoi(solver->realvalue("fralloca_registerunderscoresize"));
 		minmax = pair<int,int>(0, value-1);
 	} else {
 		minmax = solver->get_range("fralloca_registerunderscoresize");
 	}
 
-	int first_address = stoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.first;
-	int last_address  = stoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.second;
+	int first_address = strtoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.first;
+	int last_address  = strtoi(solver->realvalue("global_allocationunderscorebuffer")) + minmax.second;
 
 	operators->alloca_instr((char*)"register_ret", (char*)"PointerTyID");
 

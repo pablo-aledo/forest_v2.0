@@ -1,7 +1,7 @@
 all: ../bin/forest
 
-../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/uppaal_frontend.o ../build/goanna_fpr.o ../build/concurrent.o
-	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/uppaal_frontend.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt -I/usr/include/libxml2/ -lxml2
+../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o
+	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt -I/usr/include/libxml2/ -lxml2
 
 ../build/forest.o: forest.cpp 
 	g++ -g -c forest.cpp -o ../build/forest.o
@@ -51,9 +51,6 @@ all: ../bin/forest
 
 ../build/models.o: models.cpp
 	g++ -g -c models.cpp -o ../build/models.o
-
-../build/uppaal_frontend.o: uppaal.cpp
-	g++ -g -c uppaal.cpp -o ../build/uppaal_frontend.o -I/usr/include/libxml2/ -lxml2
 
 ../build/goanna_fpr.o: goanna_fpr.cpp
 	g++ -g -c goanna_fpr.cpp -o ../build/goanna_fpr.o

@@ -581,7 +581,7 @@ void PolynomicSolver::left_shift    (string op1, string op2, string dst){
 
 	if(is_constant(op2) || get_is_propagated_constant(op2)){
 
-		int exponent = 1 << stoi(realvalue(op2));
+		int exponent = 1 << strtoi(realvalue(op2));
 
 		map<set<string>, float> content_initial = variables[op1].content;
 		map<set<string>, float> content_final;
@@ -605,7 +605,7 @@ void PolynomicSolver::right_shift   (string op1, string op2, string dst){
 
 	if(is_constant(op2) || get_is_propagated_constant(op2)){
 
-		int exponent = 1 << stoi(realvalue(op2));
+		int exponent = 1 << strtoi(realvalue(op2));
 
 		map<set<string>, float> content_initial = variables[op1].content;
 		map<set<string>, float> content_final;
@@ -984,10 +984,10 @@ void PolynomicSolver::pointer_instruction(string dst, string offset_tree, vector
 
 
 
-	int real_pointer = stoi(realvalue(base));
+	int real_pointer = strtoi(realvalue(base));
 	for ( unsigned int i = 0; i < indexes.size(); i++) {
 		// printf("rvii %s %s\n", indexes[i].c_str(), realvalue(indexes[i]).c_str() );
-		real_pointer += (stoi(realvalue(indexes[i])) * jmp_offsets[i]);
+		real_pointer += (strtoi(realvalue(indexes[i])) * jmp_offsets[i]);
 	}
 	// printf("real_pointer %d\n", real_pointer);
 	set_real_value(dst, itos(real_pointer));

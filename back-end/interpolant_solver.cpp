@@ -195,7 +195,7 @@ void InterpolantSolver::generate_rejecting_automaton(vector<string> bbs,vector<s
 	for ( unsigned int i = 0; i < bbs.size(); i++) {
 		vector<string> tokens = tokenize(bbs[i], "_");
 		string bb = tokens[0] + "_" + tokens[1];
-		int number = stoi(tokens[2])+1;
+		int number = strtoi(tokens[2])+1;
 		number_of_bbs[bb] = number;
 	}
 

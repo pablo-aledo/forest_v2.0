@@ -36,7 +36,6 @@
 #include "linear_bblast.h"
 #include "database.h"
 #include "interpolant_solver.h"
-#include "uppaal.h"
 #include "concurrency_backend.h"
 #include "memory_allocator.h"
 #include "pre_post.h"
@@ -47,7 +46,6 @@ SolverWrapper* solver      = new Z3RealInt();
 Database* database         = new Database();
 Measurement* measurement   = new Measurement();
 Timer* timer               = new Timer();
-Uppaal* uppaal             = new Uppaal();
 Concurrency* concurrency   = new Concurrency();
 MemAlloc* memory_allocator = new MemAlloc();
 PrePost* pre_post          = new PrePost();
@@ -84,7 +82,6 @@ void CallInstr( char* _oplist, char* _ret_to, char* _call_id ){
 	} else {
 		timer->start_timer();
 		operators->CallInstr( _oplist,  _ret_to );
-		if(options->cmd_option_bool("generate_uppaal_model")) uppaal->call_id(_call_id);
 		timer->end_timer("CallInstr");
 	}
 }
@@ -100,7 +97,6 @@ void ReturnInstr(char* _retname ){
 	} else {
 	timer->start_timer();
 	operators->ReturnInstr(_retname);
-	if(options->cmd_option_bool("generate_uppaal_model")) uppaal->EndFn();
 	timer->end_timer("ReturnInstr");
 	}
 }
@@ -232,10 +228,6 @@ void BeginFn(char* _fn_name, char* _fn_oplist ){
 		else
 			operators->BeginFn(_fn_name, _fn_oplist);
 
-		if(options->cmd_option_bool("generate_uppaal_model")){
-			uppaal->BeginFn(_fn_name);
-		}
-
 		timer->end_timer("BeginFn");
 	}
 }
@@ -244,18 +236,12 @@ void EndFn(){
 	if(options->cmd_option_bool("checkerror")){
 	} else {
 		measurement->EndFn();
-		if(options->cmd_option_bool("generate_uppaal_model")){
-			uppaal->EndFn();
-		}
 	}
 }
 
 void end_sim(){
 
 	memory_allocator->end_sim();
-
-	if(options->cmd_option_bool("generate_uppaal_model"))
-		uppaal->end_sim();
 
 	if(options->cmd_option_bool("measurement"))
 		measurement->end_sim();
@@ -337,14 +323,11 @@ void* __VERIFIER_nondet_pointer(){return 0;}
 
 void mutex_lock_2(char* name){
 
-	uppaal->mutex_lock(name);
-	
 }
 
 
 void mutex_unlock_2(char* name){
 
-	uppaal->mutex_unlock(name);
 	
 }
 

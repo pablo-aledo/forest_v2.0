@@ -806,10 +806,10 @@ void Z3Solver::pointer_instruction(string dst, string offset_tree, vector<string
 	expr += ")";
 
 
-	int real_pointer = stoi(realvalue(base));
+	int real_pointer = strtoi(realvalue(base));
 	for ( unsigned int i = 0; i < indexes.size(); i++) {
 		// printf("rvii %s %s\n", indexes[i].c_str(), realvalue(indexes[i]).c_str() );
-		real_pointer += (stoi(realvalue(indexes[i])) * jmp_offsets[i]);
+		real_pointer += (strtoi(realvalue(indexes[i])) * jmp_offsets[i]);
 	}
 	// printf("real_pointer %d\n", real_pointer);
 
@@ -963,7 +963,7 @@ void Z3Solver::sym_load(string dst, string addr){
 
 
 	
-	int actual_addr = stoi(realvalue(addr));
+	int actual_addr = strtoi(realvalue(addr));
 	string actual_value = realvalue("mem_" + itos(actual_addr));
 
 	set_real_value(dst, actual_value);
@@ -1082,7 +1082,7 @@ void Z3Solver::store_idx_vals(string src, map<set<pair<string, int> > , int > ma
 				res[idx_idxval_res] = val;
 			}
 		} else {
-			res[idx_idxval_res] = stoi(realvalue(src));
+			res[idx_idxval_res] = strtoi(realvalue(src));
 		}
 
 		variables[memname].idx_values = res;
@@ -1147,7 +1147,7 @@ void Z3Solver::load_idx_vals(string dst, map<set<pair<string, int> > , int > map
 				res[idx_idxval_res] = mem_val;
 			}
 		} else {
-			res[idx_idxval_res] = stoi(realvalue(memname));
+			res[idx_idxval_res] = strtoi(realvalue(memname));
 		}
 	}
 

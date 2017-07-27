@@ -95,7 +95,7 @@ int Database::get_problem_num(){
 	sqlite3_exec (db, action.str().c_str(), callback,0,NULL );
 	if(!retsqlite.size()) printf("error\n");
 	assert(retsqlite.size() && "No database answer");
-	int ret = stoi(retsqlite[0].second);
+	int ret = strtoi(retsqlite[0].second);
 	return ret;
 }
 
@@ -1045,59 +1045,6 @@ void Database::insert_trace(){
 	sqlite3_exec (db, action.str().c_str(), callback,0,NULL );
 }
 
-
-void uppaal_clean(string& name){
-
-	if(options->cmd_option_bool("uppaal_simplify")){
-		myReplace(name, "_Z3fn1Pv_", "");
-		myReplace(name, "Z3fn1Pv_", "");
-		myReplace(name, "Z3fn1Pv_registerunderscore", "");
-		myReplace(name, "constant_IntegerTyID32_", "");
-		myReplace(name, "register_", "");
-		myReplace(name, "constant_IntegerTyID32_", "");
-		myReplace(name, "constant_IntegerTyID16_", "");
-		myReplace(name, "constant_PointerTyID_", "");
-		myReplace(name, "registerunderscore", "");
-		myReplace(name, "underscore", "");
-		myReplace(name, "global_", "");
-	}
-}
-
-void Database::insert_uppaal_row(string orig, string dst, string conds, string sem, string lockunlock, string assigns){
-
-	uppaal_clean(orig);
-	uppaal_clean(dst);
-	uppaal_clean(conds);
-	uppaal_clean(assigns);
-
-	stringstream action;
-	action << "insert into uppaal values ('" << orig << "','" << dst << "','" << conds << "',";
-	action << "'" << sem << "','" << lockunlock << "','" << assigns << "');";
-	printf("action %s\n", action.str().c_str());
-	sqlite3_exec (db, action.str().c_str(), callback,0,NULL );
-
-}
-
-
-void Database::insert_uppaal_variables(set<UppaalVar> variables){
-
-
-	for( set<UppaalVar>::iterator it = variables.begin(); it != variables.end(); it++ ){
-		stringstream action;
-
-		string name = it->name;
-		string type = it->type;
-		string init = it->init;
-
-		uppaal_clean(name);
-		uppaal_clean(init);
-
-		action << "insert into uppaal_variables values ('" << name << "','" << type << "','" << init << "');";
-		printf("action %s\n", action.str().c_str());
-		sqlite3_exec (db, action.str().c_str(), callback,0,NULL );
-	}
-	
-}
 
 void Database::insert_variable(string name){
 

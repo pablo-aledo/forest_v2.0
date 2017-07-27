@@ -77,7 +77,6 @@ int main(int argc, const char *argv[]) {
 	needs("svcomp", "final");
 	needs("svcomp", "clean_tables");
 	needs("goanna_fpr", "svcomp");
-	needs("compare_xml", "generate_uppaal_model");
 	//needs("klee_coverage", "measure_coverage");
 	//needs("klee_coverage", "klee");
 
@@ -156,11 +155,7 @@ int main(int argc, const char *argv[]) {
 	//cmd_option_bool("max_time_min")
 	//cmd_option_bool("generate_model")
 	//cmd_option_bool("fork_on_array")
-	//cmd_option_bool("uppaal_simplify")
-	//cmd_option_bool("no_uppaal_names")
-	//cmd_option_bool("no_uppaal_simplify")
 	//cmd_option_bool("location_names")
-	//cmd_option_bool("no_uppaal_if")
 	//cmd_option_bool("recursive")
 	//cmd_option_bool("heuristic_recursive_depth")
 	//cmd_option_bool("max_heuristic_paths")
@@ -206,8 +201,6 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("show_exceptions")) show_exceptions();                   // Shows possible exceptions in the program under test
 	if(cmd_option_bool("show_interpolants")) show_interpolants();               // Shows interpolants
 	if(cmd_option_bool("svcomp")) svcomp();                                     // svcomp competition
-	if(cmd_option_bool("generate_uppaal_model")) generate_uppaal_model();       // uppaal model
-	if(cmd_option_bool("compare_xml")) compare_xml();                           // check uppaal model with Kactus dependency xml model
 	if(cmd_option_bool("goanna_fpr")) goanna_fpr();                             // Use forest to check for false positives in goanna
 	if(cmd_option_bool("get_concurrent_functions")) get_concurrent_functions(); // Get functions that can be executed concurrently
 

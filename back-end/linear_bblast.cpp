@@ -240,10 +240,10 @@ void LinearBblast::pointer_instruction(string dst, string offset_tree, vector<st
 
 
 
-	int real_pointer = stoi(realvalue(base));
+	int real_pointer = strtoi(realvalue(base));
 	for ( unsigned int i = 0; i < indexes.size(); i++) {
 		// printf("rvii %s %s\n", indexes[i].c_str(), realvalue(indexes[i]).c_str() );
-		real_pointer += (stoi(realvalue(indexes[i])) * jmp_offsets[i]);
+		real_pointer += (strtoi(realvalue(indexes[i])) * jmp_offsets[i]);
 	}
 	// printf("real_pointer %d\n", real_pointer);
 	set_real_value(dst, itos(real_pointer));
@@ -642,7 +642,7 @@ void LinearBblast::right_shift   (string op1, string op2, string dst){
 	string uniq_num = itos(rand());
 
 	if(is_constant(op2) || get_is_propagated_constant(op2)){
-		int exponent = 1 << stoi(realvalue(op2));
+		int exponent = 1 << strtoi(realvalue(op2));
 
 
 		map<string, HexNum> content_initial = variables[op1].content;
@@ -687,7 +687,7 @@ void LinearBblast::left_shift    (string op1, string op2, string dst){
 	}
 
 	if(is_constant(op2) || get_is_propagated_constant(op2)){
-		int exponent = 1 << stoi(realvalue(op2));
+		int exponent = 1 << strtoi(realvalue(op2));
 
 		map<string, HexNum> content_initial = variables[op1].content;
 		map<string, HexNum> content_final;
@@ -966,7 +966,7 @@ void LinearBblast::mul_operation(string op1, string op2, string dst){
 			string var = it->first;
 			HexNum val = it->second;
 
-			content_final[var] = content_initial[var] * stoi(realvalue(op2));
+			content_final[var] = content_initial[var] * strtoi(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;
@@ -991,7 +991,7 @@ void LinearBblast::div_operation (string op1, string op2, string dst){
 			string var = it->first;
 			HexNum val = it->second;
 
-			content_final[var] = content_initial[var] / stoi(realvalue(op2));
+			content_final[var] = content_initial[var] / strtoi(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;

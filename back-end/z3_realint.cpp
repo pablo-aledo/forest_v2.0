@@ -289,13 +289,13 @@ map<set<pair<string, int> > , int > Z3RealInt::get_idx_val(string base,string id
 			string varname = *it;
 			string value = result_get(line);
 
-			sub_sol.insert(pair<string, int>(varname, stoi(value)));
+			sub_sol.insert(pair<string, int>(varname, strtoi(value)));
 
 		}
 		
 		i++;
 		line = result[i];
-		int idx_res = stoi(result_get(line));
+		int idx_res = strtoi(result_get(line));
 
 		//printf("idx_res %d\n", idx_res);
 
@@ -365,7 +365,7 @@ void Z3RealInt::replace_left_shift(string& condition){
 
 		if(!is_number(param2)) assert(0 && "Unsupported operation");
 
-		int exponent = stoi(param2);
+		int exponent = strtoi(param2);
 		int factor = 1 << exponent;
 
 		condition = before + "(* " + param1 + " " + itos(factor) + ")" + after;
@@ -410,7 +410,7 @@ void Z3RealInt::replace_right_shift(string& condition){
 
 		if(!is_number(param2)) assert(0 && "Unsupported operation");
 
-		int exponent = stoi(param2);
+		int exponent = strtoi(param2);
 		int factor = 1 << exponent;
 
 		condition = before + "(/ " + param1 + " " + itos(factor) + ")" + after;
@@ -547,7 +547,7 @@ string Z3RealInt::complement_op(string op1){
 string Z3RealInt::or_constant(string op1, string op2){
 
 	stringstream ret;
-	int op2_i = stoi(op2);
+	int op2_i = strtoi(op2);
 	string op2_b = binary_rep(op2_i);
 	string content1 = op1;
 
@@ -729,7 +729,7 @@ string Z3RealInt::or_non_constant(string op1, string op2, int width, string uniq
 string Z3RealInt::and_constant(string op1, string op2){
 
 	stringstream ret;
-	int op2_i = stoi(op2);
+	int op2_i = strtoi(op2);
 	string op2_b = binary_rep(op2_i);
 	string content1 = op1;
 

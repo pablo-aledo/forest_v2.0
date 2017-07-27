@@ -123,7 +123,7 @@ int Measurement::vector_int(char* _name){
 
 	debug && printf("vector_int %s %s\n", _name, ret.c_str());
 
-	return stoi(ret);
+	return strtoi(ret);
 }
 
 float Measurement::vector_float(char* _name){
@@ -165,7 +165,7 @@ long Measurement::vector_long(char* _name){
 
 	debug && printf("vector_long %s %s\n", _name, ret.c_str());
 
-	long ret_l = stoi(ret);
+	long ret_l = strtoi(ret);
 
 	return ret_l;
 }

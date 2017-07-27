@@ -25,7 +25,6 @@
 #include "options.h"
 #include "timer.h"
 #include "z3_solver.h"
-#include "uppaal.h"
 #include "architecture.h"
 #include "concurrency_backend.h"
 #include "pre_post.h"
@@ -39,7 +38,6 @@ extern Operators* operators;
 extern SolverWrapper* solver;
 extern Database* database;
 extern Timer* timer;
-extern Uppaal* uppaal;
 extern map<string, string> map_pos_to_last_store;
 extern Concurrency* concurrency;
 extern PrePost* pre_post;
@@ -497,8 +495,6 @@ void Operators::fork_on_array(string dst){
 
 			solver->add_eq_set(idx_val);
 			
-			if(options->cmd_option_bool("generate_uppaal_model"))
-				uppaal->add_eq_set(idx_val);
 			solver->assign_instruction(  "constant_PointerTyID_" + itos(value)   , name(dst));
 			solver->solve_problem();
 			if(!solver->solvable_problem()) exit(0);
@@ -898,15 +894,15 @@ void Operators::getelementptr(char* _dst, char* _pointer, char* _indexes, char* 
 		
 		//printf("realvalue_dst %s\n", realvalue(dst).c_str());
 		
-		//assert( stoi(realvalue(dst)) <= solver->get_last_address(name(pointer)) && "Dereference to value out-of-bounds" );
-		if( stoi(realvalue(dst)) > solver->get_last_address(name(pointer)) ) {
+		//assert( strtoi(realvalue(dst)) <= solver->get_last_address(name(pointer)) && "Dereference to value out-of-bounds" );
+		if( strtoi(realvalue(dst)) > solver->get_last_address(name(pointer)) ) {
 			//solver->show_problem();
-			debug && printf("\e[33m Access out of bounds dst %d last_address %d\e[0m\n", stoi(realvalue(dst)), solver->get_last_address(name(pointer)));
+			debug && printf("\e[33m Access out of bounds dst %d last_address %d\e[0m\n", strtoi(realvalue(dst)), solver->get_last_address(name(pointer)));
 			solver->set_outofbounds(name(dst));
 		}
-		if( stoi(realvalue(dst)) < solver->get_first_address(name(pointer)) ){
+		if( strtoi(realvalue(dst)) < solver->get_first_address(name(pointer)) ){
 			//solver->show_problem();
-			debug && printf("\e[33m Access out of bounds dst %d first_address %d\e[0m\n", stoi(realvalue(dst)), solver->get_last_address(name(pointer)));
+			debug && printf("\e[33m Access out of bounds dst %d first_address %d\e[0m\n", strtoi(realvalue(dst)), solver->get_last_address(name(pointer)));
 			solver->set_outofbounds(name(dst));
 		}
 
@@ -1145,9 +1141,6 @@ bool Operators::br_instr_cond(char* _cmp, char* _joints){
 
 		if( options->cmd_option_bool("propagate_constants") && solver->get_is_propagated_constant(name(cmp)) ){
 
-			if(options->cmd_option_bool("generate_uppaal_model") )
-				uppaal->br_instr_cond(name(cmp), real_value_prev == "false");
-			
 			return real_value_prev == "true";
 		}
 
@@ -1155,9 +1148,6 @@ bool Operators::br_instr_cond(char* _cmp, char* _joints){
 		if(database->already_covered()) exit(0);
 
 		solver->push_condition(name(cmp), actual_function, joints, false);
-
-		if(options->cmd_option_bool("generate_uppaal_model") )
-			uppaal->br_instr_cond(name(cmp), real_value_prev == "false");
 
 		debug && printf("\e[31m proceso %d acaba de esperar \e[0m\n", getpid() ); fflush(stdout);
 
@@ -1174,9 +1164,6 @@ bool Operators::br_instr_cond(char* _cmp, char* _joints){
 
 		solver->push_condition(name(cmp), actual_function, joints, true);
 
-
-		if(options->cmd_option_bool("generate_uppaal_model") )
-			uppaal->br_instr_cond(name(cmp), real_value_prev == "true");
 
 		see_each_problem && solver->show_problem();
 
@@ -1379,7 +1366,7 @@ int Operators::get_offset(vector<string> indexes, string offset_tree, string* re
 
 	debug && printf("\e[33m %s %s \e[0m\n", indexes[0].c_str(), realvalue(indexes[0]).c_str() );
 
-	int realvalue_index_0 = stoi(realvalue_index_0_s);
+	int realvalue_index_0 = strtoi(realvalue_index_0_s);
 
 	if( has_index(offset_tree, realvalue_index_0) ){
 
@@ -1396,13 +1383,13 @@ int Operators::get_offset(vector<string> indexes, string offset_tree, string* re
 		} else {
 			*remaining_tree = offset_tree;
 			//printf("elem_str to trim %s\n", elem_str.c_str());
-			return stoi(trimpar(elem_str));
+			return strtoi(trimpar(elem_str));
 		}
 
 	} else {
 		vector<string> tokens = tokenize(offset_tree, "(),");
 		string size_s = tokens[tokens.size()-1];
-		int size = stoi(size_s);
+		int size = strtoi(size_s);
 		printf("offset_tree %s realvalue_index_0 %d size_s %s\n", offset_tree.c_str(), realvalue_index_0, size_s.c_str());
 		return size*realvalue_index_0;
 	}
@@ -1427,10 +1414,10 @@ void Operators::memcpy(char* _addr_dst, char* _addr_src, char* _size_bytes, char
 	string align = string(_align);
 	string is_volatile = string(_is_volatile);
 
-	int addr_src_i = stoi(solver->realvalue(name(addr_src)));
-	int addr_dst_i = stoi(solver->realvalue(name(addr_dst)));
-	int n_elems = stoi(solver->realvalue(size_bytes))/stoi(solver->realvalue(align));
-	int align_i = stoi(solver->realvalue(align));
+	int addr_src_i = strtoi(solver->realvalue(name(addr_src)));
+	int addr_dst_i = strtoi(solver->realvalue(name(addr_dst)));
+	int n_elems = strtoi(solver->realvalue(size_bytes))/strtoi(solver->realvalue(align));
+	int align_i = strtoi(solver->realvalue(align));
 
 
 	for ( unsigned int mem_src = addr_src_i, mem_dst = addr_dst_i; n_elems > 0; mem_src += align_i, mem_dst += align_i, n_elems--) {

@@ -207,7 +207,6 @@ void load_default_options(){
 	options["max_time_min"] = "5";
 	options["witness"] = "witness.graphml";
 	options["check_witness"] = "false";
-	options["uppaal_scale"] = "1";
 	options["stack_start"] = "10000";
 	options["stack_size"] = "10";
 	options["stack_step"] = "10";

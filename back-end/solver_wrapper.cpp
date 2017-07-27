@@ -26,7 +26,6 @@
 #include "timer.h"
 #include "options.h"
 #include "database.h"
-#include "uppaal.h"
 #include "architecture.h"
 
 #define UNDERSCORE "_"
@@ -38,7 +37,6 @@ extern Options* options;
 extern Operators* operators;
 extern Database* database;
 extern Timer* timer;
-extern Uppaal* uppaal;
 
 SolverWrapper::SolverWrapper(){
 
@@ -730,7 +728,7 @@ vector<int> SolverWrapper::jump_offsets(string offset_tree){
 		string right = sub.substr(sub.find_last_of(","));
 		string center = right.substr(1,right.length()-2);
 		//printf("sub %s %s\n", sub.c_str(), center.c_str() );
-		ret.push_back(stoi(center));
+		ret.push_back(strtoi(center));
 	}
 
 	return ret;
@@ -886,7 +884,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		} else if(value_1_s == "false"){
 			value_1 = 0;
 		} else {
-			value_1 = stoi(value_1_s);
+			value_1 = strtoi(value_1_s);
 		}
 
 		if(value_2_s == "true"){
@@ -894,42 +892,42 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		} else if(value_2_s == "false"){
 			value_2 = 0;
 		} else {
-			value_2 = stoi(value_2_s);
+			value_2 = strtoi(value_2_s);
 		}
 
 		set_real_value(dst, ( value_1 != value_2 )?"true":"false" );
 	} else if (operation == "%") { // rem_operator
-		if(stoi(realvalue(op2)) == 0){
+		if(strtoi(realvalue(op2)) == 0){
 			database->insert_remzero();
 			printf("Remainder by 0\n");
 			exit(0);
 		}
-		stringstream result; result << stoi(realvalue(op1)) % stoi(realvalue(op2));
+		stringstream result; result << strtoi(realvalue(op1)) % strtoi(realvalue(op2));
 		set_real_value(dst, result.str());
 	} else if (operation == "u%") { // rem_operator
-		if(stoi(realvalue(op2)) == 0){
+		if(strtoi(realvalue(op2)) == 0){
 			database->insert_remzero();
 			printf("Remainder by 0\n");
 			exit(0);
 		}
-		stringstream result; result << (unsigned int)stoi(realvalue(op1)) % (unsigned int)stoi(realvalue(op2));
+		stringstream result; result << (unsigned int)strtoi(realvalue(op1)) % (unsigned int)strtoi(realvalue(op2));
 		set_real_value(dst, result.str());
 	} else if (operation == "R" ) { // right_shift
-		int places = stoi( realvalue(op2) );
-		int result_i = (unsigned int)stoi(realvalue(op1)) >> places;
+		int places = strtoi( realvalue(op2) );
+		int result_i = (unsigned int)strtoi(realvalue(op1)) >> places;
 		stringstream result; result << result_i;
 		set_real_value(dst, result.str());
 	} else if (operation == "L" ) { // left_shift
-		int places = stoi( realvalue(op2) );
-		int result_i = stoi(realvalue(op1)) << places;
+		int places = strtoi( realvalue(op2) );
+		int result_i = strtoi(realvalue(op1)) << places;
 		stringstream result; result << result_i;
 		set_real_value(dst, result.str());
 	} else if (operation == "Y" ) { // and_operation
-		int result_i = (unsigned int)stoi(realvalue(op1)) & (unsigned int)stoi(realvalue(op2));
+		int result_i = (unsigned int)strtoi(realvalue(op1)) & (unsigned int)strtoi(realvalue(op2));
 		stringstream result; result << result_i;
 		set_real_value(dst, result.str());
 	} else if (operation == "O" ) { // or_operation
-		int result_i = (unsigned int)stoi(realvalue(op1)) | (unsigned int)stoi(realvalue(op2));
+		int result_i = (unsigned int)strtoi(realvalue(op1)) | (unsigned int)strtoi(realvalue(op2));
 		stringstream result; result << result_i;
 		set_real_value(dst, result.str());
 	} else if (operation == "X" ) { // xor_operation
@@ -937,9 +935,9 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		if( get_type(dst) == "Real" ){
 			assert(0 && "Xor of two reals");
 		} else if (get_type(dst) == "Int") {
-			result << (stoi(realvalue(op1)) ^ stoi(realvalue(op2)));
+			result << (strtoi(realvalue(op1)) ^ strtoi(realvalue(op2)));
 		} else if(get_type(dst) == "bool"){
-			result << (stoi(realvalue(op1)) ^ stoi(realvalue(op2)));
+			result << (strtoi(realvalue(op1)) ^ strtoi(realvalue(op2)));
 		} else if( get_type(dst) == "Pointer" ) {
 			assert(0 && "Xor of two pointers");
 		} else {
@@ -949,21 +947,21 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 		set_real_value(dst, result.str());
 	} else if(operation == "<="){ // leq_operation
-		set_real_value(dst, ( stoi(realvalue(op1) ) <= stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( strtoi(realvalue(op1) ) <= strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == ">="){ // geq_operation
-		set_real_value(dst, ( stoi(realvalue(op1) ) >= stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( strtoi(realvalue(op1) ) >= strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "<"){ // lt_operation
-		set_real_value(dst, ( stoi(realvalue(op1) ) < stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( strtoi(realvalue(op1) ) < strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == ">"){ // bt_operation
-		set_real_value(dst, ( stoi(realvalue(op1) ) > stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( strtoi(realvalue(op1) ) > strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "u<="){
-		set_real_value(dst, ( (unsigned int)stoi(realvalue(op1) ) <= (unsigned int)stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( (unsigned int)strtoi(realvalue(op1) ) <= (unsigned int)strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "u>="){
-		set_real_value(dst, ( (unsigned int)stoi(realvalue(op1) ) >= (unsigned int)stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( (unsigned int)strtoi(realvalue(op1) ) >= (unsigned int)strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "u<"){
-		set_real_value(dst, ( (unsigned int)stoi(realvalue(op1) ) <  (unsigned int)stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( (unsigned int)strtoi(realvalue(op1) ) <  (unsigned int)strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "u>"){
-		set_real_value(dst, ( (unsigned int)stoi(realvalue(op1) ) >  (unsigned int)stoi( realvalue(op2) ) )?"true":"false" );
+		set_real_value(dst, ( (unsigned int)strtoi(realvalue(op1) ) >  (unsigned int)strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "="){ // eq_operation
 		//printf("realvalueop1 %s realvalueop2 %s\n", realvalue(op1).c_str(), realvalue(op2).c_str());
 		//string rv1 = make_unsigned(realvalue(op1), gettype(op1));
@@ -975,13 +973,13 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		if(rv1 == "true") rv1 = "1"; if(rv1 == "false") rv1 = "0";
 		if(rv2 == "true") rv2 = "1"; if(rv2 == "false") rv2 = "0";
 
-		set_real_value(dst, (stoi(rv1) == stoi(rv2))?"true":"false" );
+		set_real_value(dst, (strtoi(rv1) == strtoi(rv2))?"true":"false" );
 	} else if(operation == "+"){ // add_operation
 		stringstream result;
 		if( get_type(dst) == "Real" ){
 			result << stof(realvalue(op1)) + stof(realvalue(op2));
 		} else if (get_type(dst) == "Int") {
-			result << stoi(realvalue(op1)) + stoi(realvalue(op2));
+			result << strtoi(realvalue(op1)) + strtoi(realvalue(op2));
 		} else if( get_type(dst) == "Pointer" ) {
 			result << stof(realvalue(op1)) + stof(realvalue(op2));
 		} else {
@@ -994,7 +992,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		if( get_type(dst) == "Real" )
 			result << stof(realvalue(op1)) - stof(realvalue(op2));
 		else if (get_type(dst) == "Int")
-			result << stoi(realvalue(op1)) - stoi(realvalue(op2));
+			result << strtoi(realvalue(op1)) - strtoi(realvalue(op2));
 		else
 			assert(0 && "Unknown type");
 
@@ -1006,7 +1004,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		if( get_type(dst) == "Real" )
 			result << stof(realvalue(op1)) * stof(realvalue(op2));
 		else if (get_type(dst) == "Int")
-			result << stoi(realvalue(op1)) * stoi(realvalue(op2)), gettype(op1);
+			result << strtoi(realvalue(op1)) * strtoi(realvalue(op2)), gettype(op1);
 		else
 			assert(0 && "Unknown type");
 
@@ -1037,14 +1035,14 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 				exit(0);
 			}
 
-			result << stoi(realvalue(op1)) / stoi(realvalue(op2));
+			result << strtoi(realvalue(op1)) / strtoi(realvalue(op2));
 
 
 
 
 			result << stof(realvalue(op1)) / stof(realvalue(op2));
 		} else if (get_type(dst) == "Int") {
-			if(stoi(realvalue(op2)) == 0){
+			if(strtoi(realvalue(op2)) == 0){
 				database->insert_divzero();
 				printf("Division by 0\n");
 				exit(0);
@@ -1063,7 +1061,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 				exit(0);
 			}
 
-			result << stoi(realvalue(op1)) / stoi(realvalue(op2));
+			result << strtoi(realvalue(op1)) / strtoi(realvalue(op2));
 		} else {
 			assert(0 && "Unknown type");
 		}
@@ -1105,21 +1103,18 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 	make_signed(dst, gettype(dst));
 
-	//if( has_maxval(gettype(dst)) && stoi(realvalue(dst)) > maxval(gettype(dst)) ){
-		//int realval = stoi(realvalue(dst));
+	//if( has_maxval(gettype(dst)) && strtoi(realvalue(dst)) > maxval(gettype(dst)) ){
+		//int realval = strtoi(realvalue(dst));
 		//realval = realval % maxval(gettype(dst));
 		//set_real_value(dst, itos(realval));
 	//}
 
 
-	//if( has_minval(gettype(dst)) && stoi(realvalue(dst)) < minval(gettype(dst)) ){
-		//int realval = stoi(realvalue(dst));
+	//if( has_minval(gettype(dst)) && strtoi(realvalue(dst)) < minval(gettype(dst)) ){
+		//int realval = strtoi(realvalue(dst));
 		//realval = maxval(gettype(dst)) + realval;
 		//set_real_value(dst, itos(realval));
 	//}
-
-	if(options->cmd_option_bool("generate_uppaal_model"))
-		uppaal->binary_instruction(dst, op1, op2, operation);
 
 	debug && printf("\e[32m Content_dst \e[0m %s \e[32m type \e[0m %s \e[32m realvalue \e[0m %s \e[32m propconstant \e[0m %d \e[32m last_address\e[0m  %d %d \e[32m firstaddress \e[0m %d %d\n",
 		debug_content(dst).c_str(), variables_generic[dst].type.c_str(), realvalue(dst).c_str(),
@@ -1182,15 +1177,6 @@ void SolverWrapper::assign_instruction(string src, string dst, string fn_name ){
 
 	//printf("set_real_value inside assign %s %s %s\n", dst.c_str(), src.c_str(), realvalue(src).c_str() );
 	set_real_value( dst, realvalue(src) );
-
-	if(options->cmd_option_bool("generate_uppaal_model")){
-		if(assigning_globals){
-			uppaal->assign_global(src,dst);
-		} else {
-			uppaal->assign_instruction(src, dst, fn_name );
-		}
-	}
-
 
 
 	//debug && printf("\e[32m Content_dst \e[0m %s \e[32m type \e[0m %s\n", variables[dst].content.c_str(), variables[dst].type.c_str() );
