@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Array of global struct"/> 
+	<option key="file" value="array_struct_global.c"/> 
+	<option key="forced_free_var" value="mem_116"/> 
+</options>

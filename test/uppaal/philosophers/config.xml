@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="generate_uppaal_model" value="true"/> 
+	<option key="explanation" value="Philosophers problem using uppaal"/> 
+	<option key="file" value="philosophers.c"/> 
+	<option key="seedfn" value="_Z15philosophers_fnPv"/> 
+	<option key="globals_always_free" value="true"/> 
+	<option key="max_depth" value="10"/> 
+</options>

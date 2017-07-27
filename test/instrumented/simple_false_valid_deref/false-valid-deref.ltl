@@ -1,0 +1,5 @@
+EVENT foo e01 alloc
+EVENT foo e02 size
+EVENT foo e03 addr
+EVENT foo e04 index
+FORMULA foo G A x: size. X E y: alloc. G A i: index. X E z: addr. leq(y, add(z, mul(i,4))) & leq(add(z, mul(i, 4)), add(y, mul(x, 4)))

@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Struct as parameter"/> 
+	<option key="file" value="struct_param.c"/> 
+</options>

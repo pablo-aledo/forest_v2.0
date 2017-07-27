@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="force_free_hint"/> 
+	<option key="file" value="force_free_hint.c"/> 
+	<option key="forced_free_hint" value="Z2fnv_register_var_a"/> 
+	<option key="forced_free_hint" value="Z4fn1v_register_a"/> 
+
+</options>

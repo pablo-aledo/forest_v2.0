@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="check_coverage" value="true"/> 
+	<option key="explanation" value="nested ifs"/> 
+	<option key="file" value="uniform_test.c"/> 
+	<option key="expected_fn_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+	<option key="random_variable" value="mem_12 Int32 main_register_b"/> 
+	<option key="random_variable" value="mem_16 Int32 main_register_c"/> 
+	<option key="random_variable" value="mem_20 Int32 main_register_d"/> 
+	<option key="random_variable" value="mem_8  Int32 main_register_a"/> 
+	<option key="num_random_vectors" value="10"/> 
+	<option key="distribution" value="mem_12 uniform 0 10"/> 
+	<option key="distribution" value="mem_16 uniform 0 10"/> 
+	<option key="distribution" value="mem_20 uniform 0 10"/> 
+	<option key="distribution" value="mem_8  uniform 0 10"/> 
+	
+
+</options>
+<variables>
+
+	<variable name_hint="register_a" name="a" type="int" line="14"/> 
+	<variable name_hint="register_b" name="b" type="int" line="15"/> 
+	<variable name_hint="register_c" name="c" type="int" line="16"/> 
+	<variable name_hint="register_d" name="d" type="int" line="17"/> 
+
+
+</variables>
+
+<main>
+	<main_location line="12">
+</main>

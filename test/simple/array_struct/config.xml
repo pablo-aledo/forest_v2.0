@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Array of struct"/> 
+	<option key="file" value="array_struct.c"/> 
+</options>

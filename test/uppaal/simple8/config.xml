@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="generate_uppaal_model" value="true"/> 
+	<option key="explanation" value="Simple example uppaal model"/> 
+	<option key="file" value="simple8.c"/> 
+	<option key="seedfn" value="_Z3fn1Pv"/> 
+</options>

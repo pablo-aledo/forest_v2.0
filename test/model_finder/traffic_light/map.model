@@ -1,0 +1,7 @@
+input:preconditions:Bool
+input:postconditions:Bool
+input:frameconditions:Bool
+content:(= env.carLight1 (not (= impl1.mem_8 #x00)))
+content:(= env.carLight1 (not (= impl2.mem_8 #x00)))
+content:(= env.carLight1 (not (= impl3.mem_8 #x00)))
+content:(= carLight (not (= main_register_carLight #x00)))

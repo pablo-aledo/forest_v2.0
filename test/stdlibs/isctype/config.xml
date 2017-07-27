@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="isctype"/> 
+	<option key="file" value="isctype.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="isctype"/> 
+	<option key="uclib" value="__C_ctype_b"/> 
+</options>

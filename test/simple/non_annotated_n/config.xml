@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Calling a non-annotated function n times"/> 
+	<option key="file" value="non_annotated_n.c"/> 
+</options>

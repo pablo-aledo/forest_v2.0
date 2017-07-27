@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key attr.name="assumption" attr.type="string" for="edge" id="assumption"/>
+    <key attr.name="sourcecode" attr.type="string" for="edge" id="sourcecode"/>
+    <key attr.name="sourcecodeLanguage" attr.type="string" for="graph" id="sourcecodelang"/>
+    <key attr.name="tokenSet" attr.type="string" for="edge" id="tokens"/>
+    <key attr.name="originTokenSet" attr.type="string" for="edge" id="origintokens"/>
+    <key attr.name="negativeCase" attr.type="string" for="edge" id="negated">
+        <default>false</default>
+    </key>
+    <key attr.name="lineNumberInOrigin" attr.type="int" for="edge" id="originline"/>
+    <key attr.name="originFileName" attr.type="string" for="edge" id="originfile">
+        <default>"&lt;command-line&gt;"</default>
+    </key>
+    <key attr.name="nodeType" attr.type="string" for="node" id="nodetype">
+        <default>path</default>
+    </key>
+    <key attr.name="isFrontierNode" attr.type="boolean" for="node" id="frontier">
+        <default>false</default>
+    </key>
+    <key attr.name="isViolationNode" attr.type="boolean" for="node" id="violation">
+        <default>false</default>
+    </key>
+    <key attr.name="isEntryNode" attr.type="boolean" for="node" id="entry">
+        <default>false</default>
+    </key>
+    <key attr.name="isSinkNode" attr.type="boolean" for="node" id="sink">
+        <default>false</default>
+    </key>
+    <key attr.name="enterFunction" attr.type="string" for="edge" id="enterFunction"/>
+    <key attr.name="returnFromFunction" attr.type="string" for="edge" id="returnFrom"/>
+    <graph edgedefault="directed">
+        <data key="sourcecodelang">C</data>
+        <node id="A1"> <data key="entry">true</data> </node>
+        <node id="sink"> <data key="sink">true</data> </node>
+        <node id="A6"/>
+        <node id="A10"/>
+        <edge source="A1" target="A6"> <data key="tokens">13,16</data> </edge>
+        <edge source="A6" target="A10"> <data key="tokens">18,21</data> </edge>
+        <edge source="A10" target="sink"> <data key="tokens">31</data> </edge>
+    </graph>
+</graphml>

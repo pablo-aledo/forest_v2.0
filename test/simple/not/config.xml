@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="NOT operator"/> 
+	<option key="file" value="not.c"/> 
+	<option key="check_coverage" value="true"/> 
+	<option key="expected_fn_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+</options>

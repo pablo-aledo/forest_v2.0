@@ -1,0 +1,22 @@
+=== Concurrency: ===
+lockunlock       mutex  sync_name             conds                              
+---------------  -----  --------------------  -----------------------------------
+lock             a      _Z3fn1Pv_sync_1                                          
+unlock           a      _Z3fn2Pv_sync_1                                          
+
+=== Stores: ===
+pos              value       sync_point                         
+---------------  ----------  -----------------------------------
+global_k         25          _Z3fn2Pv_sync_1                    
+
+=== Sync: ===
+pos              stack                                                       
+---------------  ------------------------------------------------------------
+_Z3fn1Pv_sync_1  _Z3fn1Pv_sync_1,                                            
+_Z3fn2Pv_sync_1  _Z3fn2Pv_sync_1,                                            
+
+=== Global_Types: ===
+pos                        type        position            
+-------------------------  ----------  --------------------
+global_k                   Int                             
+

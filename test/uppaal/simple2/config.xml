@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="generate_uppaal_model" value="true"/> 
+	<option key="explanation" value="Simple example uppaal model"/> 
+	<option key="file" value="simple2.c"/> 
+	<option key="seedfn" value="_Z3fn1Pv"/> 
+	<option key="uppaal_variable" value="global_k"/> 
+	<option key="uppaal_variable" value="global_x"/> 
+	<option key="uppaal_variable" value="global_l"/> 
+	<option key="uppaal_variable" value="global_j"/> 
+	<option key="uppaal_variable" value="Z3fn1Pv_registerunderscorer1"/>
+	<option key="forced_free_hint" value="global_k"/> 
+	<option key="forced_free_hint" value="global_x"/> 
+	<option key="forced_free_hint" value="global_l"/> 
+	<option key="forced_free_hint" value="global_j"/> 
+</options>
+

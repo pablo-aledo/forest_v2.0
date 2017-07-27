@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="command line arguments test"/> 
+	<option key="file" value="cmdargs.c"/> 
+	<option key="argc" value="3"/> 
+	<option key="argv_size" value="5"/> 
+	<option key="argvs_size" value="10"/> 
+	<option key="each_argv_size" value="3"/> 
+	<option key="sym_argvs" value="1 2 3"/> 
+</options>

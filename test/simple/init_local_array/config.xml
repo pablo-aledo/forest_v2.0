@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Initialize a local array"/> 
+	<option key="file" value="init_local_array.c"/> 
+	<option key="forced_free_var" value="mem_20"/> 
+</options>

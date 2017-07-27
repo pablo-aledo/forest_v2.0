@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Propagation of constants in the stack"/> 
+	<option key="file" value="prop_const_stack.c"/> 
+</options>

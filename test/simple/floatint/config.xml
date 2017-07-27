@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Mixing float and real operations"/> 
+	<option key="file" value="floatint.c"/> 
+</options>

@@ -1,0 +1,5 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+return_of_fgets            1      1    
+return_of_fgets            0      2    
+return_of_fgets            0      3    

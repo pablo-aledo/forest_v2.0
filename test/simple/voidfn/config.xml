@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Void function call"/> 
+	<option key="file" value="voidfn.c"/> 
+</options>

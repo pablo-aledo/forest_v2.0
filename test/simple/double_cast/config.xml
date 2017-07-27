@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Double casting"/> 
+	<option key="file" value="double_cast.c"/> 
+</options>

@@ -1,0 +1,10 @@
+name_hint             value  probl
+--------------------  -----  -----
+global_k              25     1    
+global_j              0      1    
+global_k              25     2    
+global_j              1      2    
+global_k              25     3    
+global_j              0      3    
+global_k              0      4    
+global_j              0      4    

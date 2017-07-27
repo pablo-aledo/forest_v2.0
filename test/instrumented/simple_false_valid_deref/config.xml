@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Invalid dereference instrumented"/> 
+	<option key="file" value="simple_false_valid_deref.c"/> 
+</options>
+
+

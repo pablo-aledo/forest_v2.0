@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="For_infinite_loop"/> 
+	<option key="file" value="for_infinite_loop_1.c"/> 
+	<option key="driven_by_frontend" value="true"/> 
+	<option key="max_depth" value="500"/> 
+	<option key="target_node" value="main_bb3"/> 
+</options>
+
+

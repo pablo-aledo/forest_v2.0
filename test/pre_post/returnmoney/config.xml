@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Checking pre and postconditions"/> 
+	<option key="file" value="returnmoney.c"/> 
+	<option key="check_preconditions" value="true"/> 
+	<option key="pre_post_file" value="/media/DATA/Work/forest/disk/release/test/pre_post/returnmoney/prepost.conditions"/>
+	<option key="use_postconditions" value="true"/>
+</options>

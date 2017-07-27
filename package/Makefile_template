@@ -1,0 +1,17 @@
+all:
+	tar -xzf forest_%version%.tar.gz
+	cp ../bin/forest forest/bin/forest
+	cp ../lib/forest.a forest/lib/forest.a
+	cp /llvm-2.9/Release+Asserts/lib/ForestHeuristic.so forest/tools/llvm-2.9/Release+Asserts/lib/ForestHeuristic.so
+	cp /llvm-2.9/Release+Asserts/lib/ForestInstr.so forest/tools/llvm-2.9/Release+Asserts/lib/ForestInstr.so
+	cp /llvm-2.9/Release+Asserts/lib/ForestMeasure.so forest/tools/llvm-2.9/Release+Asserts/lib/ForestMeasure.so
+	cp /llvm-2.9/Release+Asserts/lib/ForestBcAnalyze.so forest/tools/llvm-2.9/Release+Asserts/lib/ForestBcAnalyze.so
+	cp /llvm-2.9/Release+Asserts/lib/ForestConcurrency.so forest/tools/llvm-2.9/Release+Asserts/lib/ForestConcurrency.so
+	rsync -vai --delete ../test/%version%/ forest/test/%version%/
+	echo 'all:' > forest/Makefile
+	find -name config.xml | sed "s/\.\/forest/\t@forest ./g" >> forest/Makefile 
+	rm forest_%version%.tar.gz
+	strip --strip-debug forest/bin/*
+	strip --strip-debug forest/lib/*
+	tar -czf forest_%version%.tar.gz forest/*
+	rm -rf forest

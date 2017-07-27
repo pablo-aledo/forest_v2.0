@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="svcomp" value="true"/> 
+	<option key="rm_include" value="true"/> 
+	<option key="force_run" value="true"/> 
+	<option key="explanation" value="Simple Memsafety"/> 
+	<option key="file" value="simple_true-valid-memsafety.c"/> 
+</options>

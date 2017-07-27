@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="iswcntrl"/> 
+	<option key="file" value="iswcntrl.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="iswcntrl"/> 
+	<option key="uclib" value="iswctype"/> 
+	<option key="uclib" value="__C_ctype_b"/> 
+	<option key="forced_free_var" value="mem_811"/> 
+</options>

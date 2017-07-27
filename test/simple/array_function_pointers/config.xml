@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Function pointer"/> 
+	<option key="check_outofbounds" value="false"/> 
+	<option key="c_standard" value="C"/> 
+	<option key="fork_on_array" value="true"/> 
+	<option key="file" value="array_function_pointers.c"/> 
+</options>

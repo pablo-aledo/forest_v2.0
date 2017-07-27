@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="basename"/> 
+	<option key="file" value="cos.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="s_cos"/> 
+	<option key="uclib" value="k_cos"/> 
+	<option key="forced_free_hint" value="main_register_x"/> 
+</options>

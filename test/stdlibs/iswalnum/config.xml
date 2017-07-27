@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="iswalnum"/> 
+	<option key="file" value="iswalnum.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="iswalnum"/> 
+	<option key="uclib" value="iswctype"/> 
+	<option key="uclib" value="__C_ctype_b"/> 
+</options>

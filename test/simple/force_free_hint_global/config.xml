@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="forced free global"/> 
+	<option key="file" value="force_free_hint_global.c"/> 
+	<option key="forced_free_hint" value="global_a"/> 
+</options>

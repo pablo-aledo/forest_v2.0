@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Invalid local dereference"/> 
+	<option key="file" value="invalid_deref.c"/> 
+	<option key="stack_start" value="1000"/> 
+	<option key="stack_size" value="10"/> 
+	<option key="stack_step" value="10"/> 
+	<option key="check_outofbounds" value="false"/> 
+</options>

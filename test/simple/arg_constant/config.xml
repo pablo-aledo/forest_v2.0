@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="propagation of constant through function parameters"/> 
+	<option key="file" value="arg_constant.c"/> 
+</options>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key attr.name="assumption" attr.type="string" for="edge" id="assumption"/>
+    <key attr.name="sourcecode" attr.type="string" for="edge" id="sourcecode"/>
+    <key attr.name="sourcecodeLanguage" attr.type="string" for="graph" id="sourcecodelang"/>
+    <key attr.name="tokenSet" attr.type="string" for="edge" id="tokens"/>
+    <key attr.name="originTokenSet" attr.type="string" for="edge" id="origintokens"/>
+    <key attr.name="negativeCase" attr.type="string" for="edge" id="negated">
+        <default>false</default>
+    </key>
+    <key attr.name="lineNumberInOrigin" attr.type="int" for="edge" id="originline"/>
+    <key attr.name="originFileName" attr.type="string" for="edge" id="originfile">
+        <default>"/usr/lib/gcc/x86_64-linux-gnu/4.6/include/stddef.h"</default>
+    </key>
+    <key attr.name="nodeType" attr.type="string" for="node" id="nodetype">
+        <default>path</default>
+    </key>
+    <key attr.name="isFrontierNode" attr.type="boolean" for="node" id="frontier">
+        <default>false</default>
+    </key>
+    <key attr.name="isViolationNode" attr.type="boolean" for="node" id="violation">
+        <default>false</default>
+    </key>
+    <key attr.name="isEntryNode" attr.type="boolean" for="node" id="entry">
+        <default>false</default>
+    </key>
+    <key attr.name="isSinkNode" attr.type="boolean" for="node" id="sink">
+        <default>false</default>
+    </key>
+    <key attr.name="enterFunction" attr.type="string" for="edge" id="enterFunction"/>
+    <key attr.name="returnFromFunction" attr.type="string" for="edge" id="returnFrom"/>
+    <graph edgedefault="directed">
+        <data key="sourcecodelang">C</data>
+        <node id="A1">
+            <data key="entry">true</data>
+        </node>
+        <edge source="A1" target="A806">
+            <data key="originline">11</data>
+            <data key="origintokens">15,16</data>
+            <data key="sourcecode">int
+                r
+                =
+                __VERIFIER_nondet_int
+                (
+                )
+                ;
+            </data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6501,6502</data>
+            <data key="assumption">r = 0;</data>
+        </edge>
+        <node id="A806"/>
+        <edge source="A806" target="A809">
+            <data key="originline">14</data>
+            <data key="origintokens">27</data>
+            <data key="sourcecode">[r == 0]</data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6513</data>
+        </edge>
+        <node id="sink">
+            <data key="sink">true</data>
+        </node>
+        <edge source="A806" target="sink">
+            <data key="negated">true</data>
+            <data key="originline">14</data>
+            <data key="origintokens">27</data>
+            <data key="sourcecode">[!(r == 0)]</data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6513</data>
+        </edge>
+        <node id="A809"/>
+        <edge source="A809" target="A821">
+            <data key="originline">21</data>
+            <data key="origintokens">55,57</data>
+            <data key="sourcecode">a
+                =
+                2
+                ;
+            </data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6541,6543</data>
+            <data key="assumption">a = 2;</data>
+        </edge>
+        <node id="A821"/>
+        <edge source="A821" target="A825">
+            <data key="originline">26</data>
+            <data key="origintokens">62,64</data>
+            <data key="sourcecode">[a == 2]</data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6548,6550</data>
+        </edge>
+        <edge source="A821" target="sink">
+            <data key="negated">true</data>
+            <data key="originline">26</data>
+            <data key="origintokens">62,64</data>
+            <data key="sourcecode">[!(a == 2)]</data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6548,6550</data>
+        </edge>
+        <node id="A825"/>
+        <edge source="A825" target="A830">
+            <data key="originline">27</data>
+            <data key="origintokens">67</data>
+            <data key="sourcecode">fprintf
+                (
+                stderr
+                ,
+                "File [%s], line %d: %s\n"
+                "path-examples/example4_false-unreach-label.c"
+                ,
+                27
+                ,
+                "Error!!"
+                )
+                ;
+            </data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6553</data>
+        </edge>
+        <node id="A830"/>
+        <edge source="A830" target="A831">
+            <data key="originline">28</data>
+            <data key="origintokens">79</data>
+            <data key="sourcecode">__VERIFIER_error
+                (
+                )
+                ;
+            </data>
+            <data key="originfile">"path-examples/example4_false-unreach-label.c"</data>
+            <data key="tokens">6565</data>
+        </edge>
+        <node id="A831">
+            <data key="violation">true</data>
+        </node>
+    </graph>
+</graphml>    

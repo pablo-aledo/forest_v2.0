@@ -1,0 +1,10 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+main_register_argc_addr1   3      1    
+main_register_argc_addr1   0      2    
+main_register_argc_addr1   2      3    
+main_register_argvs+5      45     4    
+main_register_argc_addr1   2      4    
+main_register_argvs+5      0      5    
+main_register_argc_addr1   2      5    
+main_register_argc_addr1   0      6    

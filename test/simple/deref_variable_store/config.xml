@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Dereferencing a pointer with a free variable in store"/> 
+	<option key="file" value="deref_variable_store.c"/> 
+	<option key="forced_free_var" value="mem_8"/> 
+	<option key="check_outofbounds" value="false"/> 
+</options>

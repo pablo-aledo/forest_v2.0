@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="string comparison"/> 
+	<option key="file" value="strcmp.c"/> 
+	<option key="argc" value="3"/> 
+	<option key="argv_size" value="30"/> 
+	<option key="argvs_size" value="100"/> 
+	<option key="each_argv_size" value="5"/> 
+</options>

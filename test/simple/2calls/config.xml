@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="calling same function twice"/> 
+	<option key="file" value="2calls.c"/> 
+</options>

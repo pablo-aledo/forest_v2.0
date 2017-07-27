@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Turn indicator model in Mercedes"/> 
+	<option key="file" value="TurnIndicator.c"/> 
+	<option key="forced_free_var" value="mem_0"/>    tilOld;
+	<option key="forced_free_var" value="mem_1"/>    tilLevel;
+	<option key="forced_free_var" value="mem_2"/>    emerSwitch;
+	<option key="forced_free_var" value="mem_5"/>    ctr;
+	<option key="forced_free_var" value="mem_6"/>    lOld;
+	<option key="forced_free_var" value="mem_8"/>    rOld;
+	<option key="forced_free_var" value="mem_3"/>    output_left;
+	<option key="forced_free_var" value="mem_4"/>    output_right;
+	<option key="forced_free_var" value="mem_10"/>   output_left_p;
+	<option key="forced_free_var" value="mem_11"/>   output_right_p;
+	<option key="forced_free_var" value="mem_7"/>    lampsleft;
+	<option key="forced_free_var" value="mem_9"/>    lampsright;
+	<option key="output" value="mem_0"/>    tilOld;
+	<option key="output" value="mem_1"/>    tilLevel;
+	<option key="output" value="mem_2"/>    emerSwitch;
+	<option key="output" value="mem_5"/>    ctr;
+	<option key="output" value="mem_6"/>    lOld;
+	<option key="output" value="mem_8"/>    rOld;
+	<option key="output" value="mem_3"/>    output_left;
+	<option key="output" value="mem_4"/>    output_right;
+	<option key="output" value="mem_10"/>   output_left_p;
+	<option key="output" value="mem_11"/>   output_right_p;
+	<option key="output" value="mem_7"/>    lampsleft;
+	<option key="output" value="mem_9"/>    lampsright;
+	<option key="max_depth" value="10"/> 
+	<option key="generate_model" value="true"/> 
+	<option key="solver" value="bitvector"/> 
+</options>
+
+

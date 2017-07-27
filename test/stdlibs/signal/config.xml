@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="basename"/> 
+	<option key="file" value="signal.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="signal"/> 
+</options>

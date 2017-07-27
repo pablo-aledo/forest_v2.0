@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="minver example"/> 
+	<option key="file" value="minver.c"/> 
+	<option key="forced_free_var" value="mem_296"/>
+	<option key="forced_free_var" value="mem_304"/>
+	<option key="forced_free_var" value="mem_312"/>
+	<option key="forced_free_var" value="mem_320"/>
+	<option key="forced_free_var" value="mem_328"/>
+	<option key="forced_free_var" value="mem_336"/>
+	<option key="forced_free_var" value="mem_344"/>
+	<option key="forced_free_var" value="mem_352"/>
+	<option key="forced_free_var" value="mem_360"/>
+</options>

@@ -1,0 +1,12 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+global_.str+1              101    1    
+global_.str+1              0      2    
+global_.str+1              0      4    
+global_.str+1              101    5    
+global_.str+1              101    6    
+global_.str+1              101    7    
+global_.str+1              101    8    
+global_.str+1              101    9    
+global_.str+1              97     10   
+global_.str+1              101    11   

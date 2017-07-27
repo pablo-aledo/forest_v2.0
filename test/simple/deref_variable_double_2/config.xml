@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Double dereference with a free variable"/> 
+	<option key="file" value="deref_variable_double_2.c"/> 
+	<option key="forced_free_var" value="mem_64"/> 
+	<option key="forced_free_var" value="mem_68"/> 
+	<option key="check_outofbounds" value="false"/> 
+</options>

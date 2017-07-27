@@ -1,0 +1,13 @@
+
+<?xml version="1.0" ?>
+
+<options>
+	<option key="generate_uppaal_model" value="true"/> 
+	<option key="explanation" value="Simple example uppaal model"/> 
+	<option key="file" value="simple6.c"/> 
+	<option key="seedfn" value="_Z3fn1Pv"/> 
+	<option key="uppaal_variable" value="Z3fn1Pv_register_k"/> 
+	<option key="uppaal_variable" value="Z3fn1Pv_register_x"/> 
+	<option key="uppaal_variable" value="Z3fn1Pv_register_l"/> 
+	<option key="uppaal_variable" value="Z3fn1Pv_register_j"/> 
+</options>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Avoids problematic module 0"/> 
+	<option key="file" value="problem_mod.c"/> 
+	<option key="forced_free_var" value="mem_8"/> 
+	<option key="forced_free_var" value="mem_12"/> 
+</options>

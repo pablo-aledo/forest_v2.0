@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Two conditions"/> 
+	<option key="file" value="2cond.c"/> 
+	<option key="unconstrained" value="true"/> 
+	<option key="seed_function" value="_Z3gcdii"/> 
+	<option key="output" value="main_registerunderscorer2"/> 
+	<option key="get_model_fn" value="true"/> 
+	<option key="show_bdd" value="true"/> 
+</options>

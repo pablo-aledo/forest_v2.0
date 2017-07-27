@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="basename"/> 
+	<option key="file" value="fopen.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="fopen"/> 
+	<option key="uclib" value="_fopen"/> 
+	<option key="uclib" value="isatty"/> 
+	<option key="uclib" value="tcgetattr"/> 
+</options>

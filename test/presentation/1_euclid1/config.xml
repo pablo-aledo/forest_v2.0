@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Euclides gcd algorithm 1"/> 
+	<option key="file" value="euclid1.c"/> 
+	<option key="output" value="main_registerunderscoreretval8"/> 
+	<option key="unconstrained" value="true"/> 
+	<option key="max_depth" value="10"/> 
+	<option key="generate_model" value="true"/> 
+</options>

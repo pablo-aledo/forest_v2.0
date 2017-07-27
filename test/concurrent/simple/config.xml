@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="explanation" value="Simple example on concurrency"/> 
+	<option key="file" value="simple.c"/> 
+	<option key="get_concurrent_functions" value="true"/> 
+</options>

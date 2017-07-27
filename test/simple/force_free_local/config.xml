@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="check_coverage" value="false"/> 
+	<option key="explanation" value="Force a local variable to be free"/> 
+	<option key="file" value="force_free_local.c"/> 
+	<option key="expected_fn_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+	<option key="forced_free_var" value="mem_8"/> 
+</options>

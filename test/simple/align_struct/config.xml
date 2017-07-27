@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="struct fields alignment"/> 
+	<option key="file" value="align_struct.c"/> 
+</options>

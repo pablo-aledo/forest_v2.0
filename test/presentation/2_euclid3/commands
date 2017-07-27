@@ -1,0 +1,6 @@
+forest -test false -run
+forest -get_model_fn 2>/dev/null > /media/disk/euclid3_fn
+sed -i s/main_register_a/a/g /media/disk/euclid3_fn
+sed -i s/main_register_b/b/g /media/disk/euclid3_fn
+echo 'input:m' >> /media/disk/euclid3_fn
+

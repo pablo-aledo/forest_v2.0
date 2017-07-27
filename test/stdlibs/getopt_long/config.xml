@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="getopt_long"/> 
+	<option key="file" value="getopt_long.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="getopt"/> 
+	<option key="uclib" value="strcmp"/> 
+	<option key="uclib" value="strncmp"/> 
+	<option key="uclib" value="strlen"/> 
+	<option key="forced_free_var" value="mem_10"/> 
+	<option key="forced_free_var" value="mem_11"/> 
+	<option key="forced_free_var" value="mem_12"/> 
+	<option key="forced_free_var" value="mem_13"/> 
+	<option key="forced_free_var" value="mem_14"/> 
+	<option key="forced_free_var" value="mem_15"/> 
+	<option key="forced_free_var" value="mem_16"/> 
+	<option key="forced_free_var" value="mem_17"/> 
+	<option key="forced_free_var" value="mem_18"/> 
+</options>

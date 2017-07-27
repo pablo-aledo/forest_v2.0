@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Euclides gcd algorithm 1"/> 
+	<option key="file" value="euclid3.c"/> 
+	<option key="unconstrained" value="true"/> 
+	<option key="seed_function" value="_Z3gcdii"/> 
+	<option key="output" value="main_registerunderscorer2"/> 
+	<option key="max_depth" value="10"/> 
+</options>

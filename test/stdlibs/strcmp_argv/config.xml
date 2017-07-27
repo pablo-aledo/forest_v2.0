@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="compare argv[0]"/> 
+	<option key="file" value="strcmp_argv.c"/> 
+	<option key="with_libs" value="true"/> 
+	<option key="sym_argvs" value="1 1 5"/> 
+</options>

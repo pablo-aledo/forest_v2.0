@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Short datatype"/> 
+	<option key="file" value="short.c"/> 
+	<option key="forced_free_var" value="mem_0"/> 
+</options>

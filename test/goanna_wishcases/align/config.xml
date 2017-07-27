@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Division by zero"/> 
+	<option key="file" value="align.c"/> 
+</options>

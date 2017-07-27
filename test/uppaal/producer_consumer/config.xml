@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="generate_uppaal_model" value="true"/> 
+	<option key="explanation" value="Simple example uppaal model"/> 
+	<option key="file" value="producer_consumer.c"/> 
+	<option key="seedfn" value="_Z8producerPv"/> 
+	<option key="max_depth" value="50"/> 
+</options>

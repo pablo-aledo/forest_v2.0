@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="basename"/> 
+	<option key="file" value="setlocale.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="setlocale"/> 
+	<option key="uclib" value="localeconv"/> 
+	<option key="forced_free_hint" value="main_register_a"/> 
+</options>

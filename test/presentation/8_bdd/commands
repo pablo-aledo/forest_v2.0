@@ -1,0 +1,3 @@
+forest -test false -run
+forest -get_model_fn -show_bdd
+forest -get_model_fn -show_bdd -bdd_permutation 1232

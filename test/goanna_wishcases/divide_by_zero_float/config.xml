@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Divide by zero float"/> 
+	<option key="file" value="divide_by_zero_float_fgets.c"/> 
+</options>

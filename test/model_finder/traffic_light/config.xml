@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Simple TrafficLight example"/> 
+	<option key="file" value="traffic_light.c"/> 
+	<option key="output" value="mem_8"/> 
+	<option key="max_depth" value="10"/> 
+	<option key="generate_model" value="true"/> 
+	<option key="solver" value="bitvector"/> 
+</options>

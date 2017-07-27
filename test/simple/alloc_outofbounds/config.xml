@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Access out of bounds in heap"/> 
+	<option key="file" value="alloc_outofbounds.c"/> 
+</options>

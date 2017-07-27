@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="basename"/> 
+	<option key="file" value="fclose.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="fopen"/> 
+	<option key="uclib" value="_fopen"/> 
+	<option key="uclib" value="isatty"/> 
+	<option key="uclib" value="tcgetattr"/> 
+	<option key="uclib" value="fclose"/> 
+	<option key="uclib" value="fflush_unlocked"/> 
+	<option key="uclib" value="_wcommit"/> 
+	<option key="uclib" value="_WRITE"/> 
+</options>

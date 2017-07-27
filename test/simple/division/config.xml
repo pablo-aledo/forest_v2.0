@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Division"/> 
+	<option key="file" value="division.c"/> 
+	<option key="forced_free_hint" value="main_register_a"/>
+	<option key="forced_free_hint" value="main_register_b"/>
+
+</options>

@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="cryptographic example"/> 
+	<option key="file" value="crypt.c"/> 
+</options>

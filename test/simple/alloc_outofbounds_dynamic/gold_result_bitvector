@@ -1,0 +1,17 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+main_register_b            6      1    
+main_register_b            0      2    
+main_register_b            5      3    
+main_register_b            2      4    
+global_allocation_buffer+  0      4    
+global_allocation_buffer+  0      4    
+global_allocation_buffer+  0      4    
+global_allocation_buffer+  0      4    
+global_allocation_buffer+  0      4    
+main_register_b            0      5    
+global_allocation_buffer+  0      5    
+global_allocation_buffer+  0      5    
+global_allocation_buffer+  0      5    
+global_allocation_buffer+  0      5    
+global_allocation_buffer+  0      5    

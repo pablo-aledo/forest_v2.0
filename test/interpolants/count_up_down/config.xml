@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Count_up_down"/> 
+	<option key="file" value="count_up_down.c"/> 
+	<option key="driven_by_frontend" value="true"/>
+	<option key="max_depth" value="100"/>
+	<option key="target_node" value="main_bb5"/>
+</options>
+

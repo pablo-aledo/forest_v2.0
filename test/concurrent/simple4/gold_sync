@@ -1,0 +1,37 @@
+=== Concurrency: ===
+lockunlock       mutex  sync_name             conds                              
+---------------  -----  --------------------  -----------------------------------
+lock             a      _Z3fn1Pv_sync_1                                          
+lock             g      _Z3fn1Pv_sync_3       (= global_k 25)                    
+unlock           f      _Z3fn1Pv_sync_2       (= global_k 25)                    
+lock             c      _Z3fn1Pv_sync_4       (not (= global_k 25))              
+unlock           a      _Z3fn2Pv_sync_1                                          
+unlock           c      _Z3fn2Pv_sync_3       (= global_k 12)                    
+lock             f      _Z3fn2Pv_sync_5       (not (= global_k 12))              
+unlock           g      _Z3fn2Pv_sync_7       (not (= global_k 12))              
+
+=== Stores: ===
+pos              value       sync_point                         
+---------------  ----------  -----------------------------------
+global_j         1           _Z3fn2Pv_sync_3                    
+global_j         0           _Z3fn2Pv_sync_5                    
+global_j         1           _Z3fn2Pv_sync_7                    
+
+=== Sync: ===
+pos              stack                                                       
+---------------  ------------------------------------------------------------
+_Z3fn1Pv_sync_1  _Z3fn1Pv_sync_1,                                            
+_Z3fn1Pv_sync_2  _Z3fn1Pv_sync_1,_Z3fn1Pv_sync_2,                            
+_Z3fn1Pv_sync_3  _Z3fn1Pv_sync_1,_Z3fn1Pv_sync_2,_Z3fn1Pv_sync_3,            
+_Z3fn1Pv_sync_4  _Z3fn1Pv_sync_1,_Z3fn1Pv_sync_4,                            
+_Z3fn2Pv_sync_1  _Z3fn2Pv_sync_1,                                            
+_Z3fn2Pv_sync_3  _Z3fn2Pv_sync_1,_Z3fn2Pv_sync_3,                            
+_Z3fn2Pv_sync_5  _Z3fn2Pv_sync_1,_Z3fn2Pv_sync_5,                            
+_Z3fn2Pv_sync_7  _Z3fn2Pv_sync_1,_Z3fn2Pv_sync_5,_Z3fn2Pv_sync_7,            
+
+=== Global_Types: ===
+pos                        type        position            
+-------------------------  ----------  --------------------
+global_k                   Int                             
+global_j                   Int                             
+

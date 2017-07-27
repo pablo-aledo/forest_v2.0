@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Random initialization of array"/> 
+	<option key="file" value="random_init.c"/> 
+	<option key="forced_free_var" value="mem_4"/>
+</options>

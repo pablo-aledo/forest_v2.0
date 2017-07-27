@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="svcomp" value="true"/> 
+	<option key="force_run" value="true"/> 
+	<option key="explanation" value="Function pointer"/> 
+	<option key="file" value="function_pointer_global.c"/> 
+</options>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="svcomp" value="true"/> 
+	<option key="force_run" value="true"/> 
+	<option key="file" value="deref_var_and_cond.c"/> 
+	<option key="check_outofbounds" value="false"/> 
+	<option key="check_witness" value="true" />
+</options>

@@ -1,0 +1,12 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+Z2fnv_register_var_a       0      1    
+Z4fn1v_register_a          0      2    
+Z2fnv_register_var_a       0      2    
+Z4fn1v_register_a          1      3    
+Z2fnv_register_var_a       0      3    
+Z2fnv_register_var_a       1      4    
+Z4fn1v_register_a          0      5    
+Z2fnv_register_var_a       -1     5    
+Z4fn1v_register_a          1      6    
+Z2fnv_register_var_a       1      6    

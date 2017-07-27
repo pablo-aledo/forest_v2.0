@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Performing two wired boolean operations"/> 
+	<option key="file" value="wired_bool_twice.c"/> 
+	<option key="check_coverage" value="true"/> 
+	<option key="expected_fn_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+</options>

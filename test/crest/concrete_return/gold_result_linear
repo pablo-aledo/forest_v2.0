@@ -1,0 +1,4 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+return_of_printf           3      1    
+return_of_printf           0      2    

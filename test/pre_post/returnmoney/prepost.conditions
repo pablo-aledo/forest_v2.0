@@ -1,0 +1,22 @@
+function:Z11pickMaxCoiniPii
+content:(= preconditions (> Z11returnmoneyii_registerunderscorereturnunderscoremoney 0))
+input:Z11returnmoneyii_registerunderscorereturnunderscoremoney
+content:(= preconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+0  Z11returnmoneyii_registerunderscorepunderscorecoins+4))
+content:(= preconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+4  Z11returnmoneyii_registerunderscorepunderscorecoins+8))
+content:(= preconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+8  Z11returnmoneyii_registerunderscorepunderscorecoins+12))
+content:(= preconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+12 Z11returnmoneyii_registerunderscorepunderscorecoins+16))
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+0
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+4
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+8
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+12
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+16
+function:Z4sortPii
+content:(= postconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+0  Z11returnmoneyii_registerunderscorepunderscorecoins+4))
+content:(= postconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+4  Z11returnmoneyii_registerunderscorepunderscorecoins+8))
+content:(= postconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+8  Z11returnmoneyii_registerunderscorepunderscorecoins+12))
+#content:(= postconditions (< Z11returnmoneyii_registerunderscorepunderscorecoins+12 Z11returnmoneyii_registerunderscorepunderscorecoins+16))
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+0
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+4
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+8
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+12
+input:Z11returnmoneyii_registerunderscorepunderscorecoins+16

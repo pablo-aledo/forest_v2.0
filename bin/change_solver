@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+filename=`dirname $0`/../front-end/cmd_options.cpp
+dirname=`dirname $0`/../
+sed -i "s/^\toptions\[\"solver\"\] = \".*\";/\toptions[\"solver\"] = \"$1\";/g" $filename
+cd $dirname
+make
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Refinement of Trace Abstraction"/> 
+	<option key="file" value="heizmann_2009_1.c"/> 
+	<option key="solver" value="interpolants"/> 
+	<option key="driven_by_frontend" value="true"/> 
+	<option key="max_depth" value="500"/> 
+	<option key="target_node" value="main_bb3"/> 
+</options>
+

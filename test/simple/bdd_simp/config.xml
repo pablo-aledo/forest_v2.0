@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Euclides gcd algorithm 1"/> 
+	<option key="file" value="bdd_simp.c"/> 
+	<option key="unconstrained" value="true"/> 
+	<option key="seed_function" value="_Z3gcdiii"/> 
+	<option key="output" value="main_registerunderscorer3"/> 
+	<option key="get_model_fn" value="true"/> 
+	<option key="show_bdd" value="true"/> 
+</options>

@@ -1,0 +1,8 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+main_register_a_lc         65535  1    
+main_register_a_lc         0      2    
+main_register_a_lc         0      3    
+global_agl                 65535  3    
+main_register_a_lc         0      4    
+global_agl                 0      4    

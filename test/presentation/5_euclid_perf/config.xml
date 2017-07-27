@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Euclides gcd algorithm 2"/> 
+	<option key="file" value="euclid2.c"/> 
+	<option key="unconstrained" value="true"/> 
+	<option key="output" value="mem_0"/> 
+	<option key="max_depth" value="10"/> 
+</options>

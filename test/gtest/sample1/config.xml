@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Google test sample 1"/> 
+	<option key="file" value="sample1.cc"/> 
+</options>

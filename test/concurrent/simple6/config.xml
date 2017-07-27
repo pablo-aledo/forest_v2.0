@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="false"/> 
+	<option key="check_concurrency" value="true"/>
+	<option key="explanation" value="Concurrent Simple Example 6"/> 
+	<option key="file" value="simple6.c"/> 
+</options>

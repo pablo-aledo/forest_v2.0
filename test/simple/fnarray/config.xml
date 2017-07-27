@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Pointer passed to function"/> 
+	<option key="file" value="fnarray.c"/> 
+	<option key="forced_free_var" value="mem_16"/> 
+</options>

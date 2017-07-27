@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="isupper"/> 
+	<option key="file" value="isupper.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="isupper"/> 
+	<option key="uclib" value="__C_ctype_b"/> 
+</options>

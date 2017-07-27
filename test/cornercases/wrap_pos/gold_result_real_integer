@@ -1,0 +1,6 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+main_register_i            -1     1    
+main_register_i            0      2    
+main_register_i            10     3    
+main_register_i            0      4    

@@ -1,0 +1,2 @@
+forest -test false -run
+forest -get_model 2>/dev/null > /media/disk/euclid_perf

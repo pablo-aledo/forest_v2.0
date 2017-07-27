@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Double_free with symbolic pointer"/> 
+	<option key="file" value="doublefree_var.c"/> 
+</options>

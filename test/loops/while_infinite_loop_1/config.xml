@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="check_coverage" value="false"/> 
+	<option key="explanation" value="While infinite loop"/> 
+	<option key="file" value="while_infinite_loop_1.c"/> 
+	<option key="expected_fn_coverage" value="100"/> 
+	<option key="expected_bb_coverage" value="100"/> 
+</options>

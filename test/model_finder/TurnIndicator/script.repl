@@ -1,0 +1,6 @@
+clear
+import /media/disk/release/test/model_finder/TurnIndicator/impl.model as impl
+import /media/disk/release/test/model_finder/TurnIndicator/env_manageFlashing.model as env
+import /media/disk/release/test/model_finder/TurnIndicator/map.model as map
+check_smt (=> (and preconditions frameconditions impl.implementation) postconditions)
+check_smt (=> (and preconditions impl.implementation) postconditions)

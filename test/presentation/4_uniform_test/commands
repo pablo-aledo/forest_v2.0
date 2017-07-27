@@ -1,0 +1,7 @@
+forest -dfg
+forest -verbose -see_each_problem
+forest -show_test_vectors
+forest -test false -check_coverage false -random_testing -num_random_vectors 10000
+forest -test false -check_coverage false -show_coverage -verbose
+forest -test false
+forest -test false -check_coverage false -show_coverage -verbose

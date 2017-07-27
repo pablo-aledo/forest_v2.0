@@ -1,0 +1,4 @@
+name_hint                  value  probl
+-------------------------  -----  -----
+global_a+1                 255    1    
+global_a+1                 0      2    

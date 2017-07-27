@@ -1,0 +1,5 @@
+solver:bitvector
+input:main_register_carLight:(_ BitVec 8)
+output:mem_8:(_ BitVec 8)
+output:implementation:Bool
+content:(= implementation (or (and (= mem_8 (ite (= main_register_carLight #x00) #x01 #x00)) (and true )) ))

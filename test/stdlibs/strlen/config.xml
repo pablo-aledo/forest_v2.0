@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="strlen"/> 
+	<option key="file" value="strlen.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="strlen"/> 
+	<option key="forced_free_var" value="mem_3"/> 
+	<option key="forced_free_var" value="mem_4"/> 
+</options>

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="svcomp" value="true"/> 
+	<option key="explanation" value="Verifier_assume"/> 
+	<option key="file" value="verifier_assume.c"/> 
+</options>

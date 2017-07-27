@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="strcat"/> 
+	<option key="file" value="strcat.c"/> 
+	<option key="with_uclibs" value="true"/> 
+	<option key="uclib" value="strcat"/> 
+	<option key="forced_free_var" value="mem_14"/> 
+</options>

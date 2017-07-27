@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="false"/> 
+	<option key="check_concurrency" value="true"/>
+	<option key="explanation" value="Concurrent Simple Example 3"/> 
+	<option key="file" value="simple3.c"/> 
+	<option key="forced_free_var" value="mem_119"/> 
+	<option key="forced_free_var" value="mem_205"/> 
+	<option key="forced_free_var" value="mem_201"/> 
+	<option key="forced_free_var" value="mem_123"/> 
+	<option key="subst_name" value="_Z3fn1Pv_sync_1 a"/> 
+	<option key="subst_name" value="_Z3fn1Pv_sync_2 b"/> 
+	<option key="subst_name" value="_Z3fn1Pv_sync_3 c"/> 
+	<option key="subst_name" value="_Z3fn2Pv_sync_1 d"/> 
+	<option key="subst_name" value="_Z3fn2Pv_sync_3 e"/> 
+	<option key="subst_name" value="_Z3fn2Pv_sync_5 f"/> 
+	<option key="subst_name" value="_Z3fn2Pv_sync_6 g"/> 
+</options>

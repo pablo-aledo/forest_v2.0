@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Casting i16 to i32"/> 
+	<option key="file" value="cast_i16_to_i32.c"/> 
+	<option key="solver" value="bitvector"/> 
+</options>

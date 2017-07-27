@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns">
+    <key attr.name="assumption" attr.type="string" for="edge" id="assumption"/>
+    <key attr.name="sourcecode" attr.type="string" for="edge" id="sourcecode"/>
+    <key attr.name="sourcecodeLanguage" attr.type="string" for="graph" id="sourcecodelang"/>
+    <key attr.name="tokenSet" attr.type="string" for="edge" id="tokens"/>
+    <key attr.name="originTokenSet" attr.type="string" for="edge" id="origintokens"/>
+    <key attr.name="negativeCase" attr.type="string" for="edge" id="negated">
+        <default>false</default>
+    </key>
+    <key attr.name="lineNumberInOrigin" attr.type="int" for="edge" id="originline"/>
+    <key attr.name="originFileName" attr.type="string" for="edge" id="originfile">
+        <default>"&lt;command-line&gt;"</default>
+    </key>
+    <key attr.name="nodeType" attr.type="string" for="node" id="nodetype">
+        <default>path</default>
+    </key>
+    <key attr.name="isFrontierNode" attr.type="boolean" for="node" id="frontier">
+        <default>false</default>
+    </key>
+    <key attr.name="isViolationNode" attr.type="boolean" for="node" id="violation">
+        <default>false</default>
+    </key>
+    <key attr.name="isEntryNode" attr.type="boolean" for="node" id="entry">
+        <default>false</default>
+    </key>
+    <key attr.name="isSinkNode" attr.type="boolean" for="node" id="sink">
+        <default>false</default>
+    </key>
+    <key attr.name="enterFunction" attr.type="string" for="edge" id="enterFunction"/>
+    <key attr.name="returnFromFunction" attr.type="string" for="edge" id="returnFrom"/>
+    <graph edgedefault="directed">
+        <data key="sourcecodelang">C</data>
+        <node id="A1">
+            <data key="entry">true</data>
+        </node>
+        <edge source="A1" target="A7">
+            <data key="sourcecode">int
+                a
+                =
+                1
+                ;
+            </data>
+            <data key="tokens">26,29</data>
+            <data key="originfile">"path-examples/example3_false-unreach-label.c"</data>
+            <data key="origintokens">26,29</data>
+            <data key="assumption">a = 1;</data>
+            <data key="originline">9</data>
+        </edge>
+        <node id="A7"/>
+        <node id="sink">
+            <data key="sink">true</data>
+        </node>
+        <edge source="A7" target="sink">
+            <data key="sourcecode">[a == 0]</data>
+            <data key="tokens">32</data>
+            <data key="originfile">"path-examples/example3_false-unreach-label.c"</data>
+            <data key="origintokens">32</data>
+            <data key="originline">10</data>
+        </edge>
+        <edge source="A7" target="A10">
+            <data key="sourcecode">[!(a == 0)]</data>
+            <data key="tokens">32</data>
+            <data key="originfile">"path-examples/example3_false-unreach-label.c"</data>
+            <data key="origintokens">32</data>
+            <data key="negated">true</data>
+            <data key="originline">10</data>
+        </edge>
+        <node id="A10"/>
+        <edge source="A10" target="A12">
+            <data key="sourcecode">failure
+                (
+                )
+            </data>
+            <data key="tokens">32,34</data>
+            <data key="originfile">"path-examples/example3_false-unreach-label.c"</data>
+            <data key="origintokens">32,34</data>
+            <data key="enterFunction">failure</data>
+            <data key="originline">10</data>
+        </edge>
+        <node id="A12"/>
+        <edge source="A12" target="A14">
+            <data key="sourcecode">__VERIFIER_error
+                (
+                )
+                ;
+            </data>
+            <data key="tokens">13</data>
+            <data key="originfile">"path-examples/example3_false-unreach-label.c"</data>
+            <data key="origintokens">13</data>
+            <data key="originline">4</data>
+        </edge>
+        <node id="A14">
+            <data key="violation">true</data>
+        </node>
+    </graph>
+</graphml>    
+
