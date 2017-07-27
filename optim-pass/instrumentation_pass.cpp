@@ -233,7 +233,7 @@ Constant* pointerToArray( Module& M, GlobalVariable* global_var ){
 	const_ptr_9_indices.push_back(const_int64_10);
 	const_ptr_9_indices.push_back(const_int64_10);
 
-	Constant* const_ptr_9 = ConstantExpr::getGetElementPtr(global_var->getType(), global_var, const_ptr_9_indices);
+	Constant* const_ptr_9 = ConstantExpr::getGetElementPtr(NULL, global_var, const_ptr_9_indices);
 
 	return const_ptr_9;
 }
@@ -292,7 +292,7 @@ string get_type_str( const Type* t){
 	}
 
 
-	if(typId == 9){
+	if(typId == 10){
 		stringstream name;
 		name << "IntegerTyID" << t->getPrimitiveSizeInBits();
 		return name.str();
@@ -2185,7 +2185,6 @@ struct BinaryOp: public ModulePass {
 						params.push_back(pointerToArray(M,c4));
 						CallInst::Create(InitFn, params, "", insertpos);
 
-						//CallInst* ci = CallInst::Create(InitFn, "", insertpos );
 
 					}
 				}
