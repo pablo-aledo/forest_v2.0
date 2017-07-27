@@ -279,13 +279,13 @@ string get_type_str( const Type* t){
 	//cerr << typId << endl;
 
 
-	if(typId == 1){
+	if(typId == 2){
 		stringstream name;
 		name << "FloatTyID";
 		return name.str();
 	}
 
-	if(typId == 2){
+	if(typId == 3){
 		stringstream name;
 		name << "DoubleTyID";
 		return name.str();
@@ -310,7 +310,7 @@ string get_type_str( const Type* t){
 		return "VoidTyID";
 	}
 
-	if(typId == 11){
+	if(typId == 12){
 		return "StructTyID";
 		
 		////cerr << "typid 11:";
