@@ -4367,31 +4367,31 @@ struct All: public ModulePass {
 
 		read_options();
 
-		//cerr << "AddAssertFn    " << endl; fflush(stderr); {AddAssertFn      pass;   pass.runOnModule(M);}
-		//cerr << "RmErrorFn      " << endl; fflush(stderr); {RmErrorFn        pass;   pass.runOnModule(M);}
-		//cerr << "RmPutsFn       " << endl; fflush(stderr); {RmPutsFn         pass;   pass.runOnModule(M);}
-		//cerr << "RmXBool        " << endl; fflush(stderr); {RmXBool          pass;   pass.runOnModule(M);}
-		//cerr << "MainArgs_2     " << endl; fflush(stderr); {MainArgs_2       pass;   pass.runOnModule(M);}
-		//cerr << "SwitchInstr    " << endl; fflush(stderr); {SwitchInstr      pass;   pass.runOnModule(M);}
-		//cerr << "FillNames      " << endl; fflush(stderr); {FillNames        pass;   pass.runOnModule(M);}
-		//cerr << "SeparateGetElm " << endl; fflush(stderr); {SeparateGetElm   pass;   pass.runOnModule(M);}
-		//cerr << "GlobalInit     " << endl; fflush(stderr); {GlobalInit       pass;   pass.runOnModule(M);}
-		//cerr << "CallInstr      " << endl; fflush(stderr); {CallInstr        pass;   pass.runOnModule(M);}
-		//cerr << "SpecialCall    " << endl; fflush(stderr); {SpecialCall      pass;   pass.runOnModule(M);}
-		//cerr << "SelectInstr    " << endl; fflush(stderr); {SelectInstr      pass;   pass.runOnModule(M);}
+		cerr << "AddAssertFn    " << endl; fflush(stderr); {AddAssertFn      pass;   pass.runOnModule(M);}
+		cerr << "RmErrorFn      " << endl; fflush(stderr); {RmErrorFn        pass;   pass.runOnModule(M);}
+		cerr << "RmPutsFn       " << endl; fflush(stderr); {RmPutsFn         pass;   pass.runOnModule(M);}
+		cerr << "RmXBool        " << endl; fflush(stderr); {RmXBool          pass;   pass.runOnModule(M);}
+		cerr << "MainArgs_2     " << endl; fflush(stderr); {MainArgs_2       pass;   pass.runOnModule(M);}
+		cerr << "SwitchInstr    " << endl; fflush(stderr); {SwitchInstr      pass;   pass.runOnModule(M);}
+		cerr << "FillNames      " << endl; fflush(stderr); {FillNames        pass;   pass.runOnModule(M);}
+		cerr << "SeparateGetElm " << endl; fflush(stderr); {SeparateGetElm   pass;   pass.runOnModule(M);}
+		cerr << "GlobalInit     " << endl; fflush(stderr); {GlobalInit       pass;   pass.runOnModule(M);}
+		cerr << "CallInstr      " << endl; fflush(stderr); {CallInstr        pass;   pass.runOnModule(M);}
+		cerr << "SpecialCall    " << endl; fflush(stderr); {SpecialCall      pass;   pass.runOnModule(M);}
+		cerr << "SelectInstr    " << endl; fflush(stderr); {SelectInstr      pass;   pass.runOnModule(M);}
 		cerr << "BinaryOp       " << endl; fflush(stderr); {BinaryOp         pass;   pass.runOnModule(M);}
-		//cerr << "CastInstr      " << endl; fflush(stderr); {CastInstr        pass;   pass.runOnModule(M);}
-		//cerr << "LoadStore      " << endl; fflush(stderr); {LoadStore        pass;   pass.runOnModule(M);}
-		//cerr << "IcmpInstr      " << endl; fflush(stderr); {IcmpInstr        pass;   pass.runOnModule(M);}
-		//cerr << "BrInstr        " << endl; fflush(stderr); {BrInstr          pass;   pass.runOnModule(M);}
-		//cerr << "BbMarks        " << endl; fflush(stderr); {BbMarks          pass;   pass.runOnModule(M);}
-		//cerr << "AllocaInstr    " << endl; fflush(stderr); {AllocaInstr      pass;   pass.runOnModule(M);}
-		//cerr << "BeginEnd       " << endl; fflush(stderr); {BeginEnd         pass;   pass.runOnModule(M);}
-		//cerr << "GetelementPtr  " << endl; fflush(stderr); {GetelementPtr    pass;   pass.runOnModule(M);}
-		//cerr << "Memcpy         " << endl; fflush(stderr); {Memcpy           pass;   pass.runOnModule(M);}
-		//cerr << "ChAssumeFn     " << endl; fflush(stderr); {ChAssumeFn       pass;   pass.runOnModule(M);}
-		//cerr << "ChAlloc        " << endl; fflush(stderr); {ChAlloc          pass;   pass.runOnModule(M);}
-		//cerr << "FPointerhook   " << endl; fflush(stderr); {FPointerhook     pass;   pass.runOnModule(M);}
+		cerr << "CastInstr      " << endl; fflush(stderr); {CastInstr        pass;   pass.runOnModule(M);}
+		cerr << "LoadStore      " << endl; fflush(stderr); {LoadStore        pass;   pass.runOnModule(M);}
+		cerr << "IcmpInstr      " << endl; fflush(stderr); {IcmpInstr        pass;   pass.runOnModule(M);}
+		cerr << "BrInstr        " << endl; fflush(stderr); {BrInstr          pass;   pass.runOnModule(M);}
+		cerr << "BbMarks        " << endl; fflush(stderr); {BbMarks          pass;   pass.runOnModule(M);}
+		cerr << "AllocaInstr    " << endl; fflush(stderr); {AllocaInstr      pass;   pass.runOnModule(M);}
+		cerr << "BeginEnd       " << endl; fflush(stderr); {BeginEnd         pass;   pass.runOnModule(M);}
+		cerr << "GetelementPtr  " << endl; fflush(stderr); {GetelementPtr    pass;   pass.runOnModule(M);}
+		cerr << "Memcpy         " << endl; fflush(stderr); {Memcpy           pass;   pass.runOnModule(M);}
+		cerr << "ChAssumeFn     " << endl; fflush(stderr); {ChAssumeFn       pass;   pass.runOnModule(M);}
+		cerr << "ChAlloc        " << endl; fflush(stderr); {ChAlloc          pass;   pass.runOnModule(M);}
+		cerr << "FPointerhook   " << endl; fflush(stderr); {FPointerhook     pass;   pass.runOnModule(M);}
 
 		return false;
 	}
