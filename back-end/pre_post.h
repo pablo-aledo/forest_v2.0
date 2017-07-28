@@ -29,6 +29,9 @@
 #include <sys/wait.h>
 #include "solver_wrapper.h"
 #include "database.h"
+#include "operators.h"
+#include "options.h"
+#include "utils.h"
 
 using namespace std;
 
