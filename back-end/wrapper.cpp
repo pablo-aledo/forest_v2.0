@@ -35,7 +35,6 @@
 #include "z3_realint.h"
 #include "linear_bblast.h"
 #include "database.h"
-#include "interpolant_solver.h"
 #include "concurrency_backend.h"
 #include "memory_allocator.h"
 #include "pre_post.h"
@@ -203,8 +202,6 @@ void begin_sim(){
 		solver = new AllSolvers();
 	else if(options->cmd_option_str("solver") == "linear_bblast")
 		solver = new LinearBblast();
-	else if(options->cmd_option_str("solver") == "interpolants")
-		solver = new InterpolantSolver();
 	else
 		assert(0 && "Unknown solver");
 

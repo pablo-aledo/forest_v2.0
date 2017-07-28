@@ -3,8 +3,8 @@ CC=gcc
 
 all: ../lib/forest.a 
 
-../lib/forest.a: ../build/database.o ../build/operators.o ../build/solver_wrapper.o ../build/all_solvers.o ../build/z3_variable.o ../build/linear_variable.o ../build/poly_variable.o ../build/variable.o ../build/z3_solver.o ../build/linear_solver.o ../build/interpolant_solver.o ../build/mixed_int.o ../build/mixed_bblast.o ../build/linear_bblast.o ../build/linear_variable_bb.o ../build/polynomic_solver.o ../build/z3_bitvector.o ../build/z3_realint.o ../build/sqlite.o ../build/utils.o ../build/options.o ../build/wrapper.o ../build/measurement.o ../build/timer.o ../build/architecture.o ../build/assignment.o ../build/state.o ../build/automaton.o ../build/concurrency_backend.o ../build/memory_allocator.o ../build/pre_post.o
-	ar rcs ../lib/forest.a ../build/database.o ../build/operators.o ../build/solver_wrapper.o ../build/all_solvers.o ../build/z3_variable.o ../build/linear_variable.o ../build/poly_variable.o ../build/variable.o ../build/z3_solver.o ../build/linear_solver.o ../build/interpolant_solver.o ../build/mixed_int.o ../build/mixed_bblast.o ../build/linear_bblast.o ../build/linear_variable_bb.o ../build/linear_bblast.o ../build/polynomic_solver.o ../build/z3_bitvector.o ../build/z3_realint.o ../build/sqlite.o ../build/utils.o ../build/options.o ../build/wrapper.o ../build/measurement.o ../build/timer.o ../build/architecture.o ../build/assignment.o ../build/state.o ../build/automaton.o ../build/concurrency_backend.o ../build/memory_allocator.o ../build/pre_post.o
+../lib/forest.a: ../build/database.o ../build/operators.o ../build/solver_wrapper.o ../build/all_solvers.o ../build/z3_variable.o ../build/linear_variable.o ../build/poly_variable.o ../build/variable.o ../build/z3_solver.o ../build/linear_solver.o ../build/mixed_int.o ../build/mixed_bblast.o ../build/linear_bblast.o ../build/linear_variable_bb.o ../build/polynomic_solver.o ../build/z3_bitvector.o ../build/z3_realint.o ../build/sqlite.o ../build/utils.o ../build/options.o ../build/wrapper.o ../build/measurement.o ../build/timer.o ../build/architecture.o ../build/assignment.o ../build/state.o ../build/automaton.o ../build/concurrency_backend.o ../build/memory_allocator.o ../build/pre_post.o
+	ar rcs ../lib/forest.a ../build/database.o ../build/operators.o ../build/solver_wrapper.o ../build/all_solvers.o ../build/z3_variable.o ../build/linear_variable.o ../build/poly_variable.o ../build/variable.o ../build/z3_solver.o ../build/linear_solver.o ../build/mixed_int.o ../build/mixed_bblast.o ../build/linear_bblast.o ../build/linear_variable_bb.o ../build/linear_bblast.o ../build/polynomic_solver.o ../build/z3_bitvector.o ../build/z3_realint.o ../build/sqlite.o ../build/utils.o ../build/options.o ../build/wrapper.o ../build/measurement.o ../build/timer.o ../build/architecture.o ../build/assignment.o ../build/state.o ../build/automaton.o ../build/concurrency_backend.o ../build/memory_allocator.o ../build/pre_post.o
 	#llvm-link -o=../lib/forest.a ../build/database.o ../build/operators.o ../build/solver_wrapper.o ../build/all_solvers.o ../build/z3_variable.o ../build/linear_variable.o ../build/poly_variable.o ../build/variable.o ../build/z3_solver.o ../build/linear_solver.o ../build/mixed_int.o ../build/mixed_bblast.o ../build/linear_bblast.o ../build/linear_variable_bb.o ../build/polynomic_solver.o ../build/z3_bitvector.o ../build/z3_realint.o ../build/sqlite.o ../build/utils.o ../build/options.o ../build/wrapper.o ../build/measurement.o ../build/timer.o ../build/architecture.o
 
 ../build/wrapper.o: wrapper.cpp
@@ -45,9 +45,6 @@ all: ../lib/forest.a
 
 ../build/linear_solver.o: linear_solver.cpp
 	$(CCXX) -g -c linear_solver.cpp -o ../build/linear_solver.o
-
-../build/interpolant_solver.o: interpolant_solver.cpp
-	$(CCXX) -g -c interpolant_solver.cpp -o ../build/interpolant_solver.o
 
 ../build/mixed_int.o: mixed_int.cpp
 	$(CCXX) -g -c mixed_int.cpp -o ../build/mixed_int.o
