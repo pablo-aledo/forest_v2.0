@@ -25,8 +25,6 @@
 #include <string>
 #include "bc_handling.h"
 #include "database_frontend.h"
-#include "coverage.h"
-#include "klee.h"
 #include "heuristic.h"
 #include "goanna_fpr.h"
 #include "svcomp.h"

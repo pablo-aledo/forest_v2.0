@@ -99,46 +99,6 @@ void compare_bc(){
 
 }
 
-void compare_measure_bc(){
-
-
-	string base_path = cmd_option_str("base_path");
-	string llvm_path = cmd_option_str("llvm_path");
-	stringstream cmd;
-
-	make_initial_bc();
-
-	// First optimization pass
-	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestMeasure.so -meas_fillnames < file.bc > file-2.bc";
-	systm(cmd.str().c_str());
-
-	// Disassembly
-	cmd.str("");
-	cmd << "llvm-dis < file-2.bc > salida1.txt";
-	systm(cmd.str().c_str());
-
-
-	// Second optimization pass
-	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestMeasure.so -meas_all < file-2.bc > file-3.bc";
-	systm(cmd.str().c_str());
-
-	// Disassembly
-	cmd.str("");
-	cmd << "llvm-dis < file-3.bc > salida2.txt";
-	systm(cmd.str().c_str());
-
-
-	// Comparison
-	cmd.str("");
-	cmd << "meld salida1.txt salida2.txt";
-	systm(cmd.str().c_str());
-
-
-
-}
-
 void view_bc(){
 
 	start_pass("view_bc");

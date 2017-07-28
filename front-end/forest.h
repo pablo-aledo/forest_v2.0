@@ -37,7 +37,6 @@
 #include "bc_handling.h"
 #include "svcomp.h"
 #include "concurrent.h"
-#include "random_testing.h"
 #include "models.h"
 #include "goanna_fpr.h"
 

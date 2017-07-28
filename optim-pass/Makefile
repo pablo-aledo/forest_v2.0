@@ -1,4 +1,4 @@
-#all: /llvm-2.9/install/lib/ForestInstr.so /llvm-2.9/install/lib/ForestMeasure.so /llvm-2.9/install/lib/ForestConcurrency.so /llvm-2.9/install/lib/ForestStdlibs.so /llvm-2.9/install/lib/ForestHeuristic.so /llvm-2.9/install/lib/ForestBcAnalyze.so /llvm-2.9/install/lib/ForestFeatures.so
+#all: /llvm-2.9/install/lib/ForestInstr.so /llvm-2.9/install/lib/ForestConcurrency.so /llvm-2.9/install/lib/ForestStdlibs.so /llvm-2.9/install/lib/ForestHeuristic.so /llvm-2.9/install/lib/ForestBcAnalyze.so /llvm-2.9/install/lib/ForestFeatures.so
 all: /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so
 
 /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so: instrumentation_pass.cpp 
@@ -9,13 +9,6 @@ all: /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so
 	\cp instrumentation_pass.cpp /usr/src/llvm-3.7/lib/Transforms/Forest_instr/forest_instr.cpp 
 	cd /usr/src/llvm-3.7/build3/lib/Transforms/Forest_instr/; make
 	cd /usr/src/llvm-3.7/build3/lib/Transforms/Forest_instr/; sudo make install;
-
-#/llvm-2.9/install/lib/ForestMeasure.so: measurement_pass.cpp
-	#mkdir -p /llvm-2.9/lib/Transforms/Forest_measure/
-	#cp make_measure /llvm-2.9/lib/Transforms/Forest_measure/Makefile
-	#cp measurement_pass.cpp /llvm-2.9/lib/Transforms/Forest_measure/Forest_measure.cpp 
-	#cd /llvm-2.9/lib/Transforms/Forest_measure/; make;
-	#cd /llvm-2.9/lib/Transforms/Forest_measure/; make install;
 
 #/llvm-2.9/install/lib/ForestConcurrency.so: concurrency_pass.cpp
 	#mkdir -p /llvm-2.9/lib/Transforms/Forest_concurrency/
@@ -60,13 +53,11 @@ all: /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so
 	#cd /llvm-2.9/lib/Transforms/Forest_Features/; make install;
 
 clean:
-	rm -rf /llvm-2.9/install/lib/ForestInstr.so
-	rm -rf /llvm-2.9/install/lib/ForestMeasure.so
-	rm -rf /llvm-2.9/install/lib/ForestConcurrency.so
-	rm -rf /llvm-2.9/install/lib/ForestStdlibs.so
-	rm -rf /llvm-2.9/install/lib/ForestBcAnalyze.so
+	rm -rf /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestInstr.so
+	rm -rf /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestConcurrency.so
+	rm -rf /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestStdlibs.so
+	rm -rf /usr/src/llvm-3.7/build3/Debug+Asserts/lib/ForestBcAnalyze.so
 	rm -rf /llvm-2.9/lib/Transforms/Forest_instr/
-	rm -rf /llvm-2.9/lib/Transforms/Forest_measure/
 	rm -rf /llvm-2.9/lib/Transforms/Forest_concurrency/
 	rm -rf /llvm-2.9/lib/Transforms/Forest_stdlibs/
 	rm -rf /llvm-2.9/lib/Transforms/Forest_heuristic/

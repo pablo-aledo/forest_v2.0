@@ -66,8 +66,6 @@ int main(int argc, const char *argv[]) {
 	needs("run", "clean_tables");
 	needs("make_bc", "clean");
 	needs("check_coverage", "measure_coverage");
-	needs("compare_klee", "run");
-	needs("compare_klee", "klee");
 	needs("get_result", "test");
 	needs("vim", "final");
 	needs("vim", "clean_tables");
@@ -77,8 +75,6 @@ int main(int argc, const char *argv[]) {
 	needs("svcomp", "final");
 	needs("svcomp", "clean_tables");
 	needs("goanna_fpr", "svcomp");
-	//needs("klee_coverage", "measure_coverage");
-	//needs("klee_coverage", "klee");
 
 
 	disables("compare_bc", "test");
@@ -101,17 +97,11 @@ int main(int argc, const char *argv[]) {
 	disables("show_test_vectors", "check_coverage");
 	disables("show_argvs", "test");
 	disables("show_argvs", "check_coverage");
-	disables("klee", "test");
-	disables("klee", "compare_klee");
-	disables("klee", "check_coverage");
 	disables("compare_bc", "test");
 	disables("compare_bc", "check_coverage");
 	disables("compare_measure_bc", "test");
 	disables("compare_secuencialize", "test");
-	disables("compare_klee", "test");
-	disables("compare_klee", "check_coverage");
 	disables("test_vectors", "test");
-	disables("test_vectors", "compare_klee");
 	disables("get_model", "test");
 	disables("get_model_fn", "test");
 	disables("get_model_modelfinder", "test");
@@ -122,8 +112,6 @@ int main(int argc, const char *argv[]) {
 	disables("lbc", "test");
 	disables("lbc", "check_coverage");
 	disables("measure_coverage", "test");
-	disables("tests_from_klee", "test");
-	disables("tests_from_klee", "check_coverage");
 	disables("show_coverage", "test");
 	disables("show_coverage", "check_coverage");
 	disables("show_timer", "test");
@@ -168,7 +156,6 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("clean_tables")) clean_tables();                         // removes and creates database tables
 	if(cmd_option_bool("final")) final();                                       // generates final executable code
 	if(cmd_option_bool("compare_bc")) compare_bc();                             // compares raw bc with instrumented one
-	if(cmd_option_bool("compare_measure_bc")) compare_measure_bc();             // compares raw bc with measurement one
 	if(cmd_option_bool("compare_libs")) compare_libs();                         // compares raw bc with changed-stdlibs
 	if(cmd_option_bool("view_bc")) view_bc();                                   // shows bc of the code
 	if(cmd_option_bool("dfg")) view_dfg();                                      // shows dfg of the code
@@ -178,16 +165,11 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("show_results")) show_results();                         // show generated testcases
 	if(cmd_option_bool("show_argvs")) show_argvs();                             // show generated testcases in argv form
 	if(cmd_option_bool("show_test_vectors")) show_test_vectors();               // show generated testvectors
-	if(cmd_option_bool("measure_coverage")) measure_coverage();                 // measure coverage obtained with current test_vectors
 	if(cmd_option_bool("test_vectors")) minimal_test_vectors_to_db();           // transforms data in the database to test_vector format
 	if(cmd_option_bool("show_coverage")) show_coverage();                       // shows coverage obtained with current test_vectors
-	if(cmd_option_bool("random_testing")) random_testing();                     // fuzzes free variables
-	if(cmd_option_bool("klee")) do_klee();                                      // tests the program with klee
 	if(cmd_option_bool("clean")) clean();                                       // creates and cleans temporal folder
-	if(cmd_option_bool("compare_klee")) compare_klee();                         // compares times and paths for klee and forest
 	if(cmd_option_bool("get_result")) get_result();                             // copies result to gold_result
 	if(cmd_option_bool("vim")) vim();                                           // shows debug information in vim
-	if(cmd_option_bool("check_coverage")) check_coverage();                     // checks if coverage is as good as expected
 	if(cmd_option_bool("get_model")) get_model();                               // gets a model to be used in repl
 	if(cmd_option_bool("get_model_fn")) get_model_fn();                         // gets a model of a function
 	if(cmd_option_bool("get_model_modelfinder")) get_model_modelfinder();       // gets a model to be used with the modelfinder tool
@@ -195,8 +177,6 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("valgrind")) valgrind();                                 // tests the output with valgrind 
 	if(cmd_option_bool("list_external_functions")) list_external_functions();   // lists the functions that are not implemented
 	if(cmd_option_bool("lbc")) linked_bc();                                     // get the bc linked with standard libraries
-	if(cmd_option_bool("tests_from_klee")) tests_from_klee();                   // get the test_vectors from klee output
-	if(cmd_option_bool("klee_coverage")) klee_coverage();                       // get the coverage of tests generaged by klee
 	if(cmd_option_bool("show_timer")) show_timer();                             // draws a graph with timer
 	if(cmd_option_bool("show_exceptions")) show_exceptions();                   // Shows possible exceptions in the program under test
 	if(cmd_option_bool("show_interpolants")) show_interpolants();               // Shows interpolants

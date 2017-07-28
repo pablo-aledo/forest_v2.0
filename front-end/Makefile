@@ -1,7 +1,7 @@
 all: ../bin/forest
 
-../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o
-	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/coverage.o ../build/database_frontend.o ../build/heuristic.o ../build/klee.o ../build/svcomp.o ../build/random_testing.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt -I/usr/include/libxml2/ -lxml2
+../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o
+	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt -I/usr/include/libxml2/ -lxml2
 
 ../build/forest.o: forest.cpp 
 	g++ -g -c forest.cpp -o ../build/forest.o
@@ -31,23 +31,14 @@ all: ../bin/forest
 ../build/bc_handling.o: bc_handling.cpp
 	g++ -g -c bc_handling.cpp -o ../build/bc_handling.o
 
-../build/coverage.o: coverage.cpp
-	g++ -g -c coverage.cpp -o ../build/coverage.o
-
 ../build/database_frontend.o: database_frontend.cpp
 	g++ -g -c database_frontend.cpp -o ../build/database_frontend.o
 
 ../build/heuristic.o: heuristic.cpp
 	g++ -g -c heuristic.cpp -o ../build/heuristic.o
 
-../build/klee.o: klee.cpp
-	g++ -g -c klee.cpp -o ../build/klee.o
-
 ../build/svcomp.o: svcomp.cpp
 	g++ -g -c svcomp.cpp -o ../build/svcomp.o
-
-../build/random_testing.o: random_testing.cpp
-	g++ -g -c random_testing.cpp -o ../build/random_testing.o
 
 ../build/models.o: models.cpp
 	g++ -g -c models.cpp -o ../build/models.o

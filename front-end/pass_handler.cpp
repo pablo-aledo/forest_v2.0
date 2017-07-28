@@ -44,16 +44,8 @@ void do_pass(string passname){
 		clean();
 	else if(passname == "final")
 		final();
-	else if(passname == "measure_coverage")
-		measure_coverage();
-	else if(passname == "check_coverage")
-		check_coverage();
-	else if(passname == "klee")
-		do_klee();
 	else if(passname == "get_result")
 		get_result();
-	else if(passname == "klee_coverage")
-		klee_coverage();
 	else if(passname == "heuristic")
 		get_static_heuristic();
 	else if(passname == "goanna_fpr")
