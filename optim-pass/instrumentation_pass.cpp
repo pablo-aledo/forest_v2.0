@@ -4074,7 +4074,8 @@ struct GlobalInit: public ModulePass {
 
 			string aux;
 
-			if(constant->isNullValue()){
+			// if(constant->isNullValue()){
+			if(!constant_array){
 
 				string flattenedtypes = get_flattened_types(array_type);
 				vector<string> tokens = tokenize(flattenedtypes, ",");
