@@ -337,7 +337,7 @@ string SolverWrapper::realvalue_mangled(string varname){
 string SolverWrapper::realvalue(string varname){
 
 
-	printf("\e[33m realvalue \e[0m %s\n", varname.c_str() );
+	//printf("\e[33m realvalue \e[0m %s\n", varname.c_str() );
 
 	if(!check_mangled_name(varname)) assert(0 && "Wrong name for realvalue");
 

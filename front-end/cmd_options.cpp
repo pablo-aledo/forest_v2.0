@@ -190,9 +190,9 @@ void load_default_options(){
 	options["propagate_constants"] = "true";
 	options["max_pointer_deref_combs"] = "500";
 	options["max_partitions_for_ineq"] = "5";
-	//options["solver"] = "bitvector";
+	options["solver"] = "bitvector";
 	options["check_outofbounds"] = "true";
-	options["solver"] = "real_integer";
+	//options["solver"] = "real_integer";
 	//options["solver"] = "linear";
 	//options["solver"] = "mixed_int";
 	//options["solver"] = "linear_bblast";
