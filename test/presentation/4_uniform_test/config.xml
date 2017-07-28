@@ -2,11 +2,8 @@
 
 <options>
 	<option key="test" value="true"/> 
-	<option key="check_coverage" value="true"/> 
 	<option key="explanation" value="nested ifs"/> 
 	<option key="file" value="uniform_test.c"/> 
-	<option key="expected_fn_coverage" value="100"/> 
-	<option key="expected_bb_coverage" value="100"/> 
 	<option key="random_variable" value="mem_12 Int32 main_register_b"/> 
 	<option key="random_variable" value="mem_16 Int32 main_register_c"/> 
 	<option key="random_variable" value="mem_20 Int32 main_register_d"/> 
