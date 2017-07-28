@@ -1,7 +1,7 @@
 all: ../bin/forest
 
 ../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o
-	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt -I/usr/include/libxml2/ -lxml2
+	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt
 
 ../build/forest.o: forest.cpp 
 	g++ -g -c forest.cpp -o ../build/forest.o
