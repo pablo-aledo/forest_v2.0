@@ -1003,12 +1003,23 @@ struct IsolateFunction: public ModulePass {
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
 			string name = argNames[i];
 
-			AllocaInst* ai = new AllocaInst(argTypes[i], 0, 0, name.c_str(), entry );
+			if( get_type_str(argTypes[i]) == "PointerTyID" ){
 
-			LoadInst* ai_ptr = new LoadInst(ai,"",entry);
+				ArrayType* ArrayTy_3 = ArrayType::get(cast<PointerType>(argTypes[i])->getElementType(), 10);
+				AllocaInst* ai = new AllocaInst(ArrayTy_3, 0, 0, name.c_str(), entry );
+ 				BitCastInst* bi = new BitCastInst(ai, cast<PointerType>(argTypes[i]), "", entry);
 
-			params.push_back(ai_ptr);
+				ConstantInt* zero = ConstantInt::get(M.getContext(), APInt(32, StringRef("0"), 10));
+				vector<Value*> indices; indices.push_back(zero);
+				GetElementPtrInst* gt_ptr = GetElementPtrInst::Create(NULL, bi, indices, "pointer", entry);
 
+				params.push_back(gt_ptr);
+
+			} else {
+				AllocaInst* ai = new AllocaInst(argTypes[i], 0, 0, name.c_str(), entry );
+				LoadInst* ai_ptr = new LoadInst(ai,"",entry);
+				params.push_back(ai_ptr);
+			}
 		}
 
 		CallInst::Create(fnseed, params, "", entry);
