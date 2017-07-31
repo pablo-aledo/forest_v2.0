@@ -22,6 +22,7 @@
 
 void commutativity_testing(){
 
+	string llvm_path = cmd_option_str("llvm_path");
 	stringstream cmd;
 
 	
@@ -31,4 +32,26 @@ void commutativity_testing(){
 	cmd << "opt -load /usr/share/icsa-dswp/lib/libdswp.so -load /usr/share/terrace/lib/libLLVMTerracePass.so -terrace file-canon.bc -o file-te.bc";
 
 	systm(cmd.str().c_str());
+
+	cmd_option_set("seed_function", "main_for.body.split");
+	options_to_file();
+
+	cmd.str("");
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function < file-te.bc > file-2.bc";
+	systm(cmd.str().c_str());
+
+	cmd.str("");
+	cmd << "mv file-2.bc file.bc";
+	systm(cmd.str().c_str());
+
+	// First optimization pass
+	cmd.str("");
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	systm(cmd.str().c_str());
+
+	// Second optimization pass
+	cmd.str("");
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	systm(cmd.str().c_str());
+
 }
