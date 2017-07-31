@@ -183,6 +183,7 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("svcomp")) svcomp();                                     // svcomp competition
 	if(cmd_option_bool("goanna_fpr")) goanna_fpr();                             // Use forest to check for false positives in goanna
 	if(cmd_option_bool("get_concurrent_functions")) get_concurrent_functions(); // Get functions that can be executed concurrently
+	if(cmd_option_bool("commutativity")) commutativity_testing();               // Run commutativity_testing
 
 	return 0;
 

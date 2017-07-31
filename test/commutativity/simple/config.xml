@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="commutativity" value="true"/> 
+	<option key="explanation" value="Simple commutativity testing"/> 
+	<option key="file" value="simple.c"/> 
+</options>

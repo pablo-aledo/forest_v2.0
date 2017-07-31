@@ -39,6 +39,7 @@
 #include "concurrent.h"
 #include "models.h"
 #include "goanna_fpr.h"
+#include "commutativity.h"
 
 using namespace std;
 

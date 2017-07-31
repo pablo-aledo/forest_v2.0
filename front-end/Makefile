@@ -1,7 +1,7 @@
 all: ../bin/forest
 
-../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o
-	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o -o ../bin/forest -lrt
+../bin/forest: ../build/forest.o ../build/tinystr.o ../build/tinyxml.o ../build/tinyxmlerror.o ../build/tinyxmlparser.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o ../build/commutativity.o
+	g++ ../build/forest.o ../build/tiny*.o ../build/cmd_options.o ../build/utils_frontend.o ../build/pass_handler.o ../build/bc_handling.o ../build/database_frontend.o ../build/heuristic.o ../build/svcomp.o ../build/models.o ../build/goanna_fpr.o ../build/concurrent.o ../build/commutativity.o -o ../bin/forest -lrt
 
 ../build/forest.o: forest.cpp 
 	g++ -g -c forest.cpp -o ../build/forest.o
@@ -49,4 +49,6 @@ all: ../bin/forest
 ../build/concurrent.o: concurrent.cpp 
 	g++ -g -c concurrent.cpp -o ../build/concurrent.o
 
+../build/commutativity.o: commutativity.cpp 
+	g++ -g -c commutativity.cpp -o ../build/commutativity.o
 
