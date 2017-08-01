@@ -681,9 +681,14 @@ string get_offset_tree_rec( const Type* t, int* base){
 		//cerr << "struct" << endl;
 
 		string aux = "(";
-		for ( unsigned int i = 0; i < t_struct->getNumElements(); i++) {
-			//cerr << "element " << i << endl;
-			aux += get_offset_tree_rec(t_struct->getElementType(i),base);
+
+		if( t_struct->getNumElements() == 0 ){
+			aux += "0";
+		} else {
+			for ( unsigned int i = 0; i < t_struct->getNumElements(); i++) {
+				//cerr << "element " << i << endl;
+				aux += get_offset_tree_rec(t_struct->getElementType(i),base);
+			}
 		}
 		//aux += "," + itos(get_offset(t));
 		aux += ",1";
@@ -3389,7 +3394,9 @@ struct AllocaInstr: public ModulePass {
 						string type = get_type_str(in_a->getAllocatedType());
 						string subtype = get_flattened_types( in_a->getAllocatedType() );
 
-						//cerr << "subtype " << subtype << endl;
+						if(subtype == "") subtype = "IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32";
+
+						cerr << "subtype " << subtype << endl;
 
 						GlobalVariable* c1 = make_global_str(M, nameres);
 						GlobalVariable* c2 = make_global_str(M, subtype);
