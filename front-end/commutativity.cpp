@@ -22,7 +22,10 @@
 
 void commutativity_testing(){
 
-	string llvm_path = cmd_option_str("llvm_path");
+	string base_path   = cmd_option_str("base_path");
+	string llvm_path   = cmd_option_str("llvm_path");
+	string output_file = cmd_option_str("output_file");
+
 	stringstream cmd;
 
 	
@@ -53,5 +56,10 @@ void commutativity_testing(){
 	cmd.str("");
 	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
+
+	end_pass("make_bc");
+
+	final();
+	run();
 
 }
