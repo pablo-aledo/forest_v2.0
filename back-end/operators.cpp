@@ -27,6 +27,7 @@
 #include "z3_solver.h"
 #include "architecture.h"
 #include "concurrency_backend.h"
+#include "memory_allocator.h"
 #include "pre_post.h"
 
 #define UNDERSCORE "_"
@@ -41,6 +42,7 @@ extern Timer* timer;
 extern map<string, string> map_pos_to_last_store;
 extern Concurrency* concurrency;
 extern PrePost* pre_post;
+extern MemAlloc* memory_allocator;
 
 Operators::Operators(){
 
@@ -803,6 +805,11 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 
 		//solver->initialize_var(mem_name.str());
 		solver->settype(mem_name.str(), subtype[i]);
+
+		if(subtype[i] == "PointerTyID" /*&& options->cmd_option_int("pointer_alloca_size") > 0*/){
+			solver->assign_instruction( "global_allocationunderscorebuffer", mem_name.str() );
+			solver->binary_instruction( "global_allocationunderscorebuffer", "global_allocationunderscorebuffer", "constant_IntegerTyID32_10", "+" );
+		}
 
 		if(subtype.size() == 1)
 			mem_hint << actual_function << "_" << reg;

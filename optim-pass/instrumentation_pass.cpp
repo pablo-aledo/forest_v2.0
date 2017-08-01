@@ -1008,7 +1008,7 @@ struct IsolateFunction: public ModulePass {
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
 			string name = argNames[i];
 
-			if( get_type_str(argTypes[i]) == "PointerTyID" ){
+			if( get_type_str(argTypes[i]) == "PointerTyID" && cmd_option_bool("change_pointers_to_array") ){
 
 				ArrayType* ArrayTy_3 = ArrayType::get(cast<PointerType>(argTypes[i])->getElementType(), 10);
 				AllocaInst* ai = new AllocaInst(ArrayTy_3, 0, 0, name.c_str(), entry );
