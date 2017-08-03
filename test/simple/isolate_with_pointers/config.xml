@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Isolate a function with structs with pointers"/> 
+	<option key="file" value="isolate_with_pointers.c"/> 
+	<option key="seed_function_with_pointers" value="_Z2fnP1a"/> 
+</options>

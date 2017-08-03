@@ -1035,6 +1035,67 @@ struct IsolateFunction: public ModulePass {
 	}
 };
 
+struct IsolateFunctionWithPointers: public ModulePass {
+	static char ID;
+	IsolateFunctionWithPointers() : ModulePass(ID) {}
+
+	virtual bool runOnModule(Module &M) {
+
+		read_options();
+
+		string seed = cmd_option_str("seed_function_with_pointers");
+
+		Function* fnseed = M.getFunction(seed);
+
+		Function::arg_iterator arg_begin = fnseed->arg_begin();
+		Function::arg_iterator arg_end   = fnseed->arg_end();
+		vector<string> argNames;
+		vector<Type*> argTypes;
+		for( Function::arg_iterator it = arg_begin; it != arg_end; it++ ){
+			argNames.push_back(it->getName().str());
+			Type* t = it->getType();
+			argTypes.push_back(t);
+		}
+
+		M.getFunction("main")->eraseFromParent();
+		
+		Function* func_main = cast<Function> ( M.getOrInsertFunction( "main" ,
+					Type::getVoidTy( M.getContext() ),
+					(Type *)0
+					));
+
+		BasicBlock* entry = BasicBlock::Create(M.getContext(), "entry",func_main,0);
+
+		std::vector<Value*> params;
+		for ( unsigned int i = 0; i < argNames.size(); i++) {
+			string name = argNames[i];
+
+			if( get_type_str(argTypes[i]) == "PointerTyID" && cmd_option_bool("change_pointers_to_array") ){
+
+				ArrayType* ArrayTy_3 = ArrayType::get(cast<PointerType>(argTypes[i])->getElementType(), 10);
+				AllocaInst* ai = new AllocaInst(ArrayTy_3, 0, 0, name.c_str(), entry );
+ 				BitCastInst* bi = new BitCastInst(ai, cast<PointerType>(argTypes[i]), "", entry);
+
+				ConstantInt* zero = ConstantInt::get(M.getContext(), APInt(32, StringRef("0"), 10));
+				vector<Value*> indices; indices.push_back(zero);
+				GetElementPtrInst* gt_ptr = GetElementPtrInst::Create(NULL, bi, indices, "pointer", entry);
+
+				params.push_back(gt_ptr);
+
+			} else {
+				AllocaInst* ai = new AllocaInst(argTypes[i], 0, 0, name.c_str(), entry );
+				LoadInst* ai_ptr = new LoadInst(ai,"",entry);
+				params.push_back(ai_ptr);
+			}
+		}
+
+		CallInst::Create(fnseed, params, "", entry);
+
+		ReturnInst::Create(M.getContext(), entry);
+
+		return false;
+	}
+};
 
 struct SelectInstr: public ModulePass {
 	static char ID; // Pass identification, replacement for typeid
@@ -4384,6 +4445,9 @@ static RegisterPass<SelectInstr> SelectInstr(         "instr_select"            
 
 char IsolateFunction::ID = 0;
 static RegisterPass<IsolateFunction> IsolateFunction( "isolate_function"         , "Isolate a single function for model creation        " );
+
+char IsolateFunctionWithPointers::ID = 0;
+static RegisterPass<IsolateFunctionWithPointers> IsolateFunctionWithPointers( "isolate_function_with_pointers"         , "Isolate a single function for model creation        " );
 
 char CastInstr::ID = 0;
 static RegisterPass<CastInstr> CastInstr(             "instr_castinstr"          , "Instrument cast operations                          " );

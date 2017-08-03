@@ -78,6 +78,7 @@ int main(int argc, const char *argv[]) {
 
 
 	disables("compare_bc", "test");
+	disables("compare_isolate", "test");
 	disables("get_concurrent_functions", "test");
 	disables("compare_libs", "test");
 	disables("make_bc", "test");
@@ -184,6 +185,7 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("goanna_fpr")) goanna_fpr();                             // Use forest to check for false positives in goanna
 	if(cmd_option_bool("get_concurrent_functions")) get_concurrent_functions(); // Get functions that can be executed concurrently
 	if(cmd_option_bool("commutativity")) commutativity_testing();               // Run commutativity_testing
+	if(cmd_option_bool("compare_isolate")) compare_isolate();                   // Isolate function and compare with original
 
 	return 0;
 

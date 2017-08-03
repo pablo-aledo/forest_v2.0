@@ -44,6 +44,7 @@ void run();
 void dump_forced_free_vars();
 void dump_forced_free_hints();
 void compare_libs();
+void compare_isolate();
 void list_external_functions();
 void linked_bc();
 void create_tmp_path();

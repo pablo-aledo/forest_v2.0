@@ -99,6 +99,36 @@ void compare_bc(){
 
 }
 
+void compare_isolate(){
+
+	string base_path   = cmd_option_str("base_path");
+	string llvm_path   = cmd_option_str("llvm_path");
+	string output_file = cmd_option_str("output_file");
+
+	stringstream cmd;
+
+	cmd << "cp " << prj_file(cmd_option_str("file")) << " file.c; ";
+	cmd << "clang++ -c -emit-llvm file.c -o file.bc;";
+
+	systm(cmd.str().c_str());
+
+	options_to_file();
+
+	cmd.str("");
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
+	systm(cmd.str().c_str());
+
+	cmd.str("");
+	cmd << "llvm-dis file.bc -o file.ll;";
+	cmd << "llvm-dis file-2.bc -o file-2.ll;";
+	systm(cmd.str().c_str());
+
+	cmd.str("");
+	cmd << "meld file.ll file-2.ll";
+	systm(cmd.str().c_str());
+
+}
+
 void view_bc(){
 
 	start_pass("view_bc");

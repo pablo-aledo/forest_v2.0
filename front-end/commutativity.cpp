@@ -36,11 +36,11 @@ void commutativity_testing(){
 
 	systm(cmd.str().c_str());
 
-	cmd_option_set("seed_function", "main_for.body.split");
+	cmd_option_set("seed_function_with_pointers", "main_for.body.split");
 	options_to_file();
 
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function < file-te.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file-te.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	cmd.str("");
