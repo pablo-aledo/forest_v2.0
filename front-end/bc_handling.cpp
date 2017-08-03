@@ -42,6 +42,14 @@ void make_bc(){
 		systm(cmd.str().c_str());
 	}
 
+	if(cmd_option_str("seed_function_with_pointers") != ""){
+		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
+		systm(cmd.str().c_str());
+		cmd.str("");
+		cmd << "mv file-2.bc file.bc";
+		systm(cmd.str().c_str());
+	}
+
 	// First optimization pass
 	cmd.str("");
 	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";

@@ -1035,9 +1035,124 @@ struct IsolateFunction: public ModulePass {
 	}
 };
 
+#define TSIZE 3
+
 struct IsolateFunctionWithPointers: public ModulePass {
 	static char ID;
 	IsolateFunctionWithPointers() : ModulePass(ID) {}
+
+
+	void create_instructions_for_type_rec(BasicBlock* entry, Type* type, vector<Value*>* params){
+	
+	
+	}
+
+	void create_instructions_for_type_rec(BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
+
+		cerr << "rec with " << get_type_str(type) << " "; type->dump();
+
+		if(get_type_str(type) == "PointerTyID"){
+
+			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
+
+			PointerType* pointer_type = cast<PointerType>(type);
+			Type* pointed_type        = pointer_type->getElementType();
+			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+
+			coordinates.push_back(0);
+
+			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
+
+			for ( unsigned int i = 0; i < TSIZE; i++) {
+				create_instructions_for_type_rec(entry, pointed_type, anchor, coordinates);
+			}
+
+			// getelementptr
+
+		}
+
+		if(get_type_str(type) == "StructTyID"){
+
+			const StructType* t_struct = dyn_cast<StructType>(type);
+
+			unsigned int numelems = t_struct->getNumElements();
+
+			for ( unsigned int i = 0; i < numelems; i++) {
+				vector<int> coordinates_bak = coordinates;
+				coordinates.push_back(i);
+				create_instructions_for_type_rec(entry, t_struct->getElementType(i), anchor, coordinates);
+				coordinates = coordinates_bak;
+			}
+
+		}
+
+		if(get_type_str(type) == "ArrayTyID"){
+			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
+		}
+
+	}
+
+	vector<Value*> vector_of_constants(Module &M,vector<int> values){
+
+		vector<Value*> ret;
+		for ( unsigned int i = 0; i < values.size(); i++) {
+			ConstantInt* constant = ConstantInt::get(M.getContext(), APInt(32, StringRef(itos(values[i])), 10));
+			ret.push_back(constant);
+		}
+
+		return ret;
+	}
+
+	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params) {
+		cerr << get_type_str(type) << endl;
+
+		AllocaInst* ai = new AllocaInst(type, 0, 0, name.c_str(), entry );
+
+		if(get_type_str(type) == "PointerTyID"){
+
+			PointerType* pointer_type = cast<PointerType>(type);
+			Type* pointed_type        = pointer_type->getElementType();
+			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+			vector<int> coordinates; //coordinates.push_back(0);
+
+			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, name.c_str(), entry );
+			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
+
+			for ( unsigned int i = 0; i < TSIZE; i++) {
+				vector<int> coordinates_bak = coordinates;
+				coordinates.push_back(i);
+				create_instructions_for_type_rec(entry, pointed_type, ai, coordinates);
+			
+
+				coordinates = coordinates_bak;
+			}
+
+			coordinates.push_back(0);
+			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
+
+			//cerr << "vector_indexes "; for ( unsigned int k = 0; k < vector_indexes.size(); k++) { vector_indexes[k]->dump(); }
+			//cerr << "pointed_type "; pointed_type->dump();
+			//cerr << "ai2 "; ai2->dump();
+			//cerr << "bi "; bi->dump();
+
+			//GetElementPtrInst* getelement_store = GetElementPtrInst::Create( pointed_type, bi, vector_indexes, "pointer_store", entry);
+			//GetElementPtrInst* getelement_load  = GetElementPtrInst::Create( pointed_type, bi, vector_indexes, "pointer_store", entry);
+
+			//cerr << "getelement_store " ; getelement_store->getType()->dump();
+			//cerr << "ai2 "        ; ai2->getType()->dump();
+			//cerr << "bi "         ; bi->getType()->dump();
+			//cerr << "ai "         ; ai->getType()->dump();
+			
+			new StoreInst(bi,ai,entry);
+
+			//LoadInst* load = new LoadInst(getelement, "load", false, entry);
+
+		}
+
+		LoadInst* ai_ptr = new LoadInst(ai,"",entry);
+		params->push_back(ai_ptr);
+
+	}
 
 	virtual bool runOnModule(Module &M) {
 
@@ -1067,26 +1182,11 @@ struct IsolateFunctionWithPointers: public ModulePass {
 		BasicBlock* entry = BasicBlock::Create(M.getContext(), "entry",func_main,0);
 
 		std::vector<Value*> params;
+
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
-			string name = argNames[i];
 
-			if( get_type_str(argTypes[i]) == "PointerTyID" && cmd_option_bool("change_pointers_to_array") ){
+			create_instructions_for_type(M, entry, argTypes[i], argNames[i], &params);
 
-				ArrayType* ArrayTy_3 = ArrayType::get(cast<PointerType>(argTypes[i])->getElementType(), 10);
-				AllocaInst* ai = new AllocaInst(ArrayTy_3, 0, 0, name.c_str(), entry );
- 				BitCastInst* bi = new BitCastInst(ai, cast<PointerType>(argTypes[i]), "", entry);
-
-				ConstantInt* zero = ConstantInt::get(M.getContext(), APInt(32, StringRef("0"), 10));
-				vector<Value*> indices; indices.push_back(zero);
-				GetElementPtrInst* gt_ptr = GetElementPtrInst::Create(NULL, bi, indices, "pointer", entry);
-
-				params.push_back(gt_ptr);
-
-			} else {
-				AllocaInst* ai = new AllocaInst(argTypes[i], 0, 0, name.c_str(), entry );
-				LoadInst* ai_ptr = new LoadInst(ai,"",entry);
-				params.push_back(ai_ptr);
-			}
 		}
 
 		CallInst::Create(fnseed, params, "", entry);

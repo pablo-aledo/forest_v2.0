@@ -20,7 +20,7 @@
 
 
 void fn(int* a){
-	a[5] = 2;
+	a[1] = 2;
 }
 
 int main() {
