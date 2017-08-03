@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Isolate a function with an argument pointer"/> 
+	<option key="file" value="isolate_and_pointer.c"/> 
+	<option key="seed_function" value="_Z2fnPi"/> 
+</options>

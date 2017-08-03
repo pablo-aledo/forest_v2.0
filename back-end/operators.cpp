@@ -795,8 +795,6 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 	stringstream mem_var_aux; mem_var_aux << "mem" UNDERSCORE << itos(alloca_pointer);
 	int initial_alloca_pointer = alloca_pointer;
 
-	int last_address = alloca_pointer + get_size(subtypes) - get_size(subtype[subtype.size()-1]);
-	int first_address = alloca_pointer;
 
 	for ( unsigned int i = 0; i < subtype.size(); i++) {
 
@@ -806,9 +804,14 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 		//solver->initialize_var(mem_name.str());
 		solver->settype(mem_name.str(), subtype[i]);
 
-		if(subtype[i] == "PointerTyID" /*&& options->cmd_option_int("pointer_alloca_size") > 0*/){
+		if(subtype[i] == "PointerTyID" && options->cmd_option_int("pointer_alloca_size") > 0 ){
+			printf("\e[32m Allocating with subtype pointer \e[0m\n");
 			solver->assign_instruction( "global_allocationunderscorebuffer", mem_name.str() );
 			solver->binary_instruction( "global_allocationunderscorebuffer", "global_allocationunderscorebuffer", "constant_IntegerTyID32_10", "+" );
+			int first_address = strtoi( solver->realvalue("global_allocationunderscorebuffer") );
+			int last_address  = strtoi( solver->realvalue("global_allocationunderscorebuffer") ) + 10;
+			solver->set_first_address(mem_name.str(), first_address);
+			solver->set_last_address(mem_name.str(), last_address);
 		}
 
 		if(subtype.size() == 1)
@@ -831,6 +834,8 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 		alloca_pointer += get_size(subtype[i]);
 	}
 
+	int last_address = alloca_pointer + get_size(subtypes) - get_size(subtype[subtype.size()-1]);
+	int first_address = alloca_pointer;
 	solver->set_last_address(name(reg), last_address);
 	solver->set_first_address(name(reg), first_address);
 
@@ -884,6 +889,7 @@ void Operators::getelementptr(char* _dst, char* _pointer, char* _indexes, char* 
 	
 
 	if(all_constant(indexes)){
+		debug && printf("\e[31m constant getelementptr \e[0m\n");
 		solver->set_is_propagated_constant(name(dst));
 		string remaining_tree;
 		int offset = get_offset(indexes, offset_tree, &remaining_tree);

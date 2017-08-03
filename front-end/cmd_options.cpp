@@ -208,7 +208,7 @@ void load_default_options(){
 	options["witness"] = "witness.graphml";
 	options["check_witness"] = "false";
 	options["stack_start"] = "10000";
-	options["stack_size"] = "10";
+	options["stack_size"] = "100";
 	options["stack_step"] = "10";
 
 	if(string(getenv("FOREST_HOME")) != "")
