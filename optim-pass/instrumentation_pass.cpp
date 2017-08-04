@@ -1042,12 +1042,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 	IsolateFunctionWithPointers() : ModulePass(ID) {}
 
 
-	void create_instructions_for_type_rec(BasicBlock* entry, Type* type, vector<Value*>* params){
-	
-	
-	}
-
-	void create_instructions_for_type_rec(BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
+	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
 
 		cerr << "rec with " << get_type_str(type) << " "; type->dump();
 
@@ -1059,16 +1054,19 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			Type* pointed_type        = pointer_type->getElementType();
 			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
 
-			coordinates.push_back(0);
-
 			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
+			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
+			new StoreInst(bi,ai,entry);
 
 			for ( unsigned int i = 0; i < TSIZE; i++) {
-				create_instructions_for_type_rec(entry, pointed_type, anchor, coordinates);
+				vector<int> coordinates_bak = coordinates;
+				coordinates.push_back(i);
+				create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
+				coordinates = coordinates_bak;
 			}
 
-			// getelementptr
-
+			coordinates.push_back(0);
+			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 		}
 
 		if(get_type_str(type) == "StructTyID"){
@@ -1080,7 +1078,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			for ( unsigned int i = 0; i < numelems; i++) {
 				vector<int> coordinates_bak = coordinates;
 				coordinates.push_back(i);
-				create_instructions_for_type_rec(entry, t_struct->getElementType(i), anchor, coordinates);
+				create_instructions_for_type_rec(M, entry, t_struct->getElementType(i), anchor, coordinates);
 				coordinates = coordinates_bak;
 			}
 
@@ -1117,13 +1115,12 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, name.c_str(), entry );
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
+			new StoreInst(bi,ai,entry);
 
 			for ( unsigned int i = 0; i < TSIZE; i++) {
 				vector<int> coordinates_bak = coordinates;
 				coordinates.push_back(i);
-				create_instructions_for_type_rec(entry, pointed_type, ai, coordinates);
-			
-
+				create_instructions_for_type_rec(M, entry, pointed_type, ai, coordinates);
 				coordinates = coordinates_bak;
 			}
 
@@ -1143,7 +1140,6 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			//cerr << "bi "         ; bi->getType()->dump();
 			//cerr << "ai "         ; ai->getType()->dump();
 			
-			new StoreInst(bi,ai,entry);
 
 			//LoadInst* load = new LoadInst(getelement, "load", false, entry);
 
