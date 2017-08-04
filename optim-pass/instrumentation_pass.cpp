@@ -1070,59 +1070,31 @@ struct IsolateFunctionWithPointers: public ModulePass {
 	}
 
 	Type* transform_type(Type* type){
-		if(get_type_str(type) == "PointerTyID"){
-			PointerType* pointer_type = cast<PointerType>(type);
-			Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
-			PointerType* ret = PointerType::get(pointed_type, 0);
-			return ret;
-		} else {
-			cerr << "ERROR" << endl;
-			type->dump();
-		}
+
+		assert( get_type_str(type) == "PointerTyID" );
+
+		PointerType* pointer_type = cast<PointerType>(type);
+		Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
+		PointerType* ret = PointerType::get(pointed_type, 0);
+		return ret;
 
 	}
 
 	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
 
-		cerr << "rec with " << get_type_str(type) << " "; type->dump();
+		//cerr << "rec with " << get_type_str(type) << " "; type->dump();
 
 		if(get_type_str(type) == "PointerTyID"){
 
 			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
 
-			cerr << "anchor "; anchor->dump();
-			cerr << "anchortype "; anchor->getType()->dump();
-
-			PointerType* pointer_type = cast<PointerType>(type);
 			Type* transformed_type = transform_type(anchor->getType() );
-			Type* pointed_type        = pointer_type->getElementType();
-			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
-			//ArrayType* at = cast<ArrayType>(transformed_type);
 
 			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 
-			//AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
 			BitCastInst* ci = new BitCastInst(anchor,transformed_type, "", entry);
 
-			cerr << "vector_indexes "; for ( unsigned int k = 0; k < vector_indexes.size(); k++) { vector_indexes[k]->dump(); }
-			//cerr << "pointer_type "; pointer_type->dump();
-			//cerr << "anchor "; anchor->dump();
-			//cerr << "at "; at->getElementType()->dump();
-			//cerr << "anchortype "; anchor->getType()->dump();
-			cerr << "transformed_type "; transformed_type->dump();
-			cerr << "ci "; ci->dump();
-			cerr << "ci_type "; ci->getType()->dump();
-
-			GetElementPtrInst* ai2 = GetElementPtrInst::Create(NULL, ci, vector_indexes, "pointer_store", entry);
-			//cerr << "GETELEMENTTYPE "; ai2->getType()->dump();
-			//new StoreInst(bi,ai,entry);
-
-			//for ( unsigned int i = 0; i < TSIZE; i++) {
-				//vector<int> coordinates_bak = coordinates;
-				//coordinates.push_back(i);
-				//create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
-				//coordinates = coordinates_bak;
-			//}
+			GetElementPtrInst* ai2 = GetElementPtrInst::Create(NULL, ci, vector_indexes, "pointer", entry);
 
 		}
 
@@ -1159,7 +1131,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 	}
 
 	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params) {
-		cerr << get_type_str(type) << endl;
+		//cerr << get_type_str(type) << endl;
 
 		AllocaInst* ai = new AllocaInst(type, 0, 0, name.c_str(), entry );
 
@@ -1183,22 +1155,6 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 			coordinates.push_back(0);
 			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
-
-			//cerr << "vector_indexes "; for ( unsigned int k = 0; k < vector_indexes.size(); k++) { vector_indexes[k]->dump(); }
-			//cerr << "pointed_type "; pointed_type->dump();
-			//cerr << "ai2 "; ai2->dump();
-			//cerr << "bi "; bi->dump();
-
-			//GetElementPtrInst* getelement_store = GetElementPtrInst::Create( pointed_type, bi, vector_indexes, "pointer_store", entry);
-			//GetElementPtrInst* getelement_load  = GetElementPtrInst::Create( pointed_type, bi, vector_indexes, "pointer_store", entry);
-
-			//cerr << "getelement_store " ; getelement_store->getType()->dump();
-			//cerr << "ai2 "        ; ai2->getType()->dump();
-			//cerr << "bi "         ; bi->getType()->dump();
-			//cerr << "ai "         ; ai->getType()->dump();
-			
-
-			//LoadInst* load = new LoadInst(getelement, "load", false, entry);
 
 		}
 
