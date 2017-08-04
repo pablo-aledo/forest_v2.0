@@ -1041,10 +1041,10 @@ struct IsolateFunctionWithPointers: public ModulePass {
 	static char ID;
 	IsolateFunctionWithPointers() : ModulePass(ID) {}
 
-	Type* transform_type_rec(Type* type){
+	Type* transform_type_rec(Module &M, Type* type){
 		if(get_type_str(type) == "PointerTyID"){
 			PointerType* pointer_type = cast<PointerType>(type);
-			Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
+			Type* pointed_type        = transform_type_rec(M, pointer_type->getElementType());
 			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
 			return array_type;
 		}
@@ -1057,8 +1057,12 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 			unsigned int numelems = t_struct->getNumElements();
 
+			if( numelems == 0){
+				vect.push_back( IntegerType::get(M.getContext(), 8) );
+			}
+
 			for ( unsigned int i = 0; i < numelems; i++) {
-				vect.push_back(transform_type_rec(t_struct->getElementType(i)));
+				vect.push_back(transform_type_rec(M, t_struct->getElementType(i)));
 			}
 
 			Type* ret = StructType::create(vect);
@@ -1069,32 +1073,53 @@ struct IsolateFunctionWithPointers: public ModulePass {
 		return type;
 	}
 
-	Type* transform_type(Type* type){
+	Type* transform_type(Module &M,Type* type){
 
 		assert( get_type_str(type) == "PointerTyID" );
 
 		PointerType* pointer_type = cast<PointerType>(type);
-		Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
+		Type* pointed_type        = transform_type_rec(M, pointer_type->getElementType());
 		PointerType* ret = PointerType::get(pointed_type, 0);
 		return ret;
 
 	}
 
-	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
+	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, Type* type, BitCastInst* anchor, vector<int> coordinates) {
 
-		//cerr << "rec with " << get_type_str(type) << " "; type->dump();
+		cerr << "rec with " << get_type_str(type) << " "; type->dump();
 
 		if(get_type_str(type) == "PointerTyID"){
 
-			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
-
-			Type* transformed_type = transform_type(anchor->getType() );
 
 			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 
-			BitCastInst* ci = new BitCastInst(anchor,transformed_type, "", entry);
 
-			GetElementPtrInst* ai2 = GetElementPtrInst::Create(NULL, ci, vector_indexes, "pointer", entry);
+			GetElementPtrInst* ai1 = GetElementPtrInst::Create(NULL, anchor, vector_indexes, "pointer", entry);
+
+
+			PointerType* pointer_type = cast<PointerType>(type);
+			Type* pointed_type        = pointer_type->getElementType();
+			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+
+			AllocaInst*  bi1 = new AllocaInst(array_type, 0, 0, "", entry );
+			BitCastInst* bi2 = new BitCastInst(bi1, pointer_type, "", entry);
+
+
+			cerr << "pointer_type" ; ai1->getType()->dump();
+			cerr << "alloca_type"  ; bi1->getType()->dump();
+			cerr << "bitcast_type" ; bi2->getType()->dump();
+
+			//BitCastInst* ai2 = new BitCastInst(ai1, pointer_type, "", entry);
+			//new StoreInst(bi2,ai2,entry);
+
+
+			//for ( unsigned int i = 0; i < TSIZE; i++) {
+				//vector<int> coordinates_bak = coordinates;
+				//coordinates.push_back(i);
+				//create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
+				//coordinates = coordinates_bak;
+			//}
+
 
 		}
 
@@ -1113,9 +1138,6 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 		}
 
-		if(get_type_str(type) == "ArrayTyID"){
-			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
-		}
 
 	}
 
@@ -1132,10 +1154,13 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params) {
 		//cerr << get_type_str(type) << endl;
-
+		
 		AllocaInst* ai = new AllocaInst(type, 0, 0, name.c_str(), entry );
 
 		if(get_type_str(type) == "PointerTyID"){
+
+			Type* transformed_type = transform_type(M,ai->getType() );
+			BitCastInst* ai_to_anchor = new BitCastInst(ai,transformed_type, "", entry);
 
 			PointerType* pointer_type = cast<PointerType>(type);
 			Type* pointed_type        = pointer_type->getElementType();
@@ -1146,15 +1171,13 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
 			new StoreInst(bi,ai,entry);
 
+
 			for ( unsigned int i = 0; i < TSIZE; i++) {
 				vector<int> coordinates_bak = coordinates;
 				coordinates.push_back(i);
-				create_instructions_for_type_rec(M, entry, pointed_type, ai, coordinates);
+				create_instructions_for_type_rec(M, entry, pointed_type, ai_to_anchor, coordinates);
 				coordinates = coordinates_bak;
 			}
-
-			coordinates.push_back(0);
-			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 
 		}
 
