@@ -1041,6 +1041,46 @@ struct IsolateFunctionWithPointers: public ModulePass {
 	static char ID;
 	IsolateFunctionWithPointers() : ModulePass(ID) {}
 
+	Type* transform_type_rec(Type* type){
+		if(get_type_str(type) == "PointerTyID"){
+			PointerType* pointer_type = cast<PointerType>(type);
+			Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
+			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+			return array_type;
+		}
+
+		if(get_type_str(type) == "StructTyID"){
+
+			vector<Type*> vect;
+
+			const StructType* t_struct = dyn_cast<StructType>(type);
+
+			unsigned int numelems = t_struct->getNumElements();
+
+			for ( unsigned int i = 0; i < numelems; i++) {
+				vect.push_back(transform_type_rec(t_struct->getElementType(i)));
+			}
+
+			Type* ret = StructType::create(vect);
+
+			return ret;
+		}
+
+		return type;
+	}
+
+	Type* transform_type(Type* type){
+		if(get_type_str(type) == "PointerTyID"){
+			PointerType* pointer_type = cast<PointerType>(type);
+			Type* pointed_type        = transform_type_rec(pointer_type->getElementType());
+			PointerType* ret = PointerType::get(pointed_type, 0);
+			return ret;
+		} else {
+			cerr << "ERROR" << endl;
+			type->dump();
+		}
+
+	}
 
 	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, Type* type, AllocaInst* anchor, vector<int> coordinates) {
 
@@ -1050,23 +1090,40 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 			AllocaInst* ai = new AllocaInst(type, 0, 0, "", entry );
 
+			cerr << "anchor "; anchor->dump();
+			cerr << "anchortype "; anchor->getType()->dump();
+
 			PointerType* pointer_type = cast<PointerType>(type);
+			Type* transformed_type = transform_type(anchor->getType() );
 			Type* pointed_type        = pointer_type->getElementType();
 			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+			//ArrayType* at = cast<ArrayType>(transformed_type);
 
-			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
-			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
-			new StoreInst(bi,ai,entry);
-
-			for ( unsigned int i = 0; i < TSIZE; i++) {
-				vector<int> coordinates_bak = coordinates;
-				coordinates.push_back(i);
-				create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
-				coordinates = coordinates_bak;
-			}
-
-			coordinates.push_back(0);
 			vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
+
+			//AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
+			BitCastInst* ci = new BitCastInst(anchor,transformed_type, "", entry);
+
+			cerr << "vector_indexes "; for ( unsigned int k = 0; k < vector_indexes.size(); k++) { vector_indexes[k]->dump(); }
+			//cerr << "pointer_type "; pointer_type->dump();
+			//cerr << "anchor "; anchor->dump();
+			//cerr << "at "; at->getElementType()->dump();
+			//cerr << "anchortype "; anchor->getType()->dump();
+			cerr << "transformed_type "; transformed_type->dump();
+			cerr << "ci "; ci->dump();
+			cerr << "ci_type "; ci->getType()->dump();
+
+			GetElementPtrInst* ai2 = GetElementPtrInst::Create(NULL, ci, vector_indexes, "pointer_store", entry);
+			//cerr << "GETELEMENTTYPE "; ai2->getType()->dump();
+			//new StoreInst(bi,ai,entry);
+
+			//for ( unsigned int i = 0; i < TSIZE; i++) {
+				//vector<int> coordinates_bak = coordinates;
+				//coordinates.push_back(i);
+				//create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
+				//coordinates = coordinates_bak;
+			//}
+
 		}
 
 		if(get_type_str(type) == "StructTyID"){
@@ -1111,7 +1168,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			PointerType* pointer_type = cast<PointerType>(type);
 			Type* pointed_type        = pointer_type->getElementType();
 			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
-			vector<int> coordinates; //coordinates.push_back(0);
+			vector<int> coordinates; coordinates.push_back(0);
 
 			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, name.c_str(), entry );
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
