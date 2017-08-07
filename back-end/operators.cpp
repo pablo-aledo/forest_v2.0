@@ -834,10 +834,15 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 		alloca_pointer += get_size(subtype[i]);
 	}
 
+	int first_address = initial_alloca_pointer;
 	int last_address = alloca_pointer + get_size(subtypes) - get_size(subtype[subtype.size()-1]);
-	int first_address = alloca_pointer;
+
+	assert(first_address <= initial_alloca_pointer );
+	assert(last_address  >= initial_alloca_pointer );
+
 	solver->set_last_address(name(reg), last_address);
 	solver->set_first_address(name(reg), first_address);
+
 
 
 	debug && printf("\e[31m alloca_instr %s %s \e[0m. %s %s %s %s allocapointer %d last_address %d first_address %d\n", name(reg).c_str(), subtypes.c_str(), name(reg).c_str(), realvalue(reg).c_str(), mem_var_aux.str().c_str(), realvalue(mem_var_aux.str()).c_str(), alloca_pointer, solver->get_last_address(name(mem_var_aux.str())), solver->get_first_address(name(mem_var_aux.str())) );

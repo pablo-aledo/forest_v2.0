@@ -1162,22 +1162,25 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			Type* transformed_type = transform_type(M,ai->getType() );
 			BitCastInst* ai_to_anchor = new BitCastInst(ai,transformed_type, "", entry);
 
+			PointerType* pointer_transformed_type = cast<PointerType>(transformed_type);
+			Type* pointed_transformed_type = pointer_transformed_type->getElementType();
+
 			PointerType* pointer_type = cast<PointerType>(type);
 			Type* pointed_type        = pointer_type->getElementType();
 			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
 			vector<int> coordinates; coordinates.push_back(0);
 
-			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, name.c_str(), entry );
+			AllocaInst* ai2 = new AllocaInst(pointed_transformed_type, 0, 0, name.c_str(), entry );
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
 			new StoreInst(bi,ai,entry);
 
 
-			for ( unsigned int i = 0; i < TSIZE; i++) {
-				vector<int> coordinates_bak = coordinates;
-				coordinates.push_back(i);
-				create_instructions_for_type_rec(M, entry, pointed_type, ai_to_anchor, coordinates);
-				coordinates = coordinates_bak;
-			}
+			//for ( unsigned int i = 0; i < TSIZE; i++) {
+				//vector<int> coordinates_bak = coordinates;
+				//coordinates.push_back(i);
+				//create_instructions_for_type_rec(M, entry, pointed_type, ai_to_anchor, coordinates);
+				//coordinates = coordinates_bak;
+			//}
 
 		}
 
