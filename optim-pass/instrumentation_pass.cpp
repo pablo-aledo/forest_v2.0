@@ -1186,7 +1186,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 		return ret;
 	}
 
-	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params) {
+	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params, int narg) {
 		//cerr << get_type_str(type) << endl;
 		
 		AllocaInst* ai = new AllocaInst(type, 0, 0, name.c_str(), entry );
@@ -1217,6 +1217,26 @@ struct IsolateFunctionWithPointers: public ModulePass {
 				//LoadInst* ld = new LoadInst(gep,"",entry);
 				create_instructions_for_type_rec(M, entry, gep);
 			}
+
+		}
+
+		if(cmd_option_bool("commutativity") && narg == 1){
+				//vector<int> coordinates; coordinates.push_back(0);
+				//vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
+				//GetElementPtrInst* gep = GetElementPtrInst::Create(NULL, ai, vector_indexes, "pointerf", entry);
+				//cerr << "GEP ";
+				//gep->dump();
+				//gep->getType()->dump();
+				vector<int> coordinates; coordinates.push_back(0); vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
+				vector<int> coordinates_2; coordinates_2.push_back(0); coordinates_2.push_back(0); vector<Value*> vector_indexes_2 = vector_of_constants(M, coordinates_2);
+				LoadInst* ai_ptr = new LoadInst(ai,"",entry);
+				GetElementPtrInst* gep  = GetElementPtrInst::Create(NULL, ai_ptr, vector_indexes, "pointerf", entry);
+				GetElementPtrInst* gep2 = GetElementPtrInst::Create(NULL, gep, vector_indexes_2, "pointerf", entry);
+				ConstantInt* zero = ConstantInt::get(M.getContext(), APInt(32, StringRef("0"), 10));
+				cerr << "TYPES" << endl;
+				zero->getType()->dump();
+				gep2->getType()->dump();
+				new StoreInst(zero,gep2,entry);
 
 		}
 
@@ -1256,7 +1276,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
 
-			create_instructions_for_type(M, entry, argTypes[i], argNames[i], &params);
+			create_instructions_for_type(M, entry, argTypes[i], argNames[i], &params, i);
 
 		}
 
