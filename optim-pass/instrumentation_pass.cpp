@@ -1035,56 +1035,11 @@ struct IsolateFunction: public ModulePass {
 	}
 };
 
-#define TSIZE 3
-
 struct IsolateFunctionWithPointers: public ModulePass {
 	static char ID;
 	IsolateFunctionWithPointers() : ModulePass(ID) {}
 
-	Type* transform_type_rec(Module &M, Type* type){
-		if(get_type_str(type) == "PointerTyID"){
-			PointerType* pointer_type = cast<PointerType>(type);
-			Type* pointed_type        = transform_type_rec(M, pointer_type->getElementType());
-			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
-			return array_type;
-		}
-
-		if(get_type_str(type) == "StructTyID"){
-
-			vector<Type*> vect;
-
-			const StructType* t_struct = dyn_cast<StructType>(type);
-
-			unsigned int numelems = t_struct->getNumElements();
-
-			if( numelems == 0){
-				vect.push_back( IntegerType::get(M.getContext(), 8) );
-			}
-
-			for ( unsigned int i = 0; i < numelems; i++) {
-				vect.push_back(transform_type_rec(M, t_struct->getElementType(i)));
-			}
-
-			Type* ret = StructType::create(vect);
-
-			return ret;
-		}
-
-		return type;
-	}
-
-	Type* transform_type(Module &M,Type* type){
-
-		assert( get_type_str(type) == "PointerTyID" );
-
-		PointerType* pointer_type = cast<PointerType>(type);
-		Type* pointed_type        = transform_type_rec(M, pointer_type->getElementType());
-		PointerType* ret = PointerType::get(pointed_type, 0);
-		return ret;
-
-	}
-
-	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, GetElementPtrInst* gep) {
+	void create_instructions_for_type_rec(Module &M,BasicBlock* entry, GetElementPtrInst* gep, int depth, vector<int> sizes_depth ) {
 
 		//cerr << "rec with " << get_type_str(type) << " "; type->dump();
 		
@@ -1099,19 +1054,12 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 			PointerType* pointer_type_2 = cast<PointerType>(pointed_type);
 			Type* pointed_type        = pointer_type_2->getElementType();
-			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
+			ArrayType* array_type     = ArrayType::get(pointed_type, sizes_depth[depth]);
 
 			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, "", entry );
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type_2, "", entry);
 			new StoreInst(bi,gep,entry);
 
-			//for ( unsigned int i = 0; i < TSIZE; i++) {
-				//vector<int> coordinates; coordinates.push_back(i);
-				//vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
-				//GetElementPtrInst* gep = GetElementPtrInst::Create(NULL, ai2, vector_indexes, "pointera", entry);
-				//LoadInst* ld = new LoadInst(gep,"",entry);
-				//create_instructions_for_type_rec(M, entry,ld);
-			//}
 
 		}
 
@@ -1130,48 +1078,12 @@ struct IsolateFunctionWithPointers: public ModulePass {
 				Type* indexed_type = GetElementPtrInst::getIndexedType( pointed_type, vector_indexes );
 				if( get_type_str(indexed_type) == "PointerTyID" ){
 					GetElementPtrInst* gep2 = GetElementPtrInst::Create(NULL, gep, vector_indexes, "pointerb", entry);
-					//LoadInst* ld = new LoadInst(gep2,"",entry);
-					create_instructions_for_type_rec(M, entry, gep2);
+					create_instructions_for_type_rec(M, entry, gep2, depth + 1, sizes_depth);
 				}
 
 			}
 
 		}
-
-
-
-
-
-			//vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
-
-
-			//GetElementPtrInst* ai1 = GetElementPtrInst::Create(NULL, anchor, vector_indexes, "pointer", entry);
-
-
-
-			//AllocaInst*  bi1 = new AllocaInst(pointed_type, 0, 0, "hola", entry );
-			//BitCastInst* bi2 = new BitCastInst(bi1, pointer_type, "", entry);
-
-
-			//cerr << "pointer_type" ; ai1->getType()->dump();
-			//cerr << "alloca_type"  ; bi1->getType()->dump();
-			//cerr << "bitcast_type" ; bi2->getType()->dump();
-
-			//BitCastInst* ai2 = new BitCastInst(ai1, pointer_type, "", entry);
-			//new StoreInst(bi2,ai2,entry);
-
-
-			//for ( unsigned int i = 0; i < TSIZE; i++) {
-				//vector<int> coordinates_bak = coordinates;
-				//coordinates.push_back(i);
-				//create_instructions_for_type_rec(M, entry, pointed_type, anchor, coordinates);
-				//coordinates = coordinates_bak;
-			//}
-
-
-		//}
-
-
 
 	}
 
@@ -1186,47 +1098,30 @@ struct IsolateFunctionWithPointers: public ModulePass {
 		return ret;
 	}
 
-	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params, int narg) {
-		//cerr << get_type_str(type) << endl;
+	void create_instructions_for_type(Module &M,BasicBlock* entry, Type* type, string name, vector<Value*>* params, int narg, int depth, vector<int> sizes_depth) {
 		
 		AllocaInst* ai = new AllocaInst(type, 0, 0, name.c_str(), entry );
 
 		if(get_type_str(type) == "PointerTyID"){
 
-			//Type* transformed_type = transform_type(M,ai->getType() );
-			//BitCastInst* ai_to_anchor = new BitCastInst(ai,transformed_type, "", entry);
-
-			//PointerType* pointer_transformed_type = cast<PointerType>(transformed_type);
-			//Type* pointed_transformed_type = pointer_transformed_type->getElementType();
-
 			PointerType* pointer_type = cast<PointerType>(type);
 			Type* pointed_type        = pointer_type->getElementType();
-			ArrayType* array_type     = ArrayType::get(pointed_type, TSIZE);
-
-
-			//vector<int> coordinates; coordinates.push_back(0);
+			ArrayType* array_type     = ArrayType::get(pointed_type, sizes_depth[depth]);
 
 			AllocaInst* ai2 = new AllocaInst(array_type, 0, 0, name.c_str(), entry );
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
 			new StoreInst(bi,ai,entry);
 
-			for ( unsigned int i = 0; i < TSIZE; i++) {
+			for ( unsigned int i = 0; i < sizes_depth[depth]; i++) {
 				vector<int> coordinates; coordinates.push_back(0); coordinates.push_back(i);
 				vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 				GetElementPtrInst* gep = GetElementPtrInst::Create(NULL, ai2, vector_indexes, "pointerc", entry);
-				//LoadInst* ld = new LoadInst(gep,"",entry);
-				create_instructions_for_type_rec(M, entry, gep);
+				create_instructions_for_type_rec(M, entry, gep, depth + 1, sizes_depth);
 			}
 
 		}
 
-		if(cmd_option_bool("commutativity") && narg == 1){
-				//vector<int> coordinates; coordinates.push_back(0);
-				//vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
-				//GetElementPtrInst* gep = GetElementPtrInst::Create(NULL, ai, vector_indexes, "pointerf", entry);
-				//cerr << "GEP ";
-				//gep->dump();
-				//gep->getType()->dump();
+		if(cmd_option_bool("commutativity") && false/*narg == 1*/){
 				vector<int> coordinates; coordinates.push_back(0); vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 				vector<int> coordinates_2; coordinates_2.push_back(0); coordinates_2.push_back(0); vector<Value*> vector_indexes_2 = vector_of_constants(M, coordinates_2);
 				LoadInst* ai_ptr = new LoadInst(ai,"",entry);
@@ -1274,9 +1169,15 @@ struct IsolateFunctionWithPointers: public ModulePass {
 
 		std::vector<Value*> params;
 
+		vector<string> sizes_depth_str = tokenize( cmd_option_str("sizes_depth"), ",");
+		vector<int> sizes_depth;
+		for ( unsigned int i = 0; i < sizes_depth_str.size(); i++) {
+			sizes_depth.push_back(strtoi(sizes_depth_str[i]));
+		}
+
 		for ( unsigned int i = 0; i < argNames.size(); i++) {
 
-			create_instructions_for_type(M, entry, argTypes[i], argNames[i], &params, i);
+			create_instructions_for_type(M, entry, argTypes[i], argNames[i], &params, i, 0, sizes_depth);
 
 		}
 

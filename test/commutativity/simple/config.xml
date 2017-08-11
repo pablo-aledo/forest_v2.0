@@ -4,4 +4,6 @@
 	<option key="commutativity" value="true"/> 
 	<option key="explanation" value="Simple commutativity testing"/> 
 	<option key="file" value="simple.c"/> 
+	<option key="max_pointer_deref_combs" value="3"/> 
+	<option key="sizes_depth" value="1,10,10"/> 
 </options>
