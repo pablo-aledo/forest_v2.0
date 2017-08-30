@@ -103,6 +103,7 @@ public:
 	void binary_instruction(string dst, string op1, string op2, string operation);
 	string get_name_hint(string name);
 	void cast_instruction(string src, string dst, string type_src, string type_dst, string sext);
+	set<string> get_free_variables(string name);
 
 	virtual bool solvable_problem() = 0;
 	virtual void sym_store(string src, string addr) = 0;

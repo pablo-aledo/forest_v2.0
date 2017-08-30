@@ -855,19 +855,6 @@ void PolynomicSolver::uleq_operation(string op1, string op2, string dst){
 	variables[dst].polarity = "<=";
 }
 
-set<string> setunion(set<string> set1, set<string> set2){
-	set<string> ret;
-	for( set<string>::iterator it = set1.begin(); it != set1.end(); it++ ){
-		ret.insert(*it);
-	}
-	for( set<string>::iterator it = set2.begin(); it != set2.end(); it++ ){
-		ret.insert(*it);
-	}
-
-	return ret;
-	
-}
-
 void PolynomicSolver::mul_operation(string op1, string op2, string dst){
 
 	if( ( is_constant(op1) || get_is_propagated_constant(op1) ) && !( is_constant(op2) || get_is_propagated_constant(op2) ) )

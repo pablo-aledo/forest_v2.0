@@ -867,6 +867,22 @@ bool Operators::all_constant(vector<string> names){
 	
 }
 
+bool Operators::all_created_in_main(vector<string> names){
+
+	for( vector<string>::iterator it = names.begin(); it != names.end(); it++ ){
+		printf("%s %d\n", it->c_str(), solver->get_free_variables(name(*it)).size() );
+		set<string> free_vars = solver->get_free_variables(name(*it));
+		for( set<string>::iterator it2 = free_vars.begin(); it2 != free_vars.end(); it2++ ){
+			printf("free_var %s\n", it2->c_str());
+			if( it2->substr(0,13) != "main_register" )
+				return false;
+		}
+	}
+
+	return true;
+	
+}
+
 void Operators::getelementptr(char* _dst, char* _pointer, char* _indexes, char* _offset_tree){
 
 	string dst     = string(_dst);
@@ -926,6 +942,16 @@ void Operators::getelementptr(char* _dst, char* _pointer, char* _indexes, char* 
 
 
 	} else {
+
+		if( options->cmd_option_bool("commutativity") ){
+			if( !all_created_in_main(indexes) ){
+				assert(0 && "Not all indexes created in main");
+			} else {
+				printf("forcing zero to offset\n");
+				solver->assign_instruction(name(pointer), name(dst));
+				return;
+			}
+		}
 
 		debug && printf("\e[31m non-constant getelementptr \e[0m\n");
 		//for( vector<string>::iterator it = indexes.begin(); it != indexes.end(); it++ ){

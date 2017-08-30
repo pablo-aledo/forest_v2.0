@@ -334,5 +334,18 @@ string tmp_file(string file){
 }
 
 
+set<string> setunion(set<string> set1, set<string> set2){
+	set<string> ret;
+	for( set<string>::iterator it = set1.begin(); it != set1.end(); it++ ){
+		ret.insert(*it);
+	}
+	for( set<string>::iterator it = set2.begin(); it != set2.end(); it++ ){
+		ret.insert(*it);
+	}
+
+	return ret;
+	
+}
+
 
 

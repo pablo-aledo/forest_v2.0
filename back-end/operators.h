@@ -106,6 +106,7 @@ private:
 	bool is_variable_pointer(string addr);
 	string get_index_expr(string offset_tree, vector<string> indexes, string base);
 	bool all_constant(vector<string> names);
+	bool all_created_in_main(vector<string> names);
 	void pr_callstack();
 	bool see_each_problem;
 

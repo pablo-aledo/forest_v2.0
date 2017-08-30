@@ -783,6 +783,9 @@ void SolverWrapper::propagate_binary(string op1, string op2, string dst){
 		settype(variables_generic[op1].malloc_origin, gettype(op2));
 	}
 
+	variables_generic[dst].free_variables = setunion( variables_generic[op1].free_variables, variables_generic[op2].free_variables);
+	if(is_free_var(op1)) variables_generic[dst].free_variables.insert(get_name_hint(op1));
+	if(is_free_var(op2)) variables_generic[dst].free_variables.insert(get_name_hint(op2));
 
 
 	propagate_binary_extra(op1, op2, dst);
@@ -813,6 +816,9 @@ void SolverWrapper::propagate_unary(string src, string dst, bool forcedfree){
 
 	if(variables_generic[src].malloc_origin != "")
 		variables_generic[dst].malloc_origin = variables_generic[src].malloc_origin;
+
+	variables_generic[dst].free_variables = variables_generic[src].free_variables;
+	if(is_free_var(src)) variables_generic[dst].free_variables.insert(get_name_hint(src));
 
 
 	propagate_unary_extra(src, dst, forcedfree );
@@ -1398,6 +1404,12 @@ bool SolverWrapper::get_freed(string name_mem){
 void SolverWrapper::set_freed(string name_mem, bool value){
 	printf("set_freed %s %d\n", name_mem.c_str(), value);
 	variables_generic[name_mem].freed = value;
+}
+
+
+set<string> SolverWrapper::get_free_variables(string name){
+
+	return variables_generic[name].free_variables;
 }
 
 //void SolverWrapper::insert_variable_and_type(string var, string type){

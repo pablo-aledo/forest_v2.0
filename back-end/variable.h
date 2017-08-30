@@ -46,6 +46,7 @@ public:
 	bool outofbounds;
 	string malloc_origin;
 	bool freed;
+	set<string> free_variables;
 
 };
 

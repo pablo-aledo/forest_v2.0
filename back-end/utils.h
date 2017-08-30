@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <set>
 #include <stdio.h>
 #include <assert.h>
 #include <inttypes.h>
@@ -65,5 +66,6 @@ string binary_rep(int n);
 string hex2dec(string in);
 uint32_t rc_crc32(uint32_t crc, const char *buf, size_t len);
 string tmp_file(string file);
+set<string> setunion(set<string> set1, set<string> set2);
 
 #endif /* end of include guard: _UTILS_H_ */
