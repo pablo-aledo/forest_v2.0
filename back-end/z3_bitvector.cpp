@@ -277,7 +277,7 @@ map<set<pair<string, int> > , int > Z3BitVector::get_idx_val(string base,string 
 			break;
 		}
 
-		if(iters++ == options->cmd_option_int("max_pointer_deref_combs")){
+		if(iters++ == options->cmd_option_int("max_pointer_deref_combs") - 1){
 			printf("number of iterations exceeded\n");
 			break;
 		}
@@ -433,6 +433,8 @@ void Z3BitVector::change_cast(string& condition){
 	if( condition.find("cast") == string::npos ){
 		return;
 	} else {
+
+		printf("condition %s\n", condition.c_str() );
 
 		assert(condition.find("__") == string::npos && "Undefined casting");
 

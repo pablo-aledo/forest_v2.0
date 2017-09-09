@@ -835,7 +835,7 @@ void Operators::alloca_instr(char* _reg, char* _subtype){
 	}
 
 	int first_address = initial_alloca_pointer;
-	int last_address = alloca_pointer + get_size(subtypes) - get_size(subtype[subtype.size()-1]);
+	int last_address = initial_alloca_pointer + get_size(subtypes) - get_size(subtype[subtype.size()-1]);
 
 	assert(first_address <= initial_alloca_pointer );
 	assert(last_address  >= initial_alloca_pointer );
@@ -943,15 +943,15 @@ void Operators::getelementptr(char* _dst, char* _pointer, char* _indexes, char* 
 
 	} else {
 
-		if( options->cmd_option_bool("commutativity") ){
-			if( !all_created_in_main(indexes) ){
-				assert(0 && "Not all indexes created in main");
-			} else {
-				printf("forcing zero to offset\n");
-				solver->assign_instruction(name(pointer), name(dst));
-				return;
-			}
-		}
+		//if( options->cmd_option_bool("commutativity") ){
+			//if( !all_created_in_main(indexes) ){
+				//assert(0 && "Not all indexes created in main");
+			//} else {
+				//printf("forcing zero to offset\n");
+				//solver->assign_instruction(name(pointer), name(dst));
+				//return;
+			//}
+		//}
 
 		debug && printf("\e[31m non-constant getelementptr \e[0m\n");
 		//for( vector<string>::iterator it = indexes.begin(); it != indexes.end(); it++ ){

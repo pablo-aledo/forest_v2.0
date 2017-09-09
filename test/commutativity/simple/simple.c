@@ -20,10 +20,10 @@
 
 
 int main() {
-	int a[10];
+	int a[3];
 	int i;
-	for (i = 0; i < 10; i++) {
-		a[i] = a[i] * a[i] + 2;
+	for (i = 0; i < 3; i++) {
+		a[i] = 2;
 	}
 	return 0;
 }

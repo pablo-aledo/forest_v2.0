@@ -819,15 +819,25 @@ void Z3Solver::pointer_instruction(string dst, string offset_tree, vector<string
 		init_indexes(dst, indexes[i]);
 	}
 
-	map<set<pair<string, int> > , int > map_idx_val = get_idx_val(base,expr, indexes, first_address, last_address);
 
 
 
 	setcontent(dst, expr);
 	set_real_value(dst, itos(real_pointer));
 
+	if(options->cmd_option_bool("inside_bounds")){
+		settype(dst, "IntegerTyID32");
+		printf("inside bounds %d %d\n", get_first_address(base), get_last_address(base));
+		printf("content %s\n", expr.c_str() );
+		printf("content %s\n", content(dst).c_str() );
+		add_lt(dst, itos(get_last_address(base)));
+		add_bt(dst, itos(get_first_address(base)));
+	}
+
 	bool forcedfree = is_forced_free(base);
 	propagate_unary(base, dst, forcedfree);
+
+	map<set<pair<string, int> > , int > map_idx_val = get_idx_val(base,expr, indexes, first_address, last_address);
 
 	add_range_index(dst, map_idx_val);
 	add_indexes(dst, indexes);
