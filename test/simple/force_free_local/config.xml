@@ -4,5 +4,5 @@
 	<option key="test" value="true"/> 
 	<option key="explanation" value="Force a local variable to be free"/> 
 	<option key="file" value="force_free_local.c"/> 
-	<option key="forced_free_var" value="mem_8"/> 
+	<option key="forced_free_var" value="mem_4"/> 
 </options>

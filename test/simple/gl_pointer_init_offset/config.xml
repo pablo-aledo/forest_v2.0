@@ -4,5 +4,5 @@
 	<option key="test" value="true"/> 
 	<option key="explanation" value="Global pointer initialization with offset"/> 
 	<option key="file" value="gl_pointer_init_offset.c"/> 
-	<option key="forced_free_var" value="mem_13"/> 
+	<option key="forced_free_var" value="mem_5"/> 
 </options>

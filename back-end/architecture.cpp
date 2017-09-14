@@ -67,6 +67,7 @@ unsigned int bits(string type){
 	else if(type == "FloatTyID" ) return 32;
 	else if(type == "Pointer" ) return 64;
 	else if(type == "bool" ) return 8;
+	else if(type == "IntegerTyID1" ) return 8;
 	else{
 		printf("unknown_type %s\n", type.c_str());
 		assert(0 && "Unknown type");
