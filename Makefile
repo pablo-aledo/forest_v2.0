@@ -23,6 +23,9 @@ clean:
 	rm -rf build/*
 	make -C optim-pass clean
 
+test:
+	make -C test
+
 distclean: clean
 	rm -rf bin/* lib/*
 
