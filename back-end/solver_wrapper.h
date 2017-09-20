@@ -66,6 +66,7 @@ public:
 	string gettype(string name);
 	float get_solve_time();
 	string realvalue(string varname);
+	bool is_defined(string varname);
 	string get_first_content_value(string var);
 	string get_comma_stack_conditions_static();
 	string get_path_stack_str();

@@ -1450,6 +1450,7 @@ string Operators::get_actual_function(){
 	return actual_function;
 }
 
+/*
 void Operators::memcpy(char* _addr_dst, char* _addr_src, char* _size_bytes, char* _align, char* _is_volatile){
 
 	string addr_dst = string(_addr_dst);
@@ -1475,6 +1476,36 @@ void Operators::memcpy(char* _addr_dst, char* _addr_src, char* _size_bytes, char
 	
 
 	printf("\e[31m llvm.memcpy \e[31m addr_dst \e[0m %s \e[31m addr_src \e[0m %s \e[31m size_bytes \e[0m %s \e[31m align \e[0m %s \e[31m is_volatile \e[0m %s\n", addr_dst.c_str(), addr_src.c_str(), size_bytes.c_str(), align.c_str(), is_volatile.c_str());
+	//exit(0);
+	
+}
+*/
+
+void Operators::memcpy(char* _addr_dst, char* _addr_src, char* _size_bytes, char* _align, char* _is_volatile){
+
+	string addr_dst = string(_addr_dst);
+	string addr_src = string(_addr_src);
+	string size_bytes = string(_size_bytes);
+
+	int addr_src_i = strtoi(solver->realvalue(name(addr_src)));
+	int addr_dst_i = strtoi(solver->realvalue(name(addr_dst)));
+
+	int n_elems = strtoi(solver->realvalue(size_bytes));
+
+	for ( unsigned int mem_src = addr_src_i, mem_dst = addr_dst_i; n_elems > 0; mem_src += 1, mem_dst += 1, n_elems--) {
+		string mem_name_src = "mem_" + itos(mem_src);
+		string mem_name_dst = "mem_" + itos(mem_dst);
+		//printf("memcpy_isdefined %d\n", solver->is_defined( mem_name_dst ) );
+		if(solver->is_defined( mem_name_src ) ){
+			solver->assign_instruction(mem_name_src,mem_name_dst);
+		}
+	}
+
+	//printf("addr_dst_i %d\n", addr_dst_i);
+	//printf("n_elems %d\n", n_elems);
+	
+
+	printf("\e[31m llvm.memcpy \e[31m addr_dst \e[0m %s \e[31m addr_src \e[0m %s \e[31m size_bytes \e[0m %s\n", addr_dst.c_str(), addr_src.c_str(), size_bytes.c_str());
 	//exit(0);
 	
 }

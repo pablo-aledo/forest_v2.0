@@ -334,6 +334,22 @@ string SolverWrapper::realvalue_mangled(string varname){
 	}
 }
 
+bool SolverWrapper::is_defined(string varname){
+	if(!check_mangled_name(varname)) assert(0 && "Wrong name for is_defined");
+
+	if(is_number(varname)){
+		assert(0 && "is_defined of single number");
+	} else if( is_function(varname) ){
+		assert(0 && "is_defined of function");
+	} else if( is_constant(varname) ){
+		assert(0 && "is_defined of constant");
+	} else if( variables_generic[varname].real_value == "" ){
+		return false;
+	}else{
+		return true;
+	}
+}
+
 string SolverWrapper::realvalue(string varname){
 
 
