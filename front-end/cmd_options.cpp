@@ -215,10 +215,10 @@ void load_default_options(){
 		set_option("base_path", string(getenv("FOREST_HOME")));
 	if(string(getenv("LLVM_HOME")) != "")
 		set_option("llvm_path", string(getenv("LLVM_HOME")));
-	if(string(getenv("CPACHECKER_HOME")) != "")
-		set_option("cpachecker_path", string(getenv("CPACHECKER_HOME")));
-	if(string(getenv("CSEQ_HOME")) != "")
-		set_option("cseq_path", string(getenv("CSEQ_HOME")));
+	//if(string(getenv("CPACHECKER_HOME")) != "")
+		//set_option("cpachecker_path", string(getenv("CPACHECKER_HOME")));
+	//if(string(getenv("CSEQ_HOME")) != "")
+		//set_option("cseq_path", string(getenv("CSEQ_HOME")));
 
 }
 

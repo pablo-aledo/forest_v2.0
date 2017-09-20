@@ -38,6 +38,10 @@ make
 # add bin to path
 export PATH=$(pwd)/bin/:$PATH
 
+# set environment variables
+export LLVM_HOME=/usr/src/llvm-3.7
+export FOREST_HOME=$(pwd)
+
 # test
 make test 
 
