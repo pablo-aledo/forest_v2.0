@@ -41,7 +41,8 @@
 #include <stdio.h>
 #include <map>
 #include <set>
-#include "/media/DATA/Work/forest_comm/disk/release/back-end/architecture.cpp"
+#include "utils.h"
+#include "architecture.h"
 
 
 #define mod_iterator(mod, fn) for( Module::iterator        fn = mod.begin(),  function_end    = mod.end();  fn != function_end;    ++fn )
@@ -70,39 +71,7 @@ typedef struct VarInit {
 
 // Helper Functions
 
-int strtoi(string str){
-	int ret;
-	sscanf(str.c_str(), "%d", &ret);
-	return ret;
-}
-
-
 map<string, string> options;
-
-vector<string> tokenize(const string& str,const string& delimiters) {
-	vector<string> tokens;
-    	
-	// skip delimiters at beginning.
-    	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    	
-	// find first "non-delimiter".
-    	string::size_type pos = str.find_first_of(delimiters, lastPos);
-
-    	while (string::npos != pos || string::npos != lastPos)
-    	{
-		// found a token, add it to the vector.
-		tokens.push_back(str.substr(lastPos, pos - lastPos));
-	
-		// skip delimiters.  Note the "not_of"
-		lastPos = str.find_first_not_of(delimiters, pos);
-	
-		// find next "non-delimiter"
-		pos = str.find_first_of(delimiters, lastPos);
-    	}
-
-	return tokens;
-}
-
 
 void read_options(){
 
@@ -566,20 +535,6 @@ vector<string> get_struct_offsets( const StructType* t ){
 
 	return ret;
 
-}
-
-void myReplace(std::string& str, const std::string& oldStr, const std::string& newStr) {
-	size_t pos = 0;
-	while((pos = str.find(oldStr, pos)) != std::string::npos){
-		str.replace(pos, oldStr.length(), newStr);
-		pos += newStr.length();
-	}
-}
-
-string itos( int value ){
-	stringstream ret_ss;
-	ret_ss << value;
-	return ret_ss.str();
 }
 
 int get_offset(const Type* t, int debug = 1){
@@ -1309,18 +1264,6 @@ struct FunctionNames: public ModulePass {
 		return false;
 	}
 };
-
-string tmp_dir(){
-	//if(!getenv("TMPDIR")){
-		return "/dev/shm/forest";
-	//} else {
-		//return string(getenv("TMPDIR"));
-	//}
-}
-
-string tmp_file(string file){
-	return tmp_dir() + "/" + file;
-}
 
 struct Demangle: public ModulePass {
 	static char ID; // Pass identification, replacement for typeid
