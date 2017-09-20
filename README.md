@@ -25,6 +25,8 @@ sudo make install
 # llvm-3.7
 svn co http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_371/final /usr/src/llvm-3.7
 svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_371/final /usr/src/llvm-3.7/tools/clang
+svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_371/final /usr/src/llvm-3.7/projects/libcxx
+svn co http://llvm.org/svn/llvm-project/libcxxabi/tags/RELEASE_371/final /usr/src/llvm-3.7/projects/libcxxabi
 
 cd /usr/src/llvm-3.7
 mkd build
