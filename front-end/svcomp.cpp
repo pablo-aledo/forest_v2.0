@@ -507,7 +507,7 @@ map<string, int> read_position_to_token(){
 	
 	while( getline( input, line ) ) {
 		vector<string> tokens = tokenize(line, " ");
-		ret[tokens[0]] = stoi(tokens[1]);
+		ret[tokens[0]] = ::stoi(tokens[1]);
 	}
 
 	return ret;

@@ -427,7 +427,7 @@ set<vector<string> > minimal_vectors(){
 		vector<string> tokens = tokenize(*it, "|");
 		string name = tokens[0];
 		string value = tokens[1];
-		int problem_id = stoi(tokens[2]);
+		int problem_id = ::stoi(tokens[2]);
 		values[problem_id][name] = value;
 	}
 
@@ -723,7 +723,7 @@ char get_argv_char(int testvector, int i){
 	if(string(ret) == "")
 		return 0;
 	else
-		return stoi(ret);
+		return ::stoi(ret);
 
 }
 
@@ -744,7 +744,7 @@ void show_argvs(){
 	string argvs_str = cmd_option_str("sym_argvs");
 	string max_size_each_s = tokenize(argvs_str, " ")[2];
 	string max_size_s = tokenize(argvs_str, " ")[1];
-	max_size = stoi(max_size_s) * stoi(max_size_each_s) + stoi(max_size_s);
+	max_size = ::stoi(max_size_s) * ::stoi(max_size_each_s) + ::stoi(max_size_s);
 
 
 	for ( unsigned int testvector = 0; testvector < num_vectors; testvector++) {

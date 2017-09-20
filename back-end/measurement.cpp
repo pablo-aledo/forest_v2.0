@@ -136,7 +136,7 @@ float Measurement::vector_float(char* _name){
 
 	debug && printf("vector_float %s %s\n", _name, ret.c_str());
 
-	return stof(ret);
+	return ::stof(ret);
 }
 
 short Measurement::vector_short(char* _name){

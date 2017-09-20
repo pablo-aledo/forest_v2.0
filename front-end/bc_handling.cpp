@@ -939,7 +939,7 @@ void show_timer(){
 	while( getline( input, line ) ) {
 		vector<string> tokens = tokenize(line, "|");
 		string id = tokens[0];
-		float time = stof(tokens[1]);
+		float time = ::stof(tokens[1]);
 		times[id] += time;
 	}
 

@@ -462,7 +462,7 @@ map<set<string>, float> PolynomicSolver::content(string name){
 
 	if(is_constant(name)){
 		set<string> set; set.insert("1");
-		ret[set] = stof(realvalue(name));
+		ret[set] = ::stof(realvalue(name));
 		return ret;
 	}
 
@@ -477,7 +477,7 @@ map<set<string>, float> PolynomicSolver::content(string name){
 
 		if(is_number(name)){
 			set<string> set; set.insert("");
-			ret[set] = stof(name);
+			ret[set] = ::stof(name);
 			return ret;
 		} else {
 			set<string> set; set.insert(position);
@@ -489,7 +489,7 @@ map<set<string>, float> PolynomicSolver::content(string name){
 
 		if(get_is_propagated_constant(name)){
 			set<string> set; set.insert("1");
-			ret[set] = stof(realvalue(name));
+			ret[set] = ::stof(realvalue(name));
 			return ret;
 		} else {
 			return variables[name].content;
@@ -670,7 +670,7 @@ void PolynomicSolver::div_operation (string op1, string op2, string dst){
 			set<string>var = it->first;
 			float  val = it->second;
 
-			content_final[var] = content_initial[var] / stof(realvalue(op2));
+			content_final[var] = content_initial[var] / ::stof(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;
@@ -868,7 +868,7 @@ void PolynomicSolver::mul_operation(string op1, string op2, string dst){
 			set<string>var = it->first;
 			float  val = it->second;
 
-			content_final[var] = content_initial[var] * stof(realvalue(op2));
+			content_final[var] = content_initial[var] * ::stof(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;

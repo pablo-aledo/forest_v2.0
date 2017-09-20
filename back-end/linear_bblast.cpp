@@ -569,7 +569,7 @@ map<string, HexNum> LinearBblast::content(string name){
 	
 
 	if(is_constant(name)){
-		ret[""] = stof(realvalue(name));
+		ret[""] = ::stof(realvalue(name));
 		return ret;
 	}
 
@@ -583,7 +583,7 @@ map<string, HexNum> LinearBblast::content(string name){
 		insert_variable(name, position );
 
 		if(is_number(name)){
-			ret[""] = stof(name);
+			ret[""] = ::stof(name);
 			return ret;
 		} else {
 			ret[position] = 1;
@@ -593,7 +593,7 @@ map<string, HexNum> LinearBblast::content(string name){
 	} else {
 
 		if(get_is_propagated_constant(name)){
-			ret[""] = stof(realvalue(name));
+			ret[""] = ::stof(realvalue(name));
 			return ret;
 		} else {
 			return variables[name].content;

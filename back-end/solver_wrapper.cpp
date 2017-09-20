@@ -128,7 +128,7 @@ void SolverWrapper::set_real_value(string varname, string value){
 	if(!check_mangled_name(varname)) assert(0 && "Wrong name for set_real_value");
 
 	if(value.substr(0,2) == "#x") assert(0 && "internal real value");
-	if(!is_number(value) && !is_function(value)){ printf("varname %s value %s\n", varname.c_str(), value.c_str() ); assert(0 && "Not a Number"); };
+	if(!is_number(value) && !::is_function(value)){ printf("varname %s value %s\n", varname.c_str(), value.c_str() ); assert(0 && "Not a Number"); };
 
 	variables_generic[varname].real_value = value;
 }
@@ -339,7 +339,7 @@ bool SolverWrapper::is_defined(string varname){
 
 	if(is_number(varname)){
 		assert(0 && "is_defined of single number");
-	} else if( is_function(varname) ){
+	} else if( ::is_function(varname) ){
 		assert(0 && "is_defined of function");
 	} else if( is_constant(varname) ){
 		assert(0 && "is_defined of constant");
@@ -359,7 +359,7 @@ string SolverWrapper::realvalue(string varname){
 
 	if(is_number(varname)){
 		assert(0 && "Real-value of single number");
-	} else if( is_function(varname) ){
+	} else if( ::is_function(varname) ){
 		//printf("function %s\n", varname.c_str() );
 		return varname;
 	} else if( is_constant(varname) ){
@@ -862,7 +862,7 @@ void SolverWrapper::cast_instruction(string src, string dst, string type_src, st
 
 	assign_instruction(src,dst);
 
-	if(is_function(src)) return;
+	if(::is_function(src)) return;
 
 	cast_instruction_content(src, dst, type_src, type_dst, sext);
 
@@ -896,8 +896,8 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 	binary_instruction_content(dst, op1, op2, operation);
 
 	if( operation == "#" ){ // neq_operation
-		string value_1_s = make_unsigned(realvalue(op1), gettype(op1));
-		string value_2_s = make_unsigned(realvalue(op2), gettype(op2));
+		string value_1_s = ::make_unsigned(realvalue(op1), gettype(op1));
+		string value_2_s = ::make_unsigned(realvalue(op2), gettype(op2));
 		int value_1;
 		int value_2;
 
@@ -986,8 +986,8 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 		set_real_value(dst, ( (unsigned int)strtoi(realvalue(op1) ) >  (unsigned int)strtoi( realvalue(op2) ) )?"true":"false" );
 	} else if(operation == "="){ // eq_operation
 		//printf("realvalueop1 %s realvalueop2 %s\n", realvalue(op1).c_str(), realvalue(op2).c_str());
-		//string rv1 = make_unsigned(realvalue(op1), gettype(op1));
-		//string rv2 = make_unsigned(realvalue(op2), gettype(op2));
+		//string rv1 = ::make_unsigned(realvalue(op1), gettype(op1));
+		//string rv2 = ::make_unsigned(realvalue(op2), gettype(op2));
 		//printf("realvalueop1u %s realvalueop2u %s\n", rv1.c_str(), rv2.c_str());
 		string rv1 = realvalue(op1);
 		string rv2 = realvalue(op2);
@@ -999,11 +999,11 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 	} else if(operation == "+"){ // add_operation
 		stringstream result;
 		if( get_type(dst) == "Real" ){
-			result << stof(realvalue(op1)) + stof(realvalue(op2));
+			result << ::stof(realvalue(op1)) + ::stof(realvalue(op2));
 		} else if (get_type(dst) == "Int") {
 			result << strtoi(realvalue(op1)) + strtoi(realvalue(op2));
 		} else if( get_type(dst) == "Pointer" ) {
-			result << stof(realvalue(op1)) + stof(realvalue(op2));
+			result << ::stof(realvalue(op1)) + ::stof(realvalue(op2));
 		} else {
 			assert(0 && "Unknown type");
 		}
@@ -1012,7 +1012,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 	} else if(operation == "-"){ // sub_operation
 		stringstream result;
 		if( get_type(dst) == "Real" )
-			result << stof(realvalue(op1)) - stof(realvalue(op2));
+			result << ::stof(realvalue(op1)) - ::stof(realvalue(op2));
 		else if (get_type(dst) == "Int")
 			result << strtoi(realvalue(op1)) - strtoi(realvalue(op2));
 		else
@@ -1024,7 +1024,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 		stringstream result;
 		if( get_type(dst) == "Real" )
-			result << stof(realvalue(op1)) * stof(realvalue(op2));
+			result << ::stof(realvalue(op1)) * ::stof(realvalue(op2));
 		else if (get_type(dst) == "Int")
 			result << strtoi(realvalue(op1)) * strtoi(realvalue(op2)), gettype(op1);
 		else
@@ -1038,7 +1038,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 
 
-			if(stof(realvalue(op2)) == 0.0){
+			if(::stof(realvalue(op2)) == 0.0){
 				database->insert_divzero();
 				printf("Division by 0\n");
 				exit(0);
@@ -1062,7 +1062,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 
 
-			result << stof(realvalue(op1)) / stof(realvalue(op2));
+			result << ::stof(realvalue(op1)) / ::stof(realvalue(op2));
 		} else if (get_type(dst) == "Int") {
 			if(strtoi(realvalue(op2)) == 0){
 				database->insert_divzero();
@@ -1123,7 +1123,7 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 	}
 
 
-	make_signed(dst, gettype(dst));
+	::make_signed(dst, gettype(dst));
 
 	//if( has_maxval(gettype(dst)) && strtoi(realvalue(dst)) > maxval(gettype(dst)) ){
 		//int realval = strtoi(realvalue(dst));

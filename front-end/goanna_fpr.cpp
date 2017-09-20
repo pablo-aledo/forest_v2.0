@@ -160,13 +160,13 @@ set<pair<string, int> > get_goanna_lines(){
 	ifstream input2(tmp_file("goanna_lines").c_str());
 	string line2;
 	while( getline( input2, line2 ) ) {
-		ret.insert(pair<string, int>("", stoi(line2)));
+		ret.insert(pair<string, int>("", ::stoi(line2)));
 	}
 	ifstream input(tmp_file("goanna_output").c_str());
 	string line;
 	while( getline( input, line ) ) {
 		if(line.substr(0, 10) == "exit_code:" && tokenize(line, ": ")[1] == "42")
-			ret.insert(pair<string, int>("", stoi(line)));
+			ret.insert(pair<string, int>("", ::stoi(line)));
 	}
 	
 		

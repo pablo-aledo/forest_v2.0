@@ -521,7 +521,7 @@ map<string, float> LinearSolver::content(string name){
 	
 
 	if(is_constant(name)){
-		ret[""] = stof(realvalue(name));
+		ret[""] = ::stof(realvalue(name));
 		return ret;
 	}
 
@@ -535,7 +535,7 @@ map<string, float> LinearSolver::content(string name){
 		insert_variable(name, position );
 
 		if(is_number(name)){
-			ret[""] = stof(name);
+			ret[""] = ::stof(name);
 			return ret;
 		} else {
 			ret[position] = 1;
@@ -545,7 +545,7 @@ map<string, float> LinearSolver::content(string name){
 	} else {
 
 		if(get_is_propagated_constant(name)){
-			ret[""] = stof(realvalue(name));
+			ret[""] = ::stof(realvalue(name));
 			return ret;
 		} else {
 			return variables[name].content;
@@ -754,7 +754,7 @@ void LinearSolver::div_operation (string op1, string op2, string dst){
 			string var = it->first;
 			float  val = it->second;
 
-			content_final[var] = content_initial[var] / stof(realvalue(op2));
+			content_final[var] = content_initial[var] / ::stof(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;
@@ -949,7 +949,7 @@ void LinearSolver::mul_operation(string op1, string op2, string dst){
 			string var = it->first;
 			float  val = it->second;
 
-			content_final[var] = content_initial[var] * stof(realvalue(op2));
+			content_final[var] = content_initial[var] * ::stof(realvalue(op2));
 		}
 
 		variables[dst].content = content_final;
