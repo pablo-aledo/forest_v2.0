@@ -1,10 +1,19 @@
+Forest implements symbolic execution of LLVM intermediate language and is able
+to detect errors in programs developed in C. Forest transforms a program into a
+set of SMT formulas describing each feasible path and decides these formulas
+with a SMT solver. This enables to prove the satisfiability of reachability
+conditions, buffer overflows, null pointer dereferences... Forest implements
+different encodings of SMT formulas, according to different theories: linear
+arithmetic, polynomials and generic bit-accurate and not bit-accurate
+translations.
+
 ## Typical installation:
 
 ```
 # needed dependencies
-sudo apt-get install sqlite3 graphviz meld
+sudo apt-get install sqlite3 graphviz meld subversion cmake g++ python2.7
 
-# z3 (if doesnt work, go to http://z3.codeplex.com/SourceControl/latest#README, download and follow the instructions)
+# z3
 git clone https://git01.codeplex.com/z3
 cd z3-*
 ./configure
@@ -13,8 +22,15 @@ cd build
 make
 sudo make install
 
-# add a link to your llvm-installation path in /llvm-2.9/
-sudo ln -s <your-llvm-path> /llvm-2.9
+# llvm-3.7
+svn co http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_371/final /usr/src/llvm-3.7
+svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_371/final /usr/src/llvm-3.7/tools/clang
+
+cd /usr/src/llvm-3.7
+mkd build
+../configure --prefix=/usr/share/llvm-3.7
+make -j `nproc`
+sudo make install
 
 # compile
 make 
@@ -30,5 +46,6 @@ cd test/crest/math/
 forest -verbose -see_each_problem
 ```
 
-* Tested with llvm-2.9
-* Compiled with gcc-4.7.2
+* Tested with llvm-3.7
+* Compiled with g++ (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4
+
