@@ -52,19 +52,19 @@ void get_static_heuristic(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestMeasure.so -meas_fillnames < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestMeasure.so -meas_fillnames < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_rmmalloc -instr_rmpthread -instr_rmputs -instr_rmassume -instr_rmmemcpy -instr_rmerror -instr_rmindet -instr_addassert < file-3.bc > file-4.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_rmmalloc -instr_rmpthread -instr_rmputs -instr_rmassume -instr_rmmemcpy -instr_rmerror -instr_rmindet -instr_addassert < file-3.bc > file-4.bc";
 	systm(cmd.str().c_str());
 
 	options_to_file();
 
 	// Heuristic optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestHeuristic.so -pathfinder < file-4.bc > file-5.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestHeuristic.so -pathfinder < file-4.bc > file-5.bc";
 	systm(cmd.str().c_str());
 
 	end_pass("heuristic");

@@ -34,11 +34,11 @@ void get_concurrent_functions(){
 	string llvm_path   = cmd_option_str("llvm_path");
 	string output_file = cmd_option_str("output_file");
 
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestConcurrency.so -conc_pthread_cj < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestConcurrency.so -conc_pthread_cj < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 	cmd.str("");
 
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 	cmd.str("");
 

@@ -35,7 +35,7 @@ void make_bc(){
 	make_initial_bc();
 
 	if(cmd_option_str("seed_function") != ""){
-		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function < file.bc > file-2.bc";
+		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -isolate_function < file.bc > file-2.bc";
 		systm(cmd.str().c_str());
 		cmd.str("");
 		cmd << "mv file-2.bc file.bc";
@@ -43,7 +43,7 @@ void make_bc(){
 	}
 
 	if(cmd_option_str("seed_function_with_pointers") != ""){
-		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
+		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
 		systm(cmd.str().c_str());
 		cmd.str("");
 		cmd << "mv file-2.bc file.bc";
@@ -52,12 +52,12 @@ void make_bc(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 
 	end_pass("make_bc");
@@ -77,7 +77,7 @@ void compare_bc(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Disassembly
@@ -88,7 +88,7 @@ void compare_bc(){
 
 	// Second optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 
 	// Disassembly
@@ -123,7 +123,7 @@ void compare_isolate(){
 	options_to_file();
 
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	cmd.str("");
@@ -148,7 +148,7 @@ void view_bc(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Disassembly
@@ -328,12 +328,12 @@ void view_dfg_2(){
 
 	// First Optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimizatio pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 
 
@@ -716,7 +716,7 @@ void make_initial_bc(){
 
 		// Change name of standard functions
 		cmd.str("");
-		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_function_names < file.bc > file-2.bc";
+		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_function_names < file.bc > file-2.bc";
 		systm(cmd.str().c_str());
 
 		cmd.str("");
@@ -755,7 +755,7 @@ void make_initial_bc(){
 
 
 			cmd.str("");
-			cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestStdlibs.so -stdlibs_list_functions < " << line << " > /dev/null";
+			cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestStdlibs.so -stdlibs_list_functions < " << line << " > /dev/null";
 			systm(cmd.str().c_str());
 
 			cmd.str("");
@@ -769,11 +769,11 @@ void make_initial_bc(){
 		}
 
 		cmd.str("");
-		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_function_names < file.bc > file-2.bc";
+		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_function_names < file.bc > file-2.bc";
 		systm(cmd.str().c_str());
 
 		cmd.str("");
-		cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file-2.bc > file-3.bc";
+		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file-2.bc > file-3.bc";
 		systm(cmd.str().c_str());
 
 
@@ -909,7 +909,7 @@ void list_external_functions(){
 
 	stringstream cmd;
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -list_external_functions < file.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -list_external_functions < file.bc";
 	systm(cmd.str().c_str());
 
 }

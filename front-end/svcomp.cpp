@@ -26,7 +26,7 @@ bool is_parseable(){
 	string llvm_path = cmd_option_str("llvm_path");
 
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -check_parseable < file.bc >/dev/null";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -check_parseable < file.bc >/dev/null";
 	systm(cmd.str());
 
 	ifstream input(tmp_file("parseable").c_str());
@@ -607,7 +607,7 @@ void generate_witness(){
 	systm(cmd.str().c_str());
 
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestBcAnalyze.so -bcanalyze < tokenized.bc > tokenized-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestBcAnalyze.so -bcanalyze < tokenized.bc > tokenized-2.bc";
 	systm(cmd.str().c_str());
 
 	map<string, int> map_position_to_token = read_position_to_token();

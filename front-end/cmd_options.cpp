@@ -346,7 +346,7 @@ bool is_recursive(string filename){
 	string llvm_path = cmd_option_str("llvm_path");
 	stringstream command;
 	command << "clang " << filename << " -S -emit-llvm -o " << tmp_file("check_recursive") << ";";
-	command << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestFeatures.so -isrecursive < " << tmp_file("check_recursive") << " > /dev/null";
+	command << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestFeatures.so -isrecursive < " << tmp_file("check_recursive") << " > /dev/null";
 	systm(command.str().c_str());
 
 	int ret;

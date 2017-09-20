@@ -40,7 +40,7 @@ void commutativity_testing(){
 	options_to_file();
 
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file-te.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -isolate_function_with_pointers < file-te.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	cmd.str("");
@@ -49,12 +49,12 @@ void commutativity_testing(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_all < file-2.bc > file-3.bc";
 	systm(cmd.str().c_str());
 
 	end_pass("make_bc");
