@@ -4152,6 +4152,7 @@ struct GlobalInit: public ModulePass {
 
 		ConstantInt*         constant_int          = dyn_cast<ConstantInt>(constant);
 		ConstantArray*       constant_array        = dyn_cast<ConstantArray>(constant);
+		ConstantDataArray*   constant_data_array   = dyn_cast<ConstantDataArray>(constant);
 		ConstantFP*          constant_float        = dyn_cast<ConstantFP>(constant);
 		ConstantStruct*      constant_struct       = dyn_cast<ConstantStruct>(constant);
 		ConstantPointerNull* constant_pointer_null = dyn_cast<ConstantPointerNull>(constant);
@@ -4245,21 +4246,9 @@ struct GlobalInit: public ModulePass {
 
 			string aux;
 
-			// if(constant->isNullValue()){
-			if(!constant_array){
+			if(constant_array){
 
-				string flattenedtypes = get_flattened_types(array_type);
-				vector<string> tokens = tokenize(flattenedtypes, ",");
-
-				for ( unsigned int i = 0; i < tokens.size(); i++) {
-					aux += "X,";
-				}
-
-
-			} else {
-
-
-
+				//cerr << "constant_array" << endl;
 
 				for ( unsigned int i = 0; i < array_type->getNumElements(); i++) {
 
@@ -4274,6 +4263,46 @@ struct GlobalInit: public ModulePass {
 
 					aux += get_flattened_vals(operand_i_const) + ",";
 				}
+
+			} else if (constant_data_array) {
+
+				// This Constant node has no operands because it stores all of the elements of the constant as densely packed data, instead of as Value*'s.
+				
+				//cerr << "constant_data_array" << endl;
+				//cerr << array_type->getNumElements() << endl;
+				//cerr << constant_data_array->getNumOperands() << endl;
+				int each_element_size = constant_data_array->getRawDataValues().size() / array_type->getNumElements();
+				string each_element_type = get_type_str( array_type->getElementType() );
+				//cerr << "each_element_size:" << each_element_size << endl;
+				//cerr << "each_element_type: " << each_element_type << endl;
+				//cerr << string(constant_data_array->getRawDataValues().data()) << endl;
+
+				
+				for ( unsigned int i = 0; i < array_type->getNumElements(); i++) {
+
+					string value_str;
+					if(each_element_type == "IntegerTyID32"){
+						int value_int = *(constant_data_array->getRawDataValues().data() + i*each_element_size);
+						value_str = itos(value_int);
+					}
+					aux += "constant_" + each_element_type + "_" + value_str + ",";
+				}
+
+				//cerr << "aux: " << aux << endl;
+
+			} else {
+
+				//cerr << "non constant_array" << endl;
+
+				//cerr << "constant_data_array " << constant_data_array;
+
+				string flattenedtypes = get_flattened_types(array_type);
+				vector<string> tokens = tokenize(flattenedtypes, ",");
+
+				for ( unsigned int i = 0; i < tokens.size(); i++) {
+					aux += "X,";
+				}
+
 			}
 
 			return aux;
