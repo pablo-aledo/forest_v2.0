@@ -19,9 +19,6 @@
  */
 
 #include "utils.h"
-#include "options.h"
-
-extern Options* options;
 
 #define debug true
 
@@ -230,33 +227,6 @@ float stof(string str){
 	float ret;
 	sscanf(str.c_str(), "%f", &ret);
 	return ret;
-}
-
-string locknames(string condition){
-
-	if(options->cmd_option_bool("subst_names") == false)
-		return condition;
-
-	vector<string> subst = options->cmd_option_vector_str("subst_name");
-
-	for( vector<string>::iterator it = subst.begin(); it != subst.end(); it++ ){
-
-		string substs = *it;
-		vector<string> tokens = tokenize(substs, " ");
-
-		if(tokens.size() != 2) assert(0 && "Names cropped");
-
-		string from   = tokens[0];
-		string to     = tokens[1];
-
-		myReplace(condition, from, to);
-
-		//printf("locknames_option %s\n", it->c_str());
-
-	}
-
-	return condition;
-
 }
 
 string binary_rep(int n){

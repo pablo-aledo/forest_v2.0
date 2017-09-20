@@ -11,8 +11,6 @@ ${LLVM_SRC_HOME}/build/Debug+Asserts/lib/ForestInstr.so: instrumentation_pass.cp
 	\cp ../back-end/architecture.h ${LLVM_SRC_HOME}/lib/Transforms/Forest_instr/architecture.h
 	\cp ../back-end/utils.h ${LLVM_SRC_HOME}/lib/Transforms/Forest_instr/utils.h
 	\cp ../back-end/utils.cpp ${LLVM_SRC_HOME}/lib/Transforms/Forest_instr/utils.cpp 
-	\cp ../back-end/options.h ${LLVM_SRC_HOME}/lib/Transforms/Forest_instr/options.h
-	\cp ../back-end/options.cpp ${LLVM_SRC_HOME}/lib/Transforms/Forest_instr/options.cpp
 	cd ${LLVM_SRC_HOME}/build/lib/Transforms/Forest_instr/; make
 	cd ${LLVM_SRC_HOME}/build/lib/Transforms/Forest_instr/; sudo make install;
 
