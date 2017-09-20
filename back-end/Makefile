@@ -57,7 +57,7 @@ all: ../lib/forest.a
 
 
 ../build/linear_variable_bb.o: linear_variable_bb.cpp
-	$(CCXX) -g -c linear_variable_bb.cpp -o ../build/linear_variable_bb.o
+	$(CCXX) -I. -g -c linear_variable_bb.cpp -o ../build/linear_variable_bb.o
 
 
 ../build/polynomic_solver.o: polynomic_solver.cpp

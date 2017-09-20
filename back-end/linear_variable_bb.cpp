@@ -19,7 +19,7 @@
  */
 
 #include "linear_variable_bb.h"
-#include "/media/disk/release/back-end/architecture.h"
+#include <architecture.h>
 
 
 LinearVarBb::LinearVarBb(){
