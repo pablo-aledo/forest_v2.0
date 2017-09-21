@@ -190,32 +190,32 @@ void final(){
 
 		// From .bc to .s
 		cmd.str("");
-		cmd << "llc final.bc -o final.s";
+		cmd << "clang++ -c final.bc -o final.o";
 		systm(cmd.str().c_str());
 
 		// From .s to .o
-		cmd.str("");
-		cmd << "gcc -c final.s -o final.o";
-		systm(cmd.str().c_str());
+		//cmd.str("");
+		//cmd << "gcc -c final.s -o final.o";
+		//systm(cmd.str().c_str());
 
 		// link
 		cmd.str("");
-		cmd << "g++ final.o -lpthread -ldl -lrt -o " << output_file;
+		cmd << "clang++ final.o -lpthread -ldl -lrt -o " << output_file;
 		systm(cmd.str().c_str());
 	} else {
 		// From .bc to .s
 		cmd.str("");
-		cmd << "llc file-3.bc -o file-3.s";
+		cmd << "clang++ -c file-3.bc -o file-3.o";
 		systm(cmd.str().c_str());
 
 		// From .s to .o
-		cmd.str("");
-		cmd << "gcc -c file-3.s -o file-3.o";
-		systm(cmd.str().c_str());
+		//cmd.str("");
+		//cmd << "gcc -c file-3.s -o file-3.o";
+		//systm(cmd.str().c_str());
 
 		// link
 		cmd.str("");
-		cmd << "g++ file-3.o " << base_path << "/lib/forest.a" << " -lpthread -ldl -lrt -o " << output_file;
+		cmd << "clang++ file-3.o " << base_path << "/lib/forest.a" << " -lpthread -ldl -lrt -o " << output_file;
 		systm(cmd.str().c_str());
 	}
 
