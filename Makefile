@@ -1,6 +1,9 @@
 .PHONY: test coverage_viewer
 
-all: frontend backend opt z3_wrapper repl coverage_viewer
+all: start frontend backend opt z3_wrapper repl coverage_viewer
+
+start:
+	mkdir -p bin build lib
 
 z3_wrapper:
 	make -C utils/z3_wrapper/ 
