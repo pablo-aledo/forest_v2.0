@@ -58,7 +58,7 @@ void show_results(){
 	stringstream cmd;
 
 	// Show database results
-	cmd << "echo \'.mode columns\\n.width 25 5 5\\n.headers on\\nselect name_hint,value, problem_id from results where is_free;\'";
+	cmd << "(echo '.mode columns'; echo '.width 25 5 5'; echo '.headers on'; echo 'select name_hint,value, problem_id from results where is_free;')";
 	cmd << " | sqlite3 " << tmp_file("database.db");
 
 
