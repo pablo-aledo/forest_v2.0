@@ -2046,6 +2046,7 @@ struct RmInstr: public ModulePass {
 		if( fn_name == "getelementptr"    ) return true;
 		if( fn_name == "Free_fn"          ) return true;
 		if( fn_name == "Memcpy"           ) return true;
+		if( fn_name == "Memset"           ) return true;
 		if( fn_name == "assumption"       ) return true;
 		if( fn_name == "assertion"        ) return true;
 		if( fn_name == "fr_malloc"        ) return true;
@@ -3129,6 +3130,7 @@ struct CallInstr: public ModulePass {
 						//if(fn_name == "__VERIFIER_assert" ) continue;
 
 						if( fn_name.substr(0,11) == "llvm.memcpy" ) continue;
+						if( fn_name.substr(0,11) == "llvm.memset" ) continue;
 
 
 						stringstream operand_list;
@@ -3362,6 +3364,123 @@ struct Memcpy: public ModulePass {
 	}
 };
 
+struct Memset: public ModulePass {
+	static char ID; // Pass identification, replacement for typed
+	Memset() : ModulePass(ID) {}
+
+
+	virtual bool runOnModule(Module &M) {
+
+		vector<Instruction*> instr_to_rm;
+
+		mod_iterator(M, fn){
+			fun_iterator(fn, bb){
+				blk_iterator(bb, in){
+					if( CallInst::classof(in) ){
+
+						CallInst* in_c = cast<CallInst>(in);
+
+						bool hasname = in_c->getCalledFunction();
+
+						string fn_name;
+					        if(hasname){
+							fn_name = in_c->getCalledFunction()->getName().str();
+						} else {
+
+							Value* called_v = in_c->getCalledValue();
+
+							if(! ConstantExpr::classof(called_v)) continue;
+
+							ConstantExpr* called_e = cast<ConstantExpr>(called_v);
+							Function* called_f = cast<Function>(called_e->getOperand(0));
+
+							fn_name = called_f->getName().str();
+							
+
+
+						}
+
+
+						if( fn_name.substr(0,11) == "llvm.memset" ){
+
+							instr_to_rm.push_back(in);
+
+							stringstream operand_list;
+							for ( unsigned int i = 0; i < in_c->getNumOperands()-1; i++) {
+								string name = operandname( in_c->getArgOperand(i) );
+								operand_list << name << ",";
+							}
+
+
+							//string op2;
+							//ConstantExpr* op1_ce = dyn_cast<ConstantExpr>(in_c->getArgOperand(1));
+							//if(op1_ce){
+								//op2 = "register_" + op1_ce->getOperand(0)->getName().str();
+							//} else {
+								//op2 = "register_" + in_c->getArgOperand(1)->getName().str();
+							//}
+
+
+
+							string op1 = operandname( in_c->getArgOperand(0) );
+							string op2 = operandname( in_c->getArgOperand(1) );
+							string op3 = operandname( in_c->getArgOperand(2) );
+							string op4 = operandname( in_c->getArgOperand(3) );
+							string op5 = operandname( in_c->getArgOperand(4) );
+
+							string oplist  = operand_list.str();
+							string ret_to = operandname( in_c );
+							string ret_type = get_type_str( in_c->getType() );
+
+							cerr << fn_name << endl;
+							cerr << oplist  << endl;
+							//cerr << fn_oplist << endl;
+
+
+							GlobalVariable* c1 = make_global_str(M, op1 );
+							GlobalVariable* c2 = make_global_str(M, op2 );
+							GlobalVariable* c3 = make_global_str(M, op3 );
+							GlobalVariable* c4 = make_global_str(M, op4 );
+							GlobalVariable* c5 = make_global_str(M, op5 );
+
+							Value* InitFn = cast<Value> ( M.getOrInsertFunction( "Memset" ,
+										Type::getVoidTy( M.getContext() ),
+										Type::getInt8PtrTy( M.getContext() ),
+										Type::getInt8PtrTy( M.getContext() ),
+										Type::getInt8PtrTy( M.getContext() ),
+										Type::getInt8PtrTy( M.getContext() ),
+										Type::getInt8PtrTy( M.getContext() ),
+										(Type *)0
+										));
+
+
+							BasicBlock::iterator insertpos = in;
+
+							std::vector<Value*> params;
+							params.push_back(pointerToArray(M,c1));
+							params.push_back(pointerToArray(M,c2));
+							params.push_back(pointerToArray(M,c3));
+							params.push_back(pointerToArray(M,c4));
+							params.push_back(pointerToArray(M,c5));
+							CallInst::Create(InitFn, params, "", insertpos);
+
+						}
+
+
+					}
+				}
+			}
+		}
+
+
+		for( vector<Instruction*>::iterator it = instr_to_rm.begin(); it != instr_to_rm.end(); it++ ){
+			(*it)->eraseFromParent();
+		}
+		
+
+		return false;
+	}
+};
 
 struct ExternalFn: public ModulePass {
 	static char ID; // Pass identification, replacement for typed
@@ -4439,6 +4558,7 @@ struct All: public ModulePass {
 		cerr << "BeginEnd       " << endl; fflush(stderr); {BeginEnd         pass;   pass.runOnModule(M);}
 		cerr << "GetelementPtr  " << endl; fflush(stderr); {GetelementPtr    pass;   pass.runOnModule(M);}
 		cerr << "Memcpy         " << endl; fflush(stderr); {Memcpy           pass;   pass.runOnModule(M);}
+		cerr << "Memset         " << endl; fflush(stderr); {Memset           pass;   pass.runOnModule(M);}
 		cerr << "ChAssumeFn     " << endl; fflush(stderr); {ChAssumeFn       pass;   pass.runOnModule(M);}
 		cerr << "ChAlloc        " << endl; fflush(stderr); {ChAlloc          pass;   pass.runOnModule(M);}
 		cerr << "FPointerhook   " << endl; fflush(stderr); {FPointerhook     pass;   pass.runOnModule(M);}
@@ -4536,6 +4656,9 @@ static RegisterPass<CallInstr> CallInstr(             "instr_callinstr"         
 
 char Memcpy::ID = 0;
 static RegisterPass<Memcpy> Memcpy(                   "instr_memcpy"             , "Instrument memcpy operations                        " );
+
+char Memset::ID = 0;
+static RegisterPass<Memset> Memset(                   "instr_memset"             , "Instrument memset operations                        " );
 
 char ExternalFn::ID = 0;
 static RegisterPass<ExternalFn> ExternalFn(           "list_external_functions"  , "Instrument call operations                          " );

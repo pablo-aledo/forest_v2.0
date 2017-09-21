@@ -1510,6 +1510,36 @@ void Operators::memcpy(char* _addr_dst, char* _addr_src, char* _size_bytes, char
 	
 }
 
+void Operators::memset(char* _addr_dst, char* _val, char* _len, char* _align, char* _is_volatile){
+
+	string addr_dst = string(_addr_dst);
+	string len = string(_len);
+
+	int addr_dst_i = strtoi(solver->realvalue(name(addr_dst)));
+
+	unsigned int each_element_size = 0;
+	string mem_name_dst;
+	do {
+		each_element_size++;
+		mem_name_dst = "mem_" + itos(addr_dst_i + each_element_size);
+	} while(!solver->is_defined(mem_name_dst));
+
+	int n_elems = strtoi(solver->realvalue(len))/each_element_size;
+	int val_i = strtoi(solver->realvalue(name(string(_val))));
+	string val = string("constant_") + "IntegerTyID" + itos(each_element_size*8) + "_" + itos(val_i);
+
+	for ( unsigned int mem_dst = addr_dst_i; n_elems > 0; mem_dst += each_element_size, n_elems--) {
+		string mem_name_dst = "mem_" + itos(mem_dst);
+		solver->assign_instruction(val,mem_name_dst);
+	}
+
+	printf("\e[31m llvm.memset \e[31m addr_dst \e[0m %s \e[31m val \e[0m %s \e[31m len \e[0m %s\n", addr_dst.c_str(), val.c_str(), len.c_str());
+	//exit(0);
+	
+}
+
+
+
 void Operators::assume(char* _assumption_register){
 
 	string assumption_register = string(_assumption_register);

@@ -52,6 +52,7 @@ public:
 	void assume(char* _assumption_register);
 	void assertion(char* _assertion_register);
 	void memcpy(char* a, char* b, char* c, char* d, char* e);
+	void memset(char* a, char* b, char* c, char* d, char* e);
 	void pointer_ranges();
 	string get_actual_bb();
 	Operators ();

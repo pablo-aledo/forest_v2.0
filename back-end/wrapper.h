@@ -170,6 +170,7 @@ extern "C" void begin_sim_measurement(char* functions, char* bbs);
 extern "C" void br_instr_cond_measurement(bool value);
 extern "C" void pointer_ranges();
 extern "C" void Memcpy(char* a, char* b, char* c, char* d, char* e);
+extern "C" void Memset(char* a, char* b, char* c, char* d, char* e);
 
 
 extern "C" void begin_concurrency();

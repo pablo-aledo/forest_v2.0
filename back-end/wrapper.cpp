@@ -302,6 +302,12 @@ void Memcpy(char* a, char* b, char* c, char* d, char* e){
 	timer->end_timer("Memcpy");
 }
 
+void Memset(char* a, char* b, char* c, char* d, char* e){
+	timer->start_timer();
+	operators->memset(a,b,c,d,e);
+	timer->end_timer("Memset");
+}
+
 void assumption(char* _assumption_register){
 	operators->assume(_assumption_register);
 }
