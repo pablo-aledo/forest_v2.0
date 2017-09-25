@@ -2,12 +2,13 @@
 
 <options>
 	<option key="commutativity" value="true"/> 
-	<option key="explanation" value="Simple commutativity testing"/> 
-	<option key="file" value="simple.c"/> 
+	<option key="explanation" value="binary_search"/> 
+	<option key="file" value="binary_search.c"/> 
 	<option key="max_pointer_deref_combs" value="5"/> 
 	<option key="inside_bounds" value="true"/> 
 	<option key="sizes_depth" value="1,10,1"/> 
-	<option key="seed_function_with_pointers" value="main_for.body.split"/> 
+	<option key="seed_function_with_pointers" value="main_if.end"/> 
 	<option key="generate_model" value="true"/> 
-	<option key="output" value="mem_68"/> 
+	<option key="output" value="mem_0"/> 
+	<option key="forced_free_var" value="mem_0"/> 
 </options>

@@ -412,5 +412,6 @@ void expand_options(){
 
 	if(cmd_option_bool("goanna_fpr")) set_option("svcomp_silent", "true");
 	if(cmd_option_bool("goanna_fpr")) set_option("complete", "true");
+	if(cmd_option_bool("show_commutativity")) set_option("commutativity", "false");
 }
 

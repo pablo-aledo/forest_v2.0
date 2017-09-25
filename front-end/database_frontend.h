@@ -63,6 +63,7 @@ void gen_file_vectors();
 void show_test_vectors();
 char get_argv_char(int testvector, int i);
 void show_argvs();
+void show_commutativity_formulas();
 
 
 #endif /* end of include guard: _DATABASE_FRONTEND_H_ */

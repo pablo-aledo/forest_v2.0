@@ -38,7 +38,7 @@ using namespace std;
 // Pass functions
 
 void show_version_and_exit(){
-	printf("svc_16_20151108\n");
+	printf("commutativity\n");
 	exit(0);
 }
 
@@ -48,6 +48,7 @@ int main(int argc, const char *argv[]) {
 	load_default_options();
 	set_current_path();
 	create_tmp_path();
+	system("reset");
 
 	if( argc >= 2 && argv[1][0] != '-' ){
 		set_project_path( string(argv[1]) );
@@ -172,6 +173,7 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("get_result")) get_result();                             // copies result to gold_result
 	if(cmd_option_bool("vim")) vim();                                           // shows debug information in vim
 	if(cmd_option_bool("get_model")) get_model();                               // gets a model to be used in repl
+	if(cmd_option_bool("show_commutativity")) show_commutativity_formulas();    // Shows the formulas for commutativity testing
 	if(cmd_option_bool("get_model_fn")) get_model_fn();                         // gets a model of a function
 	if(cmd_option_bool("get_model_modelfinder")) get_model_modelfinder();       // gets a model to be used with the modelfinder tool
 	if(cmd_option_bool("get_static_heuristic")) get_static_heuristic();         // generates heuristics to guide the search

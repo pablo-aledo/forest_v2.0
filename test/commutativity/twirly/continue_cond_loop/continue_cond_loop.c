@@ -1,5 +1,5 @@
 
-void test() {
+int main() {
   int i = 100;
   int a = 0;
 

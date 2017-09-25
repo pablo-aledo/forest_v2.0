@@ -106,6 +106,7 @@ void clean_tables(){
 	action << "drop table measurements;";
 	action << "drop table frontend;";
 	action << "drop table check_xml;";
+	action << "drop table models;";
 	db_command( action.str() );
 
 	action.str("");
@@ -762,6 +763,24 @@ void show_argvs(){
 		}
 		printf("\n");
 	}
+
+}
+
+void show_commutativity_formulas(){
+
+	printf("show_commutativity_formulas\n");
+
+	stringstream command;
+
+	command << "(";
+
+	command << "cd " << tmp_dir() << "; ";
+
+	command << "echo '" << ".mode columns\\n.width 8 120\\n.headers on\\nselect variable, content from models;" << "' | sqlite3 " << tmp_file("database.db") << " | uniq";
+
+	command << ")";
+	
+	int ret = system(command.str().c_str() );
 
 }
 

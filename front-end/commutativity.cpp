@@ -36,7 +36,7 @@ void commutativity_testing(){
 
 	systm(cmd.str().c_str());
 
-	cmd_option_set("seed_function_with_pointers", "main_for.body.split");
+
 	options_to_file();
 
 	cmd.str("");
