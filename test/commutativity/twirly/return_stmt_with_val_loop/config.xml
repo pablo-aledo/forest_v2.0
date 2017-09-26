@@ -3,7 +3,7 @@
 <options>
 	<option key="commutativity" value="true"/> 
 	<option key="explanation" value="return_stmt_with_val_loop"/> 
-	<option key="file" value="return_stmt_with_val_loop.c"/> 
+	<option key="file" value="return_stmt_loop_with_value.c"/> 
 	<option key="max_pointer_deref_combs" value="5"/> 
 	<option key="inside_bounds" value="true"/> 
 	<option key="sizes_depth" value="1,10,1"/> 
