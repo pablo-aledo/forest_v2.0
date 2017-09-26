@@ -1,6 +1,3 @@
-
-#include <stdio.h>
-
 struct list {
   int i;
   struct list *next;
@@ -25,7 +22,7 @@ struct list *list_construct(void) {
   buf[7].next = &buf[8];
   buf[8].next = &buf[9];
   buf[9].next = &buf[10];
-  buf[10].next = NULL;
+  buf[10].next = 0;
 
   buf[0].i = 1;
   buf[1].i = 2;
@@ -44,7 +41,7 @@ struct list *list_construct(void) {
 
 int main(int argc, const char *argv[]) {
   struct list *head = list_construct();
-  struct list *p = NULL;
+  struct list *p = 0;
   int count = 0;
 
   p = head;
@@ -52,10 +49,6 @@ int main(int argc, const char *argv[]) {
     p->i++;
     p = p->next;
   }
-
-  printf("%d\n", head->i);
-  printf("%d\n", tail->i);
-  printf("%d\n", random->i);
 
   return 0;
 }

@@ -1,5 +1,5 @@
 
-void test() {
+int main() {
   int i = 100;
   int j = 100;
   int a = 0;
@@ -9,7 +9,7 @@ void test() {
 
     while(--j) {
       if(a == 50)
-        return;
+        return 0;
     }
 
     a++;

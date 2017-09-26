@@ -1,21 +1,17 @@
-
-#include <stdio.h>
-#include <stddef.h>
-
-const size_t MAX_N = 20;
+const int MAX_N = 20;
 
 struct vertex_t {
   int i;
 };
 
 struct graph_t {
-  size_t n;
+  int n;
   struct vertex_t *vertices;
-  size_t *adjacency[MAX_N];
+  int *adjacency[MAX_N];
 };
 
 struct graph_t graph_construct(void) {
-  const size_t N = 5;
+  const int N = 5;
   static struct vertex_t vertices[N];
 
   vertices[0].i = 5;
@@ -24,7 +20,7 @@ struct graph_t graph_construct(void) {
   vertices[3].i = 3;
   vertices[4].i = 9;
 
-  static size_t adjacency[][N] = {{1, 1, 1, 0, 1},
+  static int adjacency[][N] = {{1, 1, 1, 0, 1},
                                   {1, 1, 0, 0, 1},
                                   {1, 0, 0, 1, 1},
                                   {0, 0, 1, 1, 0},
@@ -47,10 +43,10 @@ int foo(struct vertex_t *v) { return v->i * v->i; }
 int main(int argc, const char *argv[]) {
   struct graph_t g = graph_construct();
   char visited[MAX_N] = {0};
-  size_t queue[MAX_N] = {0};
-  size_t i = 0;
-  size_t v = 0;
-  size_t qelements = 0;
+  int queue[MAX_N] = {0};
+  int i = 0;
+  int v = 0;
+  int qelements = 0;
   int result = 0;
 
   queue[qelements++] = 3;
@@ -69,9 +65,6 @@ int main(int argc, const char *argv[]) {
       }
     }
   }
-
-  fprintf(stderr, "%d\n", result);
-  fprintf(stderr, "%d\n", g.vertices[0].i);
 
   return 0;
 }

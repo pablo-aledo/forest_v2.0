@@ -2,11 +2,12 @@
 void test(void);
 void bar(void);
 
-void test(void) {
+int main(void) {
   int i = 100;
 
   while (--i) {
     test();
     bar();
   }
+  return 0;
 }

@@ -1,14 +1,10 @@
-
-#include <stdio.h>
-#include <stddef.h>
-
 int main() {
-  const size_t N = 16;
+  const int N = 16;
   const unsigned max_iterations = 10;
   unsigned iterations[N] = {0};
 
-  for (size_t x0 = 0; x0 < 4; ++x0)
-    for (size_t y0 = 0; y0 < 4; ++y0) {
+  for (int x0 = 0; x0 < 4; ++x0)
+    for (int y0 = 0; y0 < 4; ++y0) {
       unsigned iteration_count = 0;
       unsigned x = 0, y = 0;
 
@@ -21,8 +17,6 @@ int main() {
 
       iterations[x0 * 4 + y0] = iteration_count;
     }
-
-  fprintf(stderr, "%u\n", iterations[N / 2]);
 
   return 0;
 }

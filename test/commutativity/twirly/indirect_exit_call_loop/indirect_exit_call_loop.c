@@ -1,11 +1,4 @@
-
-void exit(int);
-
-void test() {
-  exit(1);
-}
-
-void test() {
+int main() {
   int i = 100;
   int a = 0;
 
@@ -13,10 +6,10 @@ void test() {
     a++;
 
     if(a == 50)
-      test();
+	return 1;
 
     a++;
   }
 
-  return;
+  return 0;
 }

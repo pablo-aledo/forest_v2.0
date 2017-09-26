@@ -1,5 +1,5 @@
 
-int test(int k) {
+int main(int k) {
   int i = 100;
   int a = 0;
 
