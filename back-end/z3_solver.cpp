@@ -832,6 +832,7 @@ void Z3Solver::pointer_instruction(string dst, string offset_tree, vector<string
 		printf("content %s\n", content(dst).c_str() );
 		add_lt(dst, itos(get_last_address(base)));
 		add_bt(dst, itos(get_first_address(base)));
+		set_real_value(dst, itos(get_first_address(base)) );
 	}
 
 	bool forcedfree = is_forced_free(base);

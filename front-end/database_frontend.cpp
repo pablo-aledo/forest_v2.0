@@ -776,7 +776,7 @@ void show_commutativity_formulas(){
 
 	command << "cd " << tmp_dir() << "; ";
 
-	command << "echo '" << ".mode columns\\n.width 8 120\\n.headers on\\nselect variable, content from models;" << "' | sqlite3 " << tmp_file("database.db") << " | uniq";
+	command << "echo '" << ".mode columns\\n.width 8 120\\n.headers on\\nselect distinct variable, content from models;" << "' | sqlite3 " << tmp_file("database.db");
 
 	command << ")";
 	

@@ -4,10 +4,12 @@
 	<option key="commutativity" value="true"/> 
 	<option key="explanation" value="map_simple"/> 
 	<option key="file" value="map_simple.c"/> 
-	<option key="max_pointer_deref_combs" value="5"/> 
+	<option key="max_pointer_deref_combs" value="10"/> 
 	<option key="inside_bounds" value="true"/> 
 	<option key="sizes_depth" value="1,10,1"/> 
 	<option key="seed_function_with_pointers" value="main_for.body.split"/>
 	<option key="generate_model" value="true"/> 
+	<option key="output" value="mem_100"/> 
 	<option key="output" value="mem_104"/> 
+	<option key="output" value="mem_108"/> 
 </options>
