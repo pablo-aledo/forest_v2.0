@@ -826,7 +826,7 @@ void Z3Solver::pointer_instruction(string dst, string offset_tree, vector<string
 	set_real_value(dst, itos(real_pointer));
 
 	if(options->cmd_option_bool("inside_bounds")){
-		settype(dst, "IntegerTyID32");
+		settype(dst, "Pointer");
 		printf("inside bounds %d %d\n", get_first_address(base), get_last_address(base));
 		printf("content %s\n", expr.c_str() );
 		printf("content %s\n", content(dst).c_str() );
