@@ -49,7 +49,7 @@ void commutativity_testing(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Release+Asserts/lib/ForestInstr.so " << cmd_option_str("optim_passes") << " -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimization pass

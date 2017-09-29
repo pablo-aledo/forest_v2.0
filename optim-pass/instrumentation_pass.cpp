@@ -2283,6 +2283,7 @@ struct CastInstr: public ModulePass {
 					if( CastInst::classof(in) ){
 
 						if( in->getName() == "alloca point" ) continue;
+						if( in->getName() == "reg2mem alloca point" ) continue;
 
 						string nameres = "register" UNDERSCORE + in->getName().str();
 						string nameop1 = operandname( in->getOperand(0) );
