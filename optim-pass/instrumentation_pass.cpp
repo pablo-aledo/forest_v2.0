@@ -2066,6 +2066,30 @@ if(M.getFunction("__VERIFIER_assert"))
 	}
 };
 
+struct LocalUndefs: public ModulePass {
+	static char ID; // Pass identification, replacement for typeid
+	LocalUndefs() : ModulePass(ID) {}
+
+	virtual bool runOnModule(Module &M) {
+
+		mod_iterator(M, fn){
+		fun_iterator(fn, bb){
+		blk_iterator(bb, in){
+			for ( unsigned int i = 0; i < in->getNumOperands(); i++) {
+				if(UndefValue::classof(in->getOperand(i))){
+					in->dump();
+					AllocaInst* undeflocal = new AllocaInst( in->getOperand(i)->getType(), "undef_a", in);
+					LoadInst*   undefvalue = new LoadInst( undeflocal, "undef_v", false, in);
+					in->setOperand(i, undefvalue);
+					bb->dump();
+				}
+			}
+		}}}
+
+		return false;
+	}
+};
+
 BasicBlock* return_bb(Function* function){
 	fun_iterator(function, bb){
 	blk_iterator(bb, in){
@@ -4477,6 +4501,7 @@ struct All: public ModulePass {
 		read_options();
 
 		cerr << "AddAssertFn    " << endl; fflush(stderr); {AddAssertFn      pass;   pass.runOnModule(M);}
+		cerr << "LocalUndefs    " << endl; fflush(stderr); {LocalUndefs      pass;   pass.runOnModule(M);}
 		cerr << "RmErrorFn      " << endl; fflush(stderr); {RmErrorFn        pass;   pass.runOnModule(M);}
 		cerr << "RmPutsFn       " << endl; fflush(stderr); {RmPutsFn         pass;   pass.runOnModule(M);}
 		cerr << "MainArgs_2     " << endl; fflush(stderr); {MainArgs_2       pass;   pass.runOnModule(M);}
@@ -4558,6 +4583,9 @@ static RegisterPass<ChAssertFn> ChAssertFn(           "instr_chassert"          
 
 char AddAssertFn::ID = 0;
 static RegisterPass<AddAssertFn> AddAssertFn(         "instr_addassert"           , "Add assert functions                               " );
+
+char LocalUndefs::ID = 0;
+static RegisterPass<LocalUndefs> LocalUndefs(         "local_undefs"             , "Changes undefs by local registers                   " );
 
 char RmInstr::ID = 0;
 static RegisterPass<RmInstr> RmInstr(                 "remove_instr"             , "Remove instructions                                 " );
