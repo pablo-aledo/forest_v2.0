@@ -4347,6 +4347,10 @@ struct GlobalInit: public ModulePass {
 						int value_int = *(constant_data_array->getRawDataValues().data() + i*each_element_size);
 						value_str = itos(value_int);
 					}
+					if(each_element_type == "IntegerTyID8"){
+						char value_char = *(constant_data_array->getRawDataValues().data() + i*each_element_size);
+						value_str = itos(value_char);
+					}
 					aux += "constant_" + each_element_type + "_" + value_str + ",";
 				}
 
