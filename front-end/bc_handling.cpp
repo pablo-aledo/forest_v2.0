@@ -52,7 +52,7 @@ void make_bc(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so " << cmd_option_str("optim_passes") << " -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Second optimization pass
@@ -727,62 +727,6 @@ void make_initial_bc(){
 		cmd << "mv " << tmp_file("file-3.bc") << " " << tmp_file("file.bc");
 		systm(cmd.str().c_str());
 	}
-
-	if(cmd_option_bool("with_uclibs")){
-
-		// rm list of functions 
-		cmd.str("");
-		cmd << "rm -f " << cmd_option_str("base_path") << "/stdlibs/list";
-		systm(cmd.str());
-
-		// rm list of globals
-		//cmd.str("");
-		//cmd << "rm -f " << cmd_option_str("base_path") << "/stdlibs/list2";
-		//systm(cmd.str());
-
-		// list functions and globals in stdlibs 
-
-		vector<string> uclibs = cmd_option_string_vector("uclib");
-
-		for( vector<string>::iterator it = uclibs.begin(); it != uclibs.end(); it++ ){
-			//printf("uclib %s\n", it->c_str());
-			cmd.str("");
-			cmd << "find " << base_path << "/stdlibs_uclib/ -name " << *it << ".os > " << tmp_file("filelib");
-			systm(cmd.str());
-
-			ifstream input(tmp_file("filelib").c_str());
-			string line; input >> line;
-
-
-			cmd.str("");
-			cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestStdlibs.so -stdlibs_list_functions < " << line << " > /dev/null";
-			systm(cmd.str().c_str());
-
-			cmd.str("");
-			cmd << "llvm-link " << tmp_file("file.bc") << " " << line << " -o " << tmp_file("file-2.bc") << ";";
-			systm(cmd.str().c_str());
-
-			cmd.str("");
-			cmd << "mv " << tmp_file("file-2.bc") << " " << tmp_file("file.bc");
-			systm(cmd.str().c_str());
-
-		}
-
-		cmd.str("");
-		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_function_names < file.bc > file-2.bc";
-		systm(cmd.str().c_str());
-
-		cmd.str("");
-		cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file-2.bc > file-3.bc";
-		systm(cmd.str().c_str());
-
-
-		cmd.str("");
-		cmd << "mv " << tmp_file("file-3.bc") << " " << tmp_file("file.bc");
-		systm(cmd.str().c_str());
-
-	}
-
 }
 
 void run(){

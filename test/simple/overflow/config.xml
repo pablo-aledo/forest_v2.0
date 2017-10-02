@@ -7,4 +7,5 @@
 	<option key="output" value="mem_0"/> 
 	<option key="unconstrained" value="true"/> 
 	<option key="sym_argvs" value="2 2 15"/> 
+	<option key="optim_passes" value="-reg2mem"/> 
 </options>
