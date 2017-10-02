@@ -303,14 +303,22 @@ void Z3Solver::dump_get(FILE* file){
 		
 		//printf("----- name %s type %s\n", it->first.c_str(), gettype(it->first).c_str() );
 
-		fprintf(file,"(get-value (%s)); %s\n",internal_condition(it->second.content).c_str(), it->first.c_str() );
+		if(options->cmd_option_bool("get_simplified")){
+			fprintf(file,"(simplify (%s)); %s\n",internal_condition(it->second.content).c_str(), it->first.c_str() );
+		} else {
+			fprintf(file,"(get-value (%s)); %s\n",internal_condition(it->second.content).c_str(), it->first.c_str() );
+		}
 	}
 
 	fprintf(file,"; --- ↑non-free ↓forced_free \n" );
 
 	
 	for( map<string,string>::iterator it = first_content.begin(); it != first_content.end(); it++ ){
-		fprintf(file, "(get-value (%s)); %s\n", internal_condition(it->second).c_str(), it->first.c_str());
+		if(options->cmd_option_bool("get_simplified")){
+			fprintf(file, "(simplify (%s)); %s\n", internal_condition(it->second).c_str(), it->first.c_str());
+		} else {
+			fprintf(file, "(get-value (%s)); %s\n", internal_condition(it->second).c_str(), it->first.c_str());
+		}
 	}
 	
 	
