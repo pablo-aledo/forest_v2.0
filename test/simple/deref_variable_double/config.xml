@@ -5,5 +5,5 @@
 	<option key="explanation" value="Double dereference with a free variable"/> 
 	<option key="file" value="deref_variable_double.c"/> 
 	<option key="check_outofbounds" value="false"/> 
-	<option key="forced_free_var" value="mem_56"/> 
+	<option key="forced_free_var" value="mem_52"/> 
 </options>
