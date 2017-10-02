@@ -8,4 +8,5 @@
 	<option key="argv_size" value="30"/> 
 	<option key="argvs_size" value="100"/> 
 	<option key="each_argv_size" value="5"/> 
+	<option key="optim_passes" value="-reg2mem"/> 
 </options>

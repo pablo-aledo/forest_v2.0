@@ -275,6 +275,9 @@ int get_size(string type){
 	if( type == "FunctionTyID")
 		return 1;
 
+	if( type == "IntegerTyID1" )
+		return 1;
+
 
 	if( type.find(',') != string::npos ){
 		int sum = 0;
