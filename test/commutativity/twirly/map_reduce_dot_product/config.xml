@@ -8,4 +8,5 @@
 	<option key="inside_bounds" value="true"/> 
 	<option key="sizes_depth" value="1,10,1"/> 
 	<option key="seed_function_with_pointers" value="main_for.body.split"/> 
+	<option key="optim_passes" value="-reg2mem"/> 
 </options>

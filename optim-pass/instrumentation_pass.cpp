@@ -2081,7 +2081,7 @@ struct LocalUndefs: public ModulePass {
 					AllocaInst* undeflocal = new AllocaInst( in->getOperand(i)->getType(), "undef_a", in);
 					LoadInst*   undefvalue = new LoadInst( undeflocal, "undef_v", false, in);
 					in->setOperand(i, undefvalue);
-					bb->dump();
+					//bb->dump();
 				}
 			}
 		}}}

@@ -32,7 +32,7 @@ void commutativity_testing(){
 	cmd << "cp " << prj_file(cmd_option_str("file")) << " file.c; ";
 	cmd << "clang -c -emit-llvm file.c;";
 	cmd << "opt -mem2reg -simplifycfg -loop-simplify file.bc -o file-canon.bc; ";
-	cmd << "opt -load /usr/share/icsa-dswp/lib/libdswp.so -load /usr/share/terrace/lib/libLLVMTerracePass.so -terrace file-canon.bc -o file-te.bc";
+	cmd << "opt -load /usr/share/icsa-dswp/lib/libdswp.so -load /usr/share/terrace/lib/libLLVMTerracePass.so " << cmd_option_str("optim_passes") << " -terrace file-canon.bc -o file-te.bc";
 
 	systm(cmd.str().c_str());
 
