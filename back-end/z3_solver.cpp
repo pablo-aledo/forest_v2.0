@@ -1247,6 +1247,9 @@ void Z3Solver::push_condition_var(string name, bool invert ){
 	if(type == "IntegerTyID32")
 		var.content = internal_condition("(not (= " + var.content + " constant_IntegerTyID32_0))");
 
+	if(type == "IntegerTyID1")
+		var.content = internal_condition("(not (= " + var.content + " constant_IntegerTyID8_0))");
+
 	//printf("push_condition_var %s %s\n", var.content.c_str(), variables_generic[name].type.c_str() );
 
 	conditions.push_back( var );

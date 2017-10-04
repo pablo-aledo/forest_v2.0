@@ -265,7 +265,12 @@ void SolverWrapper::push_condition(string name, string actual_function, vector<s
 		push_condition_var(name);
 	} else if( (!invert && realvalue(name) == "false") || (invert && realvalue(name) == "true") ){
 		push_condition_var(name, true);
+	} else if( (!invert && realvalue(name) != "0") || (invert && realvalue(name) == "0") ){
+		push_condition_var(name);
+	} else if( (!invert && realvalue(name) == "0") || (invert && realvalue(name) != "0") ){
+		push_condition_var(name, true);
 	} else {
+		printf("non-boolean %s\n", realvalue(name).c_str());
 		assert(0 && "Non-boolean value for condition");
 	}
 }
