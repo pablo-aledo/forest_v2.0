@@ -1,4 +1,6 @@
 name_hint                  value  probl
 -------------------------  -----  -----
-global_data+4              31416  4    
-global_data+4              10854  5    
+main_register_seed         81     2    
+main_register_seed         10854  3    
+main_register_seed         72280  4    
+main_register_seed         10854  5    
