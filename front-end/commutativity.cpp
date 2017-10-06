@@ -32,8 +32,11 @@ void commutativity_testing(){
 	cmd << "cp " << prj_file(cmd_option_str("file")) << " file.c; ";
 	cmd << "clang -c -emit-llvm file.c;";
 	cmd << "opt -mem2reg -simplifycfg -loop-simplify file.bc -o file-canon.bc; ";
-	cmd << "opt -load /usr/share/icsa-dswp/lib/libdswp.so -load /usr/share/terrace/lib/libLLVMTerracePass.so " << cmd_option_str("optim_passes") << " -terrace file-canon.bc -o file-te.bc";
+	cmd << "opt -load /usr/share/dlf-install/lib/libLLVMDecoupleLoopsFrontPass.so -decouple-loops-front -dlf-bb-prefix -dlf-debug -dlf-dot-cfg-only file-canon.bc -o file-dlf.bc; ";
+	//cmd << "opt -dot-cfg file-te.bc; ";
+	cmd << "/usr/share/toolchain_src/DecoupleLoopsFront/utils/dot_manipulation/gv_dot_dlf.sh cfg.main.dot; ";
 
+	cmd << "opt -load /usr/share/icsa-dswp/lib/libdswp.so -load /usr/share/terrace/lib/libLLVMTerracePass.so " << cmd_option_str("optim_passes") << " -terrace file-canon.bc -o file-te.bc";
 	systm(cmd.str().c_str());
 
 
