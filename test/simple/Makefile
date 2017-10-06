@@ -62,5 +62,4 @@ test:
 	@forest ./alloc_outofbounds_dynamic/config.xml   # Access out of bounds in heap with dynamic index
 	@forest ./alloc_range/config.xml                 # Allocation ranges
 	@forest ./fn_pointer/config.xml                  # Calling function through a pointer
-	@forest ./heuristic/config.xml                   # Heuristic
 	@forest ./random_init/config.xml                 # Random initialization of array

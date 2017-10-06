@@ -221,12 +221,14 @@ void  MemAlloc::fr_free(char* register_pointer){
 }
 
 void  MemAlloc::end_sim(){
-	if(number_of_mallocs > 0){
-		printf("Memory leak\n");
-		solver->solve_problem();
-		database->insert_memoryleak();
-		database->insert_problem();
-		exit(0);
+	if(options->cmd_option_bool("check_for_memory_leak")){
+		if(number_of_mallocs > 0){
+			printf("Memory leak\n");
+			solver->solve_problem();
+			database->insert_memoryleak();
+			database->insert_problem();
+			exit(0);
+		}
 	}
 }
 

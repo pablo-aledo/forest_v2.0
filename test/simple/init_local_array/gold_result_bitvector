@@ -1,4 +1,4 @@
 name_hint                  value  probl
 -------------------------  -----  -----
-main_register_a+20         -1     1    
-main_register_a+20         0      2    
+global_ZZ4mainE1a+20       0      1    
+global_ZZ4mainE1a+20       5      2    

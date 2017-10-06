@@ -4,5 +4,5 @@
 	<option key="test" value="true"/> 
 	<option key="explanation" value="Initialize a local array"/> 
 	<option key="file" value="init_local_array.c"/> 
-	<option key="forced_free_var" value="mem_64"/> 
+	<option key="forced_free_var" value="mem_20"/> 
 </options>
