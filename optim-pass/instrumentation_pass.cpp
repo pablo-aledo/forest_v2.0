@@ -2052,6 +2052,9 @@ struct RmInstr: public ModulePass {
 		if( fn_name == "fr_malloc"        ) return true;
 		if( fn_name == "fr_alloca"        ) return true;
 		if( fn_name == "fr_free"          ) return true;
+		if( fn_name == "fp_hook"          ) return true;
+		if( fn_name == "begin_sim"          ) return true;
+		if( fn_name == "pointer_ranges"          ) return true;
 		if( fn_name == "pthread_mutex_lock"        ) return true;
 		if( fn_name == "pthread_mutex_unlock"        ) return true;
 
@@ -2086,9 +2089,9 @@ struct RmInstr: public ModulePass {
 
 				CallInst* in_c = cast<CallInst>(in);
 
-				if(is_special_function(in_c->getCalledFunction())) continue;
+				// in_c->dump();
 
-				//in_c->dump();
+				if(in_c->getCalledFunction() && is_special_function(in_c->getCalledFunction())) continue;
 
 				for ( unsigned int i = 0; i < in->getNumOperands()-1; i++) {
 					Constant* zero = get_zero_of_type(in->getOperand(i)->getType(), M);
