@@ -14,7 +14,7 @@ translations.
 sudo apt-get install sqlite3 graphviz meld subversion cmake g++ python2.7
 
 # z3
-git clone https://git01.codeplex.com/z3
+git clone https://github.com/Z3Prover/z3.git
 cd z3-*
 ./configure
 python scripts/mk_make.py
