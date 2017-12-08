@@ -233,6 +233,7 @@ string internal_representation_float(float in, string type, string solver){
 int primary_size( string type_str ){
 
 	if( type_str == "IntegerTyID32" ) return 4;
+	if( type_str == "IntegerTyID1" ) return 1;
 	if( type_str == "IntegerTyID16" ) return 2;
 	if( type_str == "IntegerTyID8" ) return 1;
 	if( type_str == "IntegerTyID64" ) return 8;

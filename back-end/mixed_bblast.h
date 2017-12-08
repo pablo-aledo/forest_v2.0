@@ -47,6 +47,7 @@ protected:
 	string type_free_var(string name_hint);
 	void and_operation(string op1, string op2, string dst);
 	void or_operation(string op1, string op2, string dst);
+	void ite_intruction_content(string dst, string cmp, string op1, string op2);
 	void dump_problem(string filename);
 	void dump_bit_operations(FILE* file);
 	void dump_bits(FILE* file);

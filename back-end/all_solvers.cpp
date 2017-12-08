@@ -79,6 +79,10 @@ string AllSolvers::internal_condition(string condition){
 	return ret;
 }
 
+void AllSolvers::ite_instruction_content(string dst, string cond, string op1, string op2){
+	assert(0 && "not implemented");
+}
+
 void AllSolvers::binary_instruction_content(string dst, string op1, string op2, string operation){
 	for( vector<SolverWrapper*>::iterator it = solvers.begin(); it != solvers.end(); it++ ){
 		(*it)->get_context(this);

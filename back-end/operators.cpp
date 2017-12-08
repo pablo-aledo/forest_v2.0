@@ -380,16 +380,17 @@ void Operators::select_op(char* _dest, char* _cond, char* _sel1, char* _sel2 ){
 	string sel1 = string(_sel1);
 	string sel2 = string(_sel2);
 
-	if( realvalue(cond) == "true" ){
-
-		solver->assign_instruction( name(sel1), name(dest)  );
-
-	} else if( realvalue(cond) == "false" ){
-
-		solver->assign_instruction( name(sel2), name(dest)  );
-
+	if(solver->get_is_propagated_constant(name(cond)) || solver->is_constant(name(cond))){
+		if( realvalue(cond) == "true" || realvalue(cond) != "0" ){
+			solver->assign_instruction( name(sel1), name(dest)  );
+		} else if( realvalue(cond) == "false" || realvalue(cond) == "0" ){
+			solver->assign_instruction( name(sel2), name(dest)  );
+		} else {
+			fprintf( stderr,"%s", realvalue(cond).c_str() );
+			assert(0 && "Not binary condition");
+		}
 	} else {
-		assert(0 && "Not binary condition");
+		solver->ite_instruction( name(dest), name(cond), name(sel1), name(sel2) );
 	}
 
 	debug && printf("\e[31m select_op %s %s %s %s\e[0m\n", _dest, _cond, _sel1, _sel2);

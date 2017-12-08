@@ -77,7 +77,7 @@ void compare_bc(){
 
 	// First optimization pass
 	cmd.str("");
-	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so -instr_fill_names < file.bc > file-2.bc";
+	cmd << "opt -load " << llvm_path << "/Debug+Asserts/lib/ForestInstr.so " <<  cmd_option_str("optim_passes") << " -instr_fill_names < file.bc > file-2.bc";
 	systm(cmd.str().c_str());
 
 	// Disassembly
@@ -705,9 +705,9 @@ void make_initial_bc(){
 		// Compile code to BC
 		cmd.str("");
 		if(cmd_option_str("c_standard") == "C")
-			cmd << "llvm-gcc " << cmd_option_str("compiler_flags") << " -O0 -S -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.c -o file.bc";
+			cmd << "clang " << cmd_option_str("compiler_flags") << " -O0 -S -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.c -o file.bc";
 		else
-			cmd << "clang++ -O0 -S -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.cpp -o file.bc";
+			cmd << "clang++ -O0 -S -std=c++11 -emit-llvm -D NO_INIT " << bigsize_str << cflags << " -c file.cpp -o file.bc";
 		systm(cmd.str().c_str());
 
 	}
