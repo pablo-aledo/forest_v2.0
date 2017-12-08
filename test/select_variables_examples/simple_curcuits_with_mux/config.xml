@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Simple Circuits with MUX"/> 
+	<option key="file" value="main.cpp"/> 
+    <option key="optim_passes" value="-reg2mem"/> 
+</options>

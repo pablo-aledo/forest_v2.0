@@ -136,6 +136,9 @@ void MixedBblast::or_operation(string op1, string op2, string dst){
 }
 
 
+void MixedBblast::ite_intruction_content(string dst, string cmp, string op1, string op2){
+	assert(0 && "not implemented");
+}
 
 void MixedBblast::dump_bit_operations(FILE* file){
 

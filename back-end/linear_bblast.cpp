@@ -93,6 +93,9 @@ void LinearBblast::assign_instruction_content(string src, string dst, string fn_
 }
 
 
+void LinearBblast::ite_instruction_content(string dst, string cond, string op1, string op2){
+	assert(0 && "Not implemented");
+}
 
 void LinearBblast::binary_instruction_content(string dst, string op1, string op2, string operation){
 

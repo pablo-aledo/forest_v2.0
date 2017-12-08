@@ -171,6 +171,7 @@ bool is_number(const std::string& s) {
 	if(s.substr(0,1) == "-") return is_number(s.substr(1));
 
 	if(s.substr(0,2) == "#x") return is_number(s.substr(2));
+	if(s.substr(0,2) == "#b") return is_number(s.substr(2));
 
 	//printf("%s\n", s.substr(0,s.find(".")).c_str() );
 	//printf("%s\n", s.substr(s.find(".")+1).c_str() );

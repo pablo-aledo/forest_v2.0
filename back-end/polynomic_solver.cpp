@@ -509,6 +509,10 @@ void PolynomicSolver::assign_instruction_content(string src, string dst, string 
 	//debug && printf("\e[32m result \e[0m %f\n", variables[dst].content[""] );
 }
 
+void PolynomicSolver::ite_instruction_content(string dst, string cond, string op1, string op2){
+	assert(0 && "not implemented");
+}
+
 void PolynomicSolver::binary_instruction_content(string dst, string op1, string op2, string operation){
 
 	proplinear = true;

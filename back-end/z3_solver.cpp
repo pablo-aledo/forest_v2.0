@@ -630,6 +630,16 @@ void Z3Solver::binary_instruction_content(string dst, string op1, string op2, st
 
 }
 
+void Z3Solver::ite_instruction_content(string dst, string condition, string op1, string op2){
+
+
+	stringstream content_ss;
+
+	content_ss << "(ite " << condition << " " << op1 << " " << op2 << ")";
+
+	variables[dst].content = content_ss.str();
+
+}
 
 void Z3Solver::setcontent(string varname, string content){
 

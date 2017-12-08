@@ -41,6 +41,7 @@ public:
 	void assign_instruction_content(string src, string dst, string fn_name = "");
 	string internal_condition(string condition);
 	void binary_instruction_content(string dst, string op1, string op2, string operation);
+	void ite_instruction_content(string dst, string cond, string op1, string op2);
 	void solve_problem();
 	string internal_representation(int in, string type);
 	void cast_instruction_content(string src, string dst, string type_src, string type_dst, string sext);

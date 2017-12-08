@@ -102,6 +102,7 @@ public:
 	void get_context(SolverWrapper* other);
 	void set_isdriver();
 	void binary_instruction(string dst, string op1, string op2, string operation);
+	void ite_instruction(string dst, string cond, string op1, string op2);
 	string get_name_hint(string name);
 	void cast_instruction(string src, string dst, string type_src, string type_dst, string sext);
 	set<string> get_free_variables(string name);
@@ -126,6 +127,7 @@ public:
 	virtual string eval(string expr) = 0;
 	virtual string internal_condition(string condition) = 0;
 	virtual void binary_instruction_content(string dst, string op1, string op2, string operation) = 0;
+	virtual void ite_instruction_content(string dst, string cond, string op1, string op2) = 0;
 	virtual string internal_representation(int in, string type) = 0;
 	virtual map<set<pair<string, int> > , int > get_idx_val(string base,string idx_content, vector<string> indexes, int first_address, int last_address) = 0;
 	virtual void clear_variable(string var) = 0;

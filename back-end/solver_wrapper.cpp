@@ -1152,6 +1152,38 @@ void SolverWrapper::binary_instruction(string dst, string op1, string op2, strin
 
 }
 
+void SolverWrapper::ite_instruction(string dst, string cond, string op1, string op2){
+
+	if(!check_mangled_name(dst)) assert(0 && "Wrong dst for binary_instruction");
+	if(!check_mangled_name(cond)) assert(0 && "Wrong cond for binary_instruction");
+	if(!check_mangled_name(op1)) assert(0 && "Wrong op1 for binary_instruction");
+	if(!check_mangled_name(op2)) assert(0 && "Wrong op2 for binary_instruction");
+
+	debug && printf("\n\e[32m ite_instruction %s = %s? %s : %s\e[0m\n",
+			dst.c_str(),cond.c_str(),op1.c_str(),op2.c_str() );
+
+	ite_instruction_content(dst, cond, op1, op2);
+
+	if( realvalue(cond) == "true" || realvalue(cond) != "0" ){
+		set_real_value(dst, realvalue(op1) );
+	} else if( realvalue(cond) == "false" || realvalue(cond) == "0" ){
+		set_real_value(dst, realvalue(op2) );
+	} else {
+		assert( 0 && "non boolean value in condition" );
+	}
+
+	settype(dst, gettype(op1));
+	//bool forcedfree = is_forced_free(cond);
+	//propagate_unary(cond, dst, forcedfree);
+
+	debug && printf("\e[32m Content_dst \e[0m %s \e[32m type \e[0m %s \e[32m realvalue \e[0m %s \e[32m propconstant \e[0m %d \e[32m last_address\e[0m  %d %d \e[32m firstaddress \e[0m %d %d\n",
+		debug_content(dst).c_str(), variables_generic[dst].type.c_str(), realvalue(dst).c_str(),
+		get_is_propagated_constant(dst),
+		get_last_address(op1), get_last_address(dst), get_first_address(op1), get_first_address(dst) );
+
+	//printf("real_and_expr %s %s\n", realvalue(dst).c_str(), eval(content_smt(dst)).c_str() );
+
+}
 void SolverWrapper::assign_instruction(string src, string dst, string fn_name ){
 
 	debug && printf("\n\e[32m Assign_instruction %s = %s \e[0m\n",dst.c_str(),src.c_str() );
@@ -1230,6 +1262,7 @@ void SolverWrapper::assign_instruction(string src, string dst, string fn_name ){
 int SolverWrapper::minval(string type){
 
 	if (type == "IntegerTyID32" ) return -(1<<30 ) ;
+	if (type == "IntegerTyID1" ) return 0;
 	if (type == "IntegerTyID64" ) return -(1<<30 ) ;
 	if (type == "IntegerTyID8"  ) return -128;
 	if (type == "IntegerTyID16" ) return -(1<<15 ) ;
@@ -1247,6 +1280,7 @@ int SolverWrapper::minval(string type){
 int SolverWrapper::maxval(string type){
 
 	if (type == "IntegerTyID32" ) return (1<<30 ) ;
+	if (type == "IntegerTyID1" ) return 1;
 	if (type == "IntegerTyID64" ) return (1<<30 ) ;
 	if (type == "IntegerTyID8"  ) return 127;
 	if (type == "IntegerTyID16" ) return (1<<15 ) ;

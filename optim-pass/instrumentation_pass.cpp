@@ -4536,6 +4536,70 @@ struct GlobalInit: public ModulePass {
 	}
 };
 
+typedef struct ReplaceAfter {
+	Instruction* instr_to_replace;
+	Instruction* replace_by;
+} ReplaceAfter;
+
+struct SelectVariables: public ModulePass {
+	static char ID; // Pass identification, replacement for typeid
+	SelectVariables() : ModulePass(ID) {}
+
+	virtual bool runOnModule(Module &M) {
+
+		
+		vector<ReplaceAfter> values_to_replace;
+
+	        // Every C File is one Modules
+	        // Inside the Module you have a set of functions
+	        // Inside the functions you have basic blocks
+	        // Inside Basic Blocks there are instructions
+		mod_iterator(M, fn){ // Module
+		fun_iterator(fn, bb){ // Function 
+		blk_iterator(bb, in){ // Basic Block
+			if( BinaryOperator::classof(in) ){ 
+	
+				BasicBlock::iterator insertpos = in; insertpos++;
+	
+				AllocaInst* enable_ptr = new AllocaInst(Type::getInt1Ty( M.getContext() ), "select_enable", insertpos);
+				AllocaInst* val_ptr    = new AllocaInst(in->getType(), "select_value", insertpos);
+	
+				LoadInst* enable = new LoadInst(enable_ptr,"",insertpos);
+				LoadInst* val = new LoadInst(val_ptr,"",insertpos);
+	
+				SelectInst * SelectInstruction =  SelectInst::Create (enable,in ,val, "select_result", insertpos);
+	
+				ReplaceAfter val_to_repl = {in, SelectInstruction };
+				values_to_replace.push_back(val_to_repl);
+	
+			}
+	
+	
+		}}} 
+
+
+		for( vector<ReplaceAfter>::iterator it = values_to_replace.begin(); it != values_to_replace.end(); it++ ){
+			Instruction* instr_to_replace = it->instr_to_replace;
+			Instruction* replace_by = it->replace_by;
+
+			for (Value::user_iterator i = instr_to_replace->user_begin(), e = instr_to_replace->user_end(); i != e; ++i){
+  				Instruction *instruction = dyn_cast<Instruction>( *i );
+
+				if( instruction == replace_by ) continue;
+
+				for(int n = 0; n < instruction->getNumOperands(); n++ ){
+					if( instruction->getOperand(n) == instr_to_replace ){
+						instruction->setOperand(n, replace_by);
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+};
+
+
 struct All: public ModulePass {
 	static char ID; // Pass identification, replacement for typeid
 	All() : ModulePass(ID) {}
@@ -4580,6 +4644,9 @@ struct All: public ModulePass {
 
 
 // Identifiers
+// Select Variables 
+char SelectVariables::ID = 0;
+static RegisterPass<SelectVariables> SelectVariables(             "insert_select_variables"         , "Inserts the free SAT variables for debugging         " );
 
 char FillNames::ID = 0;
 static RegisterPass<FillNames> FillNames(             "instr_fill_names"         , "Fills operands and Block Names                      " );

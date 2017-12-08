@@ -134,6 +134,7 @@ protected:
 	void assign_instruction_content(string src, string dst, string fn_name = "");
 	string internal_condition(string condition);
 	void binary_instruction_content(string dst, string op1, string op2, string operation);
+	void ite_instruction_content(string dst, string cond, string op1, string op2);
 	string internal_representation(int in, string type);
 	map<set<pair<string, int> > , int > get_idx_val(string base,string idx_content, vector<string> indexes, int first_address, int last_address);
 	void clear_variable(string var);

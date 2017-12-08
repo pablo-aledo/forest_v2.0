@@ -77,6 +77,7 @@ public:
 	void init_indexes(string dst, string op1, string op2 = "");
 	void propagate_unary_extra(string src, string dst, bool forcedfree);
 	void binary_instruction_content(string dst, string op1, string op2, string operation);
+	void ite_instruction_content(string dst, string condition, string op1, string op2);
 	void assign_instruction_content(string src, string dst, string fn_name = "");
 	Z3Solver ();
 	virtual ~Z3Solver ();
