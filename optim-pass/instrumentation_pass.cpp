@@ -4633,7 +4633,7 @@ struct All: public ModulePass {
 		cerr << "ChAssumeFn     " << endl; fflush(stderr); {ChAssumeFn       pass;   pass.runOnModule(M);}
 		cerr << "ChAlloc        " << endl; fflush(stderr); {ChAlloc          pass;   pass.runOnModule(M);}
 		cerr << "FPointerhook   " << endl; fflush(stderr); {FPointerhook     pass;   pass.runOnModule(M);}
-		cerr << "RmInstr        " << endl; fflush(stderr); {RmInstr          pass;   pass.runOnModule(M);}
+		//cerr << "RmInstr        " << endl; fflush(stderr); {RmInstr          pass;   pass.runOnModule(M);}
 
 		return false;
 	}
