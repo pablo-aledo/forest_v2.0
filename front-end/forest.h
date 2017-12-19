@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include "cmd_options.h"
 #include "database_frontend.h"
 #include "pass_handler.h"
