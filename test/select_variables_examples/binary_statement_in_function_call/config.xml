@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/>
+	<option key="explanation" value="2 Binary Operations"/>
+	<option key="file" value="main.c"/>
+  <option key="optim_passes" value="-insert_select_variables"/>
+    <option key="c_standard" value="C">
+    <option key="globals_always_free" value="true">
+</options>
