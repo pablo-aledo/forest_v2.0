@@ -97,7 +97,7 @@ void Z3BitVector::dump_variables(FILE* file){
 			fprintf(file,"(declare-const %s (_ BitVec %d))\n", position.c_str(), bits);
 		} else if(type == "IntegerTyID1") {
 			bits = 1;
-			fprintf(file,"(declare-const %s (_ BitVec %d))\n", position.c_str(), bits);
+			fprintf(file,"(declare-const %s bool)\n", position.c_str(), bits);
 		} else if(type == "IntegerTyID64") {
 			bits = 64;
 			fprintf(file,"(declare-const %s (_ BitVec %d))\n", position.c_str(), bits);

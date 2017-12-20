@@ -635,7 +635,7 @@ void Z3Solver::ite_instruction_content(string dst, string condition, string op1,
 
 	stringstream content_ss;
 
-	content_ss << "(ite " << condition << " " << op1 << " " << op2 << ")";
+	content_ss << "(ite " << content(condition) << " " << content(op1) << " " << content(op2) << ")";
 
 	variables[dst].content = content_ss.str();
 
