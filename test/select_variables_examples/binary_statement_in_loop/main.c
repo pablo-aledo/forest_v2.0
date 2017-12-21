@@ -5,10 +5,10 @@ int main () {
  int b = 2;
  int c;
 
- for (int i = 0; i < 2e3; ++i){
+ for (int i = 0; i < 10; ++i){
    c = a +b;
  }
  
-__VERIFIER_assert(c == 3);
+__VERIFIER_assert(c == 4);
 
 }
