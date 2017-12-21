@@ -698,7 +698,7 @@ void show_test_vectors(){
 
 	command << "cd " << tmp_dir() << "; ";
 
-	command << "echo '" << ".mode columns\\n.width 6 20 30 5\\n.headers on\\nselect * from minimal_vectors;" << "' | sqlite3 " << tmp_file("database.db");
+	command << "printf '" << ".mode columns\\n.width 6 20 30 5\\n.headers on\\nselect * from minimal_vectors;" << "' | sqlite3 " << tmp_file("database.db");
 
 	command << ")";
 	
