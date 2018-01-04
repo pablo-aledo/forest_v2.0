@@ -6,7 +6,7 @@ rm *.bc
 source ../../../setvariables.sh
 
 clang -c -emit-llvm main.c
-opt -load /usr/src/llvm-3.7/Debug+Asserts/lib/ForestInstr.so -insert_select_variables < main.bc > with_select_variables.bc
+opt -load /usr/src/llvm-3.7/Debug+Asserts/lib/ForestInstr.so -loop_latch_info -insert_select_variables < main.bc > with_select_variables.bc
 
 llvm-dis main.bc
 llvm-dis with_select_variables.bc

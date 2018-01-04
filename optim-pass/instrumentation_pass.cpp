@@ -34,6 +34,7 @@
 #include <llvm/Support/MathExtras.h>
 #include <llvm/IR/Operator.h>
 #include <llvm/Transforms/Utils/BasicBlockUtils.h>
+#include "llvm/Analysis/LoopInfo.h"
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -1067,7 +1068,7 @@ struct IsolateFunctionWithPointers: public ModulePass {
 			BitCastInst* bi = new BitCastInst(ai2, pointer_type, "", entry);
 			new StoreInst(bi,ai,entry);
 
-			for ( unsigned int i = 0; i < sizes_depth[depth]; i++) {
+			for ( int i = 0; i < sizes_depth[depth]; i++) {
 				vector<int> coordinates; coordinates.push_back(0); coordinates.push_back(i);
 				vector<Value*> vector_indexes = vector_of_constants(M, coordinates);
 				GetElementPtrInst* gep = GetElementPtrInst::Create(NULL, ai2, vector_indexes, "pointerc", entry);
@@ -4536,67 +4537,136 @@ struct GlobalInit: public ModulePass {
 	}
 };
 
+
+#define DEBUG
+
+/*
+ * Use for the communication between the insert_select_variables pass and the loop_latch_info pass
+ */
+std::vector<Instruction*> BinInstructionsLoopLatch;
+
+namespace {
+  /*
+   * This pass is needed to extract the information of used binary statements in loop latches.
+   * Since we are depended on LoopInfo, we must use a FunctionPass for that - we can not integrate
+   * that into our module passes. 
+   * We have to call this pass using opt -load *-so -loop_latch_info before invoking the insert_select_variables
+   * pass since we can not call it automatically from a Module Pass. 
+   */
+  struct LoopLatchParser : public FunctionPass {
+    static char ID;
+    LoopLatchParser() : FunctionPass(ID) {} 
+    
+    // Tell LLVM that we are dependent on LoopInfo
+    void getAnalysisUsage (AnalysisUsage & AU) const {
+      AU.addRequired<LoopInfoWrapperPass>();
+      AU.setPreservesAll();
+    }
+
+    virtual  bool runOnFunction (Function &F)  {
+#ifdef DEBUG
+      errs () << "Executing LoopHeader pass ...\n";
+#endif      
+      LoopInfoWrapperPass * LIWP = getAnalysisIfAvailable<LoopInfoWrapperPass> ();
+      LoopInfo & LI = LIWP->getLoopInfo();
+      
+      for (LoopInfo::iterator i = LI.begin(), e = LI.end(); i!=e; ++i){
+	AnalyseLoop(*i, 0);
+      }
+#ifdef DEBUG
+      errs () << "Found " << BinInstructionsLoopLatch.size() << " binary statementes in loops\n";
+#endif
+      return false;
+    }
+
+  private: 
+    void AnalyseLoop (Loop * L, size_t nesting) {
+      BasicBlock::iterator I = L->getLoopLatch()->begin();
+      
+      for (; I != L->getLoopLatch()->end(); ++ I){
+      	if(BinaryOperator::classof(I)){
+	  BinInstructionsLoopLatch.push_back(I);
+      	}
+      }
+    }
+    
+  };
+}
+
 typedef struct ReplaceAfter {
-	Instruction* instr_to_replace;
-	Instruction* replace_by;
+  Instruction* instr_to_replace;
+  Instruction* replace_by;
 } ReplaceAfter;
 
 struct SelectVariables: public ModulePass {
-	static char ID; // Pass identification, replacement for typeid
-	SelectVariables() : ModulePass(ID) {}
+  static char ID;
+  SelectVariables() : ModulePass(ID) {}
+  
+  virtual bool runOnModule(Module &M) {
+ 
+    vector<ReplaceAfter> values_to_replace;
+    
+    mod_iterator(M, fn) {
+      fun_iterator(fn, bb){
+	blk_iterator(bb, in){
 
-	virtual bool runOnModule(Module &M) {
-
-		
-		vector<ReplaceAfter> values_to_replace;
-
-	        // Every C File is one Modules
-	        // Inside the Module you have a set of functions
-	        // Inside the functions you have basic blocks
-	        // Inside Basic Blocks there are instructions
-		mod_iterator(M, fn){ // Module
-		fun_iterator(fn, bb){ // Function 
-		blk_iterator(bb, in){ // Basic Block
-			if( BinaryOperator::classof(in) ){ 
+	  if(BinaryOperator::classof(in)){
+	    // Search in the extracted data by loop_latch_info if the binary instruction is part of a loop latch.
+	    // Iff it is part of a loop latch we are not inserting select variables, since this would end up in an endless loop
+	    // as the SAT solver can insert arbitrary values and the loop will never terminate
+	    if(std::find(BinInstructionsLoopLatch.begin(), BinInstructionsLoopLatch.end(), in) == BinInstructionsLoopLatch.end()){
+#ifdef DEBUG
+	      errs () << "No loop latch is using this\n";
+#endif
+	      BasicBlock::iterator insertpos = in; insertpos++;
+	      
+	      AllocaInst* enable_ptr = new AllocaInst(Type::getInt1Ty( M.getContext() ), "select_enable", insertpos);
+	      AllocaInst* val_ptr    = new AllocaInst(in->getType(), "select_value", insertpos);
 	
-				BasicBlock::iterator insertpos = in; insertpos++;
-	
-				AllocaInst* enable_ptr = new AllocaInst(Type::getInt1Ty( M.getContext() ), "select_enable", insertpos);
-				AllocaInst* val_ptr    = new AllocaInst(in->getType(), "select_value", insertpos);
-	
-				LoadInst* enable = new LoadInst(enable_ptr,"",insertpos);
-				LoadInst* val = new LoadInst(val_ptr,"",insertpos);
-	
-				SelectInst * SelectInstruction =  SelectInst::Create (enable,in ,val, "select_result", insertpos);
-	
-				ReplaceAfter val_to_repl = {in, SelectInstruction };
-				values_to_replace.push_back(val_to_repl);
-	
-			}
-	
-	
-		}}} 
+	      LoadInst* enable = new LoadInst(enable_ptr,"",insertpos);
+	      LoadInst* val = new LoadInst(val_ptr,"",insertpos);
+	      
+	      SelectInst * SelectInstruction =  SelectInst::Create (enable,in ,val, "select_result", insertpos);
 
-
-		for( vector<ReplaceAfter>::iterator it = values_to_replace.begin(); it != values_to_replace.end(); it++ ){
-			Instruction* instr_to_replace = it->instr_to_replace;
-			Instruction* replace_by = it->replace_by;
-
-			for (Value::user_iterator i = instr_to_replace->user_begin(), e = instr_to_replace->user_end(); i != e; ++i){
-  				Instruction *instruction = dyn_cast<Instruction>( *i );
-
-				if( instruction == replace_by ) continue;
-
-				for(int n = 0; n < instruction->getNumOperands(); n++ ){
-					if( instruction->getOperand(n) == instr_to_replace ){
-						instruction->setOperand(n, replace_by);
-					}
-				}
-			}
-		}
-
-		return false;
+	      // As we manipulate the result of a binary instruction we also have to make sure, that our introduces result
+	      // ends up in the indtended register!
+	      ReplaceAfter val_to_repl = {in, SelectInstruction };
+	      values_to_replace.push_back(val_to_repl);
+	      
+	    } else {
+#ifdef DEBUG
+	      errs () << "Instruction used in loop latch!\n";
+#endif
+	    }
+#ifdef DEBUG
+	    errs () << "Value ID: " << in->getValueID() << "\n";
+	    errs () << "Address" << in << "\n";
+#endif	   
+	  }
 	}
+      }
+    }
+    
+    // Replace intstruction target registers - with the introduction of select statements the targets have been changed
+    for( vector<ReplaceAfter>::iterator it = values_to_replace.begin(); it != values_to_replace.end(); it++ ){
+      Instruction* instr_to_replace = it->instr_to_replace;
+      Instruction* replace_by = it->replace_by;
+
+      for (Value::user_iterator i = instr_to_replace->user_begin(), e = instr_to_replace->user_end(); i != e; ++i){
+	Instruction *instruction = dyn_cast<Instruction>( *i );
+
+	if( instruction == replace_by ) continue;
+
+	for(int n = 0; n < instruction->getNumOperands(); n++ ){
+	  if( instruction->getOperand(n) == instr_to_replace ){
+	    instruction->setOperand(n, replace_by);
+	  }
+	}
+      }
+    }
+
+    return false;
+  }
 };
 
 
@@ -4644,9 +4714,12 @@ struct All: public ModulePass {
 
 
 // Identifiers
-// Select Variables 
+// Select Variables
+char LoopLatchParser::ID = 0;
+static RegisterPass<LoopLatchParser> LoopLatchParser(      "loop_latch_info"         , "Extract binary statements from the loop latch        " );
+
 char SelectVariables::ID = 0;
-static RegisterPass<SelectVariables> SelectVariables(             "insert_select_variables"         , "Inserts the free SAT variables for debugging         " );
+static RegisterPass<SelectVariables> SelectVariables( "insert_select_variables" , "Inserts the free SAT variables for debugging         " );
 
 char FillNames::ID = 0;
 static RegisterPass<FillNames> FillNames(             "instr_fill_names"         , "Fills operands and Block Names                      " );
