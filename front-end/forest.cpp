@@ -42,6 +42,51 @@ void show_version_and_exit(){
 	exit(0);
 }
 
+void show_help() {
+    int const WIDTH = 30;
+
+    std::cout << "Usage: forest [options]" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-version"                  << "Print version info." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-help"                     << "Displays this information." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-verbose"                  << "Displays a lot of debug information." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-make_bc"                  << "Generates bc with instrumentation and isolated function." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-clean_tables"             << "Removes and creates database tables." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-final"                    << "Generates final executable code." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-compare_bc"               << "Opens meld comparing the original and instrumented LLVM IR." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-compare_libs"             << "Compares raw bc with changed-stdlibs." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-view_bc"                  << "Shows bc of the code." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-dfg"                      << "Shows dfg of the code." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-dfg2"                     << "Shows dfg of instrumented code." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-run"                      << "Run generated executable." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-test"                     << "Run and check results." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_results"             << "Lists the results of a previous forest run." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_argvs"               << "Show generated testcases in argv form." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_test_vectors"        << "Show generated testvectors." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-test_vectors"             << "Transforms data in the database to test_vector format." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_coverage"            << "Shows coverage obtained with current test_vectors." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-clean"                    << "Creates and cleans temporal folder." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_result"               << "Copies result to gold_result." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-vim"                      << "Shows debug information in vim." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_model"                << "Gets a model to be used in repl." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_model_fn"             << "Gets a model of a function." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_model_modelfinder"    << "Gets a model to be used with the modelfinder tool." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_static_heuristic"     << "Generates heuristics to guide the search." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-valgrind"                 << "Tests the output with valgrind ." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-list_external_functions"  << "Lists the functions that are not implemented." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-lbc"                      << "Get the bc linked with standard libraries." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_timer"               << "Draws a graph with timer." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_exceptions"          << "Shows possible exceptions in the program under test." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-show_interpolants"        << "Shows interpolants." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-svcomp"                   << "svcomp competition." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-goanna_fpr"               << "Use forest to check for false positives in goanna." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-get_concurrent_functions" << "Get functions that can be executed concurrently." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-commutativity"            << "Run commutativity_testing." << std::endl;
+    std::cout <<  std::setw(WIDTH) << std::left <<  "-compare_isolate"          << "Isolate function and compare with original." << std::endl;
+
+    exit(0);
+}
+
 int main(int argc, const char *argv[]) {
 
 
@@ -153,6 +198,7 @@ int main(int argc, const char *argv[]) {
 	//cmd_option_bool("random_branching"))
 	//cmd_option_bool("svcomp_only_output"))
 	if(cmd_option_bool("version")) show_version_and_exit();                     // print version info
+    if(cmd_option_bool("help")) show_help();                                    // Show all possible command line arguments for forest
 	if(cmd_option_bool("make_bc")) make_bc();                                   // generates bc with instrumentation and isolated function
 	if(cmd_option_bool("clean_tables")) clean_tables();                         // removes and creates database tables
 	if(cmd_option_bool("final")) final();                                       // generates final executable code
@@ -186,7 +232,6 @@ int main(int argc, const char *argv[]) {
 	if(cmd_option_bool("get_concurrent_functions")) get_concurrent_functions(); // Get functions that can be executed concurrently
 	if(cmd_option_bool("commutativity")) commutativity_testing();               // Run commutativity_testing
 	if(cmd_option_bool("compare_isolate")) compare_isolate();                   // Isolate function and compare with original
-
 	return 0;
 
 }

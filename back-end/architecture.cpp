@@ -163,7 +163,7 @@ string hex_representation_2(int in, string type){
 		if(strlen(b) > bits(type)){
 			//printf("a\n");
 			string ret = "#x";
-			for ( int i = strlen(b); i < bits(type); i++) {
+			for ( size_t i = strlen(b); i < bits(type); i++) {
 				ret += "f";
 			}
 			return ret + string(b);
@@ -221,7 +221,7 @@ string internal_representation_float(float in, string type, string solver){
 	if( solver == "bitvector")
 		sprintf(b, "#x%02x", in);
 	else if( solver == "real_integer" )
-		sprintf(b, "%d", in);
+		sprintf(b, "%f", in);
 	else
 		assert(0 && "Unknown solver");
 
@@ -314,12 +314,12 @@ string sign_ext(int bits_src, int bits_dst, string content){
 
 
 	string zeros = "#x";
-	for ( unsigned int i = 0; i < size_bits/4; i++) {
+	for ( int i = 0; i < size_bits/4; i++) {
 		zeros += "0";
 	}
 
 	string ones = "#x";
-	for ( unsigned int i = 0; i < size_bits/4; i++) {
+	for ( int i = 0; i < size_bits/4; i++) {
 		ones += "f";
 	}
 
@@ -338,7 +338,7 @@ string zero_ext(int bits_src, int bits_dst, string content){
 
 
 	string zeros = "#x";
-	for ( unsigned int i = 0; i < size_bits/4; i++) {
+	for ( int i = 0; i < size_bits/4; i++) {
 		zeros += "0";
 	}
 
