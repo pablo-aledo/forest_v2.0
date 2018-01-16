@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<options>
+	<option key="test" value="true"/> 
+	<option key="explanation" value="Binary array"/> 
+	<option key="file" value="binary_array.c"/> 
+    <option key="optim_passes" value="-reg2mem -insert_select_variables"/> 
+    <option key="c_standard" value="C"/> 
+</options>

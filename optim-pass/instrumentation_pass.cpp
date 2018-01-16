@@ -3615,7 +3615,7 @@ struct AllocaInstr: public ModulePass {
 
 						if(subtype == "") subtype = "IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32,IntegerTyID32";
 
-						cerr << "subtype " << subtype << endl;
+						//cerr << "subtype " << subtype << endl;
 
 						GlobalVariable* c1 = make_global_str(M, nameres);
 						GlobalVariable* c2 = make_global_str(M, subtype);
